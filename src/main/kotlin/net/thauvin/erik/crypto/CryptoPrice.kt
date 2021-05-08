@@ -40,22 +40,28 @@ import java.io.IOException
 import java.net.URL
 import java.time.LocalDate
 
-data class Price(val base: String, val currency: String, val amount: Double)
-
-fun String.toPrice(): Price {
-    val json = JSONObject(this)
-    if (json.has("data")) {
-        val data = json.getJSONObject("data")
-        return Price(data.getString("base"), data.getString("currency"), data.getString("amount").toDouble())
-    } else {
-        throw CryptoException("Missing JSON data.")
-    }
-}
-
-open class CryptoPrice private constructor() {
+/**
+ * The `CryptoPrice` class
+ */
+open class CryptoPrice(val base: String, val currency: String, val amount: Double) {
     companion object {
         // Coinbase API URL
         private const val COINBASE_API_URL = "https://api.coinbase.com/v2/"
+
+        @JvmStatic
+        fun String.toPrice(): CryptoPrice {
+            val json = JSONObject(this)
+            if (json.has("data")) {
+                val data = json.getJSONObject("data")
+                return CryptoPrice(
+                        data.getString("base"),
+                        data.getString("currency"),
+                        data.getString("amount").toDouble()
+                )
+            } else {
+                throw CryptoException("Missing JSON data.")
+            }
+        }
 
         /**
          * Make an API call.
@@ -105,7 +111,7 @@ open class CryptoPrice private constructor() {
         @JvmStatic
         @JvmOverloads
         @Throws(CryptoException::class)
-        fun marketPrice(base: String, currency: String = "USD", date: LocalDate? = null): Price {
+        fun marketPrice(base: String, currency: String = "USD", date: LocalDate? = null): CryptoPrice {
             val params = mutableMapOf<String, String>()
             if (date != null) {
                 params.put("date", "$date")

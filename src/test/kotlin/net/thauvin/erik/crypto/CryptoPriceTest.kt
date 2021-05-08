@@ -1,6 +1,7 @@
 package net.thauvin.erik.crypto
 
 import net.thauvin.erik.crypto.CryptoPrice.Companion.marketPrice
+import net.thauvin.erik.crypto.CryptoPrice.Companion.toPrice
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith

@@ -3,6 +3,5 @@
   <ManuallySuppressedIssues/>
   <CurrentIssues>
     <ID>ThrowsCount:CryptoPrice.kt$CryptoPrice.Companion$ @JvmStatic @JvmOverloads @Throws(CryptoException::class) fun apiCall(paths: List&lt;String>, params: Map&lt;String, String> = emptyMap()): String</ID>
-    <ID>UtilityClassWithPublicConstructor:CryptoPrice.kt$CryptoPrice</ID>
   </CurrentIssues>
 </SmellBaseline>

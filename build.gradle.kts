@@ -102,24 +102,6 @@ tasks {
         }
     }
 
-    val copyToDeploy by registering(Copy::class) {
-        from(configurations.runtimeClasspath) {
-            exclude("annotations-*.jar")
-        }
-        from(jar)
-        into(deployDir)
-    }
-
-
-    register("deploy") {
-        description = "Copies all needed files to the $deployDir directory."
-        group = PublishingPlugin.PUBLISH_TASK_GROUP
-        dependsOn("build", "jar")
-        outputs.dir(deployDir)
-        inputs.files(copyToDeploy)
-        mustRunAfter("clean")
-    }
-
     "sonarqube" {
         dependsOn("jacocoTestReport")
     }
