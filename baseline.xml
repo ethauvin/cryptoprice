@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>ThrowsCount:CryptoPrice.kt$CryptoPrice.Companion$ @JvmStatic @JvmOverloads @Throws(CryptoException::class) fun apiCall(paths: List&lt;String&gt;, params: Map&lt;String, String&gt; = emptyMap()): String</ID>
+    <ID>UtilityClassWithPublicConstructor:CryptoPrice.kt$CryptoPrice</ID>
+  </CurrentIssues>
+</SmellBaseline>
