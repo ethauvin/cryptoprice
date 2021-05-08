@@ -1,0 +1,26 @@
+language: java
+dist: trusty
+
+env:
+  global:
+    - CI=true
+
+#install:
+#  - git fetch --unshallow --tags
+
+addons:
+  sonarcloud:
+    organization: "ethauvin-github"
+
+jdk:
+  - openjdk11
+  - openjdk15
+
+before_install:
+  - chmod +x gradlew
+
+after_success:
+  - |
+    if [ "${TRAVIS_TEST_RESULT}" == 0 ] && [ "$TRAVIS_JDK_VERSION" == "openjdk15" ]; then
+      ./gradlew sonarqube
+    fi
