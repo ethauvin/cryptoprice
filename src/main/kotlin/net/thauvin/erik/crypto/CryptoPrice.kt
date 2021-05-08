@@ -42,6 +42,16 @@ import java.time.LocalDate
 
 data class Price(val base: String, val currency: String, val amount: Double)
 
+fun String.toPrice(): Price {
+    val json = JSONObject(this)
+    if (json.has("data")) {
+        val data = json.getJSONObject("data")
+        return Price(data.getString("base"), data.getString("currency"), data.getString("amount").toDouble())
+    } else {
+        throw CryptoException("Missing JSON data.")
+    }
+}
+
 open class CryptoPrice private constructor() {
     companion object {
         // Coinbase API URL
@@ -101,13 +111,7 @@ open class CryptoPrice private constructor() {
                 params.put("date", "$date")
             }
             val body = apiCall(listOf("prices", "$base-$currency", "spot"), params)
-            val json = JSONObject(body)
-            if (json.has("data")) {
-                val data = json.getJSONObject("data")
-                return Price(data.getString("base"), data.getString("currency"), data.getString("amount").toDouble())
-            } else {
-                throw CryptoException("Missing JSON data.")
-            }
+            return body.toPrice()
         }
     }
 }
