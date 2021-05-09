@@ -34,11 +34,23 @@ package net.thauvin.erik.crypto
 
 @Suppress("EmptySecondaryConstructor", "unused")
 class CryptoException : Exception {
-    constructor(message: String, cause: Throwable) : super(message, cause)
-    constructor(message: String) : super(message)
-    constructor(cause: Throwable) : super(cause)
+    var statusCode = NO_STATUS
+
+    constructor(statusCode: Int = NO_STATUS, message: String, cause: Throwable) : super(message, cause) {
+        this.statusCode = statusCode
+    }
+
+    constructor(statusCode: Int = NO_STATUS, message: String) : super(message) {
+        this.statusCode = statusCode
+    }
+
+    constructor(statusCode: Int = NO_STATUS, cause: Throwable) : super(cause) {
+        this.statusCode = statusCode
+    }
 
     companion object {
+        const val NO_STATUS = -1
+
         private const val serialVersionUID = 1L
     }
 }

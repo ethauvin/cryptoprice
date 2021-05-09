@@ -53,11 +53,11 @@ open class CryptoPrice(val base: String, val currency: String, val amount: Doubl
             if (json.has("data")) {
                 with(json.getJSONObject("data")) {
                     return CryptoPrice(
-                        getString("base"), getString("currency"), getString("amount").toDouble()
+                            getString("base"), getString("currency"), getString("amount").toDouble()
                     )
                 }
             } else {
-                throw CryptoException("Missing JSON data.")
+                throw CryptoException(message = "Missing JSON data.")
             }
         }
 
@@ -85,15 +85,15 @@ open class CryptoPrice(val base: String, val currency: String, val amount: Doubl
                 if (!response.isSuccessful) {
                     if (json.has("errors")) {
                         val data = json.getJSONArray("errors")
-                        throw CryptoException(data.getJSONObject(0).getString("message"))
+                        throw CryptoException(response.code, data.getJSONObject(0).getString("message"))
                     } else {
-                        throw CryptoException("Invalid API response. (${response.code}")
+                        throw CryptoException(response.code, "Invalid API response.")
                     }
                 } else {
                     return body
                 }
             } else {
-                throw CryptoException("Empty API response.")
+                throw CryptoException(response.code, "Empty API response.")
             }
         }
 
