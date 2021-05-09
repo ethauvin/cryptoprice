@@ -49,15 +49,14 @@ open class CryptoPrice(val base: String, val currency: String, val amount: Doubl
         private const val COINBASE_API_URL = "https://api.coinbase.com/v2/"
 
         @JvmStatic
+        @Throws(CryptoException::class)
         fun String.toPrice(): CryptoPrice {
             val json = JSONObject(this)
             if (json.has("data")) {
-                val data = json.getJSONObject("data")
-                return CryptoPrice(
-                        data.getString("base"),
-                        data.getString("currency"),
-                        data.getString("amount").toDouble()
+                with(json.getJSONObject("data")) {
+                    return CryptoPrice(getString("base"), getString("currency"), getString("amount").toDouble()
                 )
+            }
             } else {
                 throw CryptoException("Missing JSON data.")
             }
@@ -112,10 +111,7 @@ open class CryptoPrice(val base: String, val currency: String, val amount: Doubl
         @JvmOverloads
         @Throws(CryptoException::class)
         fun marketPrice(base: String, currency: String = "USD", date: LocalDate? = null): CryptoPrice {
-            val params = mutableMapOf<String, String>()
-            if (date != null) {
-                params.put("date", "$date")
-            }
+            val params = if (date != null) mapOf("date" to "$date") else emptyMap()
             val body = apiCall(listOf("prices", "$base-$currency", "spot"), params)
             return body.toPrice()
         }
