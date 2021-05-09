@@ -32,11 +32,11 @@
 
 package net.thauvin.erik.crypto
 
-@Suppress("EmptySecondaryConstructor")
+@Suppress("EmptySecondaryConstructor", "unused")
 class CryptoException : Exception {
-    constructor(message: String, cause: Throwable) : super(message, cause) {}
-    constructor(message: String) : super(message) {}
-    constructor(cause: Throwable) : super(cause) {}
+    constructor(message: String, cause: Throwable) : super(message, cause)
+    constructor(message: String) : super(message)
+    constructor(cause: Throwable) : super(cause)
 
     companion object {
         private const val serialVersionUID = 1L

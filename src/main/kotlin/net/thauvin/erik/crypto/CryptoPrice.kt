@@ -36,8 +36,6 @@ import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONObject
-import java.io.IOException
-import java.net.URL
 import java.time.LocalDate
 
 /**
@@ -54,9 +52,10 @@ open class CryptoPrice(val base: String, val currency: String, val amount: Doubl
             val json = JSONObject(this)
             if (json.has("data")) {
                 with(json.getJSONObject("data")) {
-                    return CryptoPrice(getString("base"), getString("currency"), getString("amount").toDouble()
-                )
-            }
+                    return CryptoPrice(
+                        getString("base"), getString("currency"), getString("amount").toDouble()
+                    )
+                }
             } else {
                 throw CryptoException("Missing JSON data.")
             }

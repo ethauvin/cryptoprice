@@ -2,11 +2,11 @@ package net.thauvin.erik.crypto
 
 import net.thauvin.erik.crypto.CryptoPrice.Companion.marketPrice
 import net.thauvin.erik.crypto.CryptoPrice.Companion.toPrice
+import java.time.LocalDate
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
-import java.time.LocalDate
 
 /**
  * The `CryptoPriceTest` class.
@@ -52,24 +52,25 @@ class CryptoPriceTest {
     @Throws(CryptoException::class)
     fun testMarketPriceExceptions() {
         assertFailsWith(
-                message = "FOO did not fail",
-                exceptionClass = CryptoException::class,
-                block = { marketPrice("FOO") }
+            message = "FOO did not fail",
+            exceptionClass = CryptoException::class,
+            block = { marketPrice("FOO") }
         )
 
         assertFailsWith(
-                message = "BAR did not fail",
-                exceptionClass = CryptoException::class,
-                block = { marketPrice("BTC", "BAR") }
+            message = "BAR did not fail",
+            exceptionClass = CryptoException::class,
+            block = { marketPrice("BTC", "BAR") }
         )
     }
 
     @Test
     @Throws(CryptoException::class)
     fun testToPrice() {
-        val price = "{\"data\":{\"base\":\"BTC\",\"currency\":\"USD\",\"amount\":\"57515.69\"}}".toPrice()
+        val d = 57515.69
+        val price = "{\"data\":{\"base\":\"BTC\",\"currency\":\"USD\",\"amount\":\"$d\"}}".toPrice()
         assertEquals(price.base, "BTC", "base is BTC")
         assertEquals(price.currency, "USD", "currency is USD")
-        assertEquals(price.amount, "57515.69".toDouble(), "amount is 57515.69")
+        assertEquals(price.amount, d, "amount is 57515.69")
     }
 }

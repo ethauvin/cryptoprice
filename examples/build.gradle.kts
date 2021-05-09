@@ -19,7 +19,7 @@ dependencies {
 }
 
 application {
-    mainClassName = "com.example.CryptoPriceExampleKt"
+    mainClass.set("com.example.CryptoPriceExampleKt")
 }
 
 tasks {

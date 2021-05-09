@@ -41,7 +41,7 @@ dependencies {
 }
 
 application {
-    mainClassName = "net.thauvin.erik.crypto.CryptoPrice"
+    mainClass.set("net.thauvin.erik.crypto.CryptoPrice")
 }
 
 java {
@@ -133,7 +133,7 @@ publishing {
                 scm {
                     connection.set("scm:git:git://github.com/$gitHub.git")
                     developerConnection.set("scm:git:git@github.com:$gitHub.git")
-                    url.set("$mavenUrl")
+                    url.set(mavenUrl)
                 }
                 issueManagement {
                     system.set("GitHub")
