@@ -19,6 +19,7 @@ public class CryptoPriceSample {
             System.out.println("The current Bitcoin price is " + euroPrice.getAmount() + " in Euros");
 
             // Get current Bitcoin buy price using API.
+            // See: https://developers.coinbase.com/api/v2#get-buy-price
             final CryptoPrice buyPrice =
                     CryptoPrice.toPrice(
                             CryptoPrice.apiCall(

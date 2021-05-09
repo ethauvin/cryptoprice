@@ -14,6 +14,7 @@ fun main(@Suppress("UNUSED_PARAMETER") args: Array<String>) {
     println("The current Bitcoin price is ${euroPrice.amount} in Euros")
 
     // Get current Bitcoin buy price using API.
+    // See: https://developers.coinbase.com/api/v2#get-buy-price
     var buyPrice = apiCall(listOf("prices", "BTC-USD", "buy"), emptyMap()).toPrice()
     println("The current BTC buy price is ${buyPrice.amount} in ${buyPrice.currency}")
 
