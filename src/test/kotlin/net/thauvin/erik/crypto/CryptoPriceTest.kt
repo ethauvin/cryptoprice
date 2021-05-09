@@ -52,15 +52,15 @@ class CryptoPriceTest {
     @Throws(CryptoException::class)
     fun testMarketPriceExceptions() {
         assertFailsWith(
-                message = "FOO did not fail",
-                exceptionClass = CryptoException::class,
-                block = { marketPrice("FOO") }
+            message = "FOO did not fail",
+            exceptionClass = CryptoException::class,
+            block = { marketPrice("FOO") }
         )
 
         assertFailsWith(
-                message = "BAR did not fail",
-                exceptionClass = CryptoException::class,
-                block = { marketPrice("BTC", "BAR") }
+            message = "BAR did not fail",
+            exceptionClass = CryptoException::class,
+            block = { marketPrice("BTC", "BAR") }
         )
 
         try {

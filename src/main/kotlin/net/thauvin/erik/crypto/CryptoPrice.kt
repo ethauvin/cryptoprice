@@ -53,7 +53,7 @@ open class CryptoPrice(val base: String, val currency: String, val amount: Doubl
             if (json.has("data")) {
                 with(json.getJSONObject("data")) {
                     return CryptoPrice(
-                            getString("base"), getString("currency"), getString("amount").toDouble()
+                        getString("base"), getString("currency"), getString("amount").toDouble()
                     )
                 }
             } else {
