@@ -17,7 +17,7 @@ val btc = marketPrice("BTC") // Bitcoin
 print(btc.amount)
 
 val eth = marketPrice("ETH", "EUR") // Ethereum in Euros
-price(eth.amount)
+println(eth.amount)
 
 ```
  - View [Kotlin](https://github.com/ethauvin/cryptoprice/blob/master/examples/src/main/kotlin/com/example/CryptoPriceExample.kt) or [Java](https://github.com/ethauvin/cryptoprice/blob/master/examples/src/main/java/com/example/CryptoPriceSample.java) Examples.
