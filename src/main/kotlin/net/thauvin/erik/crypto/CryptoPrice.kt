@@ -56,7 +56,7 @@ open class CryptoPrice(val base: String, val currency: String, val amount: Doubl
                 if (json.has("data")) {
                     with(json.getJSONObject("data")) {
                         return CryptoPrice(
-                                getString("base"), getString("currency"), getString("amount").toDouble()
+                            getString("base"), getString("currency"), getString("amount").toDouble()
                         )
                     }
                 } else {
@@ -108,7 +108,7 @@ open class CryptoPrice(val base: String, val currency: String, val amount: Doubl
 
         @JvmStatic
         fun main(args: Array<String>) {
-            listOf("BTC", "BCH", "BSV", "ETH","ETH2","ETC").forEach {
+            listOf("BTC", "BCH", "BSV", "ETH", "ETH2", "ETC").forEach {
                 with(marketPrice(it)) {
                     println("$base: $amount")
                 }

@@ -9,7 +9,7 @@ A simple Kotlin/Java/Android implementation of the spot price [Coinbase Public A
 ## Examples (TL;DR)
 
 ```kotlin
-import net.thauvin.erik.crypto.CryptoPrice
+import net.thauvin.erik.crypto.CryptoPrice.Companion.marketPrice
 
 // ...
 

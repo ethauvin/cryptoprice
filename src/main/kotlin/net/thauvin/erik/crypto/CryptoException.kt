@@ -32,7 +32,7 @@
 
 package net.thauvin.erik.crypto
 
-@Suppress("EmptySecondaryConstructor", "unused")
+@Suppress("unused")
 class CryptoException : Exception {
     var statusCode = NO_STATUS
 
