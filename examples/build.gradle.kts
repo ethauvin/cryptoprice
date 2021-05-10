@@ -27,6 +27,6 @@ tasks {
     register<JavaExec>("runJava") {
         group = "application"
         main = "com.example.CryptoPriceSample"
-        classpath = sourceSets["main"].runtimeClasspath
+        classpath = sourceSets.main.get().runtimeClasspath
     }
 }

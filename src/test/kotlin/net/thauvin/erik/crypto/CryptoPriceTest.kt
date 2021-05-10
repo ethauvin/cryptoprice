@@ -105,7 +105,7 @@ class CryptoPriceTest {
         assertFailsWith(
             message = "no base did not fail",
             exceptionClass = CryptoException::class,
-            block = { json.replace("base","food").toPrice() }
+            block = { json.replace("base","foo").toPrice() }
         )
     }
 }

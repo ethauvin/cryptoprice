@@ -54,7 +54,7 @@ A generic `apiCall()` function is available to access other [API data endpoints]
 ```kotlin
 apiCall(paths = listOf("prices", "BTC-USD", "buy"), params = emptyMap())
 ```
-will return:
+will return something like:
 
 ```json
 {"data":{"base":"BTC","currency":"USD","amount":"58977.17"}}
