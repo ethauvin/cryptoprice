@@ -1,12 +1,11 @@
 package com.example;
 
-import net.thauvin.erik.crypto.CryptoPrice;
 import net.thauvin.erik.crypto.CryptoException;
+import net.thauvin.erik.crypto.CryptoPrice;
 
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 public class CryptoPriceSample {
     public static void main(String[] args) {
@@ -25,10 +24,11 @@ public class CryptoPriceSample {
                     CryptoPrice.toPrice(
                             CryptoPrice.apiCall(
                                     List.of("prices", "BTC-USD", "buy"),
-                                    Collections.<String, String>emptyMap()
+                                    Collections.emptyMap()
                             )
                     );
-            System.out.println("The current BTC buy price is " + price.getAmount() + " in " + price.getCurrency());
+            System.out.println("The current BTC buy price is " + buyPrice.getAmount()
+                    + " in " + buyPrice.getCurrency());
 
             System.out.println();
 
