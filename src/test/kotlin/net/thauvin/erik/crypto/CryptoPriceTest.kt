@@ -1,5 +1,6 @@
 package net.thauvin.erik.crypto
 
+import net.thauvin.erik.crypto.CryptoPrice.Companion.apiCall
 import net.thauvin.erik.crypto.CryptoPrice.Companion.marketPrice
 import net.thauvin.erik.crypto.CryptoPrice.Companion.toPrice
 import java.time.LocalDate
@@ -50,6 +51,15 @@ class CryptoPriceTest {
 
     @Test
     @Throws(CryptoException::class)
+    fun testApiCall() {
+        val price = apiCall(listOf("prices", "BTC-USD", "buy"), emptyMap()).toPrice()
+        assertEquals(price.base, "BTC", "buy BTC")
+        assertEquals(price.currency, "USD", "buy BTC is USD")
+        assertTrue(price.amount > 0.00, "buy BTC > 0")
+    }
+    
+    @Test
+    @Throws(CryptoException::class)
     fun testMarketPriceExceptions() {
         assertFailsWith(
             message = "FOO did not fail",
@@ -84,6 +94,18 @@ class CryptoPriceTest {
             message = "double convertion did not fail",
             exceptionClass = CryptoException::class,
             block = { json.replace("5", "a").toPrice() }
+        )
+
+        assertFailsWith(
+            message = "empty did not fail",
+            exceptionClass = CryptoException::class,
+            block = { "{}".toPrice() }
+        )
+
+        assertFailsWith(
+            message = "no base did not fail",
+            exceptionClass = CryptoException::class,
+            block = { json.replace("base","food").toPrice() }
         )
     }
 }
