@@ -35,7 +35,9 @@ package net.thauvin.erik.crypto
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import org.json.JSONException
 import org.json.JSONObject
+import java.io.IOException
 import java.time.LocalDate
 
 /**
@@ -49,15 +51,21 @@ open class CryptoPrice(val base: String, val currency: String, val amount: Doubl
         @JvmStatic
         @Throws(CryptoException::class)
         fun String.toPrice(): CryptoPrice {
-            val json = JSONObject(this)
-            if (json.has("data")) {
-                with(json.getJSONObject("data")) {
-                    return CryptoPrice(
-                        getString("base"), getString("currency"), getString("amount").toDouble()
-                    )
+            try {
+                val json = JSONObject(this)
+                if (json.has("data")) {
+                    with(json.getJSONObject("data")) {
+                        return CryptoPrice(
+                                getString("base"), getString("currency"), getString("amount").toDouble()
+                        )
+                    }
+                } else {
+                    throw CryptoException(message = "Missing price data.")
                 }
-            } else {
-                throw CryptoException(message = "Missing JSON data.")
+            } catch (e: NumberFormatException) {
+                throw CryptoException(message = "Could not convert price data to number.", cause = e)
+            } catch (e: JSONException) {
+                throw CryptoException(message = "Could not parse price data.", cause = e)
             }
         }
 
@@ -66,10 +74,11 @@ open class CryptoPrice(val base: String, val currency: String, val amount: Doubl
          */
         @JvmStatic
         @JvmOverloads
-        @Throws(CryptoException::class)
+        @Throws(CryptoException::class, IOException::class)
         fun apiCall(paths: List<String>, params: Map<String, String> = emptyMap()): String {
             val client = OkHttpClient()
             val url = COINBASE_API_URL.toHttpUrl().newBuilder()
+
             paths.forEach {
                 url.addPathSegment(it)
             }
@@ -81,19 +90,19 @@ open class CryptoPrice(val base: String, val currency: String, val amount: Doubl
             val response = client.newCall(request).execute()
             val body = response.body?.string()
             if (body != null) {
-                val json = JSONObject(body)
-                if (!response.isSuccessful) {
-                    if (json.has("errors")) {
+                try {
+                    val json = JSONObject(body)
+                    if (response.isSuccessful) {
+                        return body
+                    } else {
                         val data = json.getJSONArray("errors")
                         throw CryptoException(response.code, data.getJSONObject(0).getString("message"))
-                    } else {
-                        throw CryptoException(response.code, "Invalid API response.")
                     }
-                } else {
-                    return body
+                } catch (e: JSONException) {
+                    throw CryptoException(response.code, "Could not parse data.", e)
                 }
             } else {
-                throw CryptoException(response.code, "Empty API response.")
+                throw CryptoException(response.code, "Empty response.")
             }
         }
 
@@ -104,11 +113,11 @@ open class CryptoPrice(val base: String, val currency: String, val amount: Doubl
         }
 
         /**
-         * Retrieves the current market price.
+         * Retrieve the current market price.
          */
         @JvmStatic
         @JvmOverloads
-        @Throws(CryptoException::class)
+        @Throws(CryptoException::class, IOException::class)
         fun marketPrice(base: String, currency: String = "USD", date: LocalDate? = null): CryptoPrice {
             val params = if (date != null) mapOf("date" to "$date") else emptyMap()
             val body = apiCall(listOf("prices", "$base-$currency", "spot"), params)

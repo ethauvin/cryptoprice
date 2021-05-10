@@ -3,6 +3,7 @@ package com.example;
 import net.thauvin.erik.crypto.CryptoPrice;
 import net.thauvin.erik.crypto.CryptoException;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +36,7 @@ public class CryptoPriceSample {
             final CryptoPrice gbpPrice = CryptoPrice.marketPrice("ETH", "GBP");
             System.out.println("The current Ethereum price is " + gbpPrice.getAmount() + " in Pound sterling");
 
-        } catch (CryptoException e) {
+        } catch (CryptoException | IOException e) {
             System.err.println(e.getMessage());
         }
     }

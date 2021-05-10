@@ -74,9 +74,16 @@ class CryptoPriceTest {
     @Throws(CryptoException::class)
     fun testToPrice() {
         val d = 57515.69
-        val price = "{\"data\":{\"base\":\"BTC\",\"currency\":\"USD\",\"amount\":\"$d\"}}".toPrice()
+        val json = "{\"data\":{\"base\":\"BTC\",\"currency\":\"USD\",\"amount\":\"$d\"}}"
+        val price = json.toPrice()
         assertEquals(price.base, "BTC", "base is BTC")
         assertEquals(price.currency, "USD", "currency is USD")
         assertEquals(price.amount, d, "amount is 57515.69")
+
+        assertFailsWith(
+            message = "double convertion did not fail",
+            exceptionClass = CryptoException::class,
+            block = { json.replace("5", "a").toPrice() }
+        )
     }
 }
