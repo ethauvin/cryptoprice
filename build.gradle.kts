@@ -1,5 +1,6 @@
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 
 plugins {
     id("com.github.ben-manes.versions") version "0.38.0"
@@ -10,6 +11,7 @@ plugins {
     application
     `maven-publish`
     jacoco
+    java
     signing
 }
 
@@ -50,6 +52,7 @@ java {
     withSourcesJar()
 }
 
+
 detekt {
     toolVersion = "main-SNAPSHOT"
 }
@@ -70,6 +73,12 @@ val javadocJar by tasks.creating(Jar::class) {
 tasks {
     withType<KotlinCompile>().configureEach {
         kotlinOptions.jvmTarget = "11"
+    }
+
+    withType<Test> {
+        testLogging {
+            exceptionFormat = TestExceptionFormat.FULL
+        }
     }
 
     withType<GenerateMavenPom> {
