@@ -108,8 +108,11 @@ open class CryptoPrice(val base: String, val currency: String, val amount: Doubl
 
         @JvmStatic
         fun main(args: Array<String>) {
-            val price = marketPrice("BTC")
-            println("BTC: ${price.amount}")
+            listOf("BTC", "BCH", "BSV", "ETH","ETH2","ETC").forEach {
+                with(marketPrice(it)) {
+                    println("$base: $amount")
+                }
+            }
         }
 
         /**

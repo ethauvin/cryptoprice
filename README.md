@@ -14,7 +14,7 @@ import net.thauvin.erik.crypto.CryptoPrice
 // ...
 
 val btc = marketPrice("BTC") // Bitcoin
-print(btc.amount)
+println(btc.amount)
 
 val eth = marketPrice("ETH", "EUR") // Ethereum in Euros
 println(eth.amount)
