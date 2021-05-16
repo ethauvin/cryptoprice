@@ -1,10 +1,11 @@
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
     id("com.github.ben-manes.versions") version "0.38.0"
-    id("io.gitlab.arturbosch.detekt") version "1.17.0-RC1"
+    id("io.gitlab.arturbosch.detekt") version "1.17.0"
     id("org.jetbrains.dokka") version "1.4.32"
     id("org.sonarqube") version "3.2.0"
     kotlin("jvm") version "1.5.0"
@@ -54,7 +55,7 @@ java {
 
 
 detekt {
-    toolVersion = "main-SNAPSHOT"
+    //toolVersion = "main-SNAPSHOT"
 }
 
 sonarqube {
@@ -72,12 +73,13 @@ val javadocJar by tasks.creating(Jar::class) {
 
 tasks {
     withType<KotlinCompile>().configureEach {
-        kotlinOptions.jvmTarget = "11"
+        kotlinOptions.jvmTarget = java.targetCompatibility.toString()
     }
 
     withType<Test> {
         testLogging {
             exceptionFormat = TestExceptionFormat.FULL
+            events = setOf(TestLogEvent.PASSED, TestLogEvent.SKIPPED, TestLogEvent.FAILED)
         }
     }
 
