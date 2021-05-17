@@ -55,9 +55,7 @@ open class CryptoPrice(val base: String, val currency: String, val amount: Doubl
                 val json = JSONObject(this)
                 if (json.has("data")) {
                     with(json.getJSONObject("data")) {
-                        return CryptoPrice(
-                            getString("base"), getString("currency"), getString("amount").toDouble()
-                        )
+                        return CryptoPrice(getString("base"), getString("currency"), getString("amount").toDouble())
                     }
                 } else {
                     throw CryptoException(message = "Missing price data.")

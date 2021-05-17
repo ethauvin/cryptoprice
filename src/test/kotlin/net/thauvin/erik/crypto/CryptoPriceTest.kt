@@ -57,7 +57,7 @@ class CryptoPriceTest {
         assertEquals(price.currency, "USD", "buy BTC is USD")
         assertTrue(price.amount > 0.00, "buy BTC > 0")
     }
-    
+
     @Test
     @Throws(CryptoException::class)
     fun testMarketPriceExceptions() {
@@ -91,7 +91,7 @@ class CryptoPriceTest {
         assertEquals(price.amount, d, "amount is 57515.69")
 
         assertFailsWith(
-            message = "double convertion did not fail",
+            message = "double conversion did not fail",
             exceptionClass = CryptoException::class,
             block = { json.replace("5", "a").toPrice() }
         )
@@ -105,7 +105,7 @@ class CryptoPriceTest {
         assertFailsWith(
             message = "no base did not fail",
             exceptionClass = CryptoException::class,
-            block = { json.replace("base","foo").toPrice() }
+            block = { json.replace("base", "foo").toPrice() }
         )
     }
 }
