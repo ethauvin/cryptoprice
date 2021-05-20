@@ -61,6 +61,8 @@ detekt {
 sonarqube {
     properties {
         property("sonar.projectKey", "ethauvin_$name")
+        property("sonar.organization", "ethauvin-github")
+        property("sonar.host.url", "https://sonarcloud.io")
         property("sonar.sourceEncoding", "UTF-8")
     }
 }
