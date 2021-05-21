@@ -5,7 +5,7 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
     id("com.github.ben-manes.versions") version "0.38.0"
-    id("io.gitlab.arturbosch.detekt") version "1.17.0"
+    id("io.gitlab.arturbosch.detekt") version "1.17.1"
     id("org.jetbrains.dokka") version "1.4.32"
     id("org.sonarqube") version "3.2.0"
     kotlin("jvm") version "1.5.0"
