@@ -75,16 +75,16 @@ open class CryptoPrice(val base: String, val currency: String, val amount: Doubl
         @Throws(CryptoException::class, IOException::class)
         fun apiCall(paths: List<String>, params: Map<String, String> = emptyMap()): String {
             val client = OkHttpClient()
-            val url = COINBASE_API_URL.toHttpUrl().newBuilder()
+            val httpUrl = COINBASE_API_URL.toHttpUrl().newBuilder().apply {
+                paths.forEach {
+                    addPathSegment(it)
+                }
+                params.forEach {
+                    addQueryParameter(it.key, it.value)
+                }
+            }.build()
 
-            paths.forEach {
-                url.addPathSegment(it)
-            }
-            params.forEach {
-                url.addQueryParameter(it.key, it.value)
-            }
-
-            val request = Request.Builder().url(url.build()).build()
+            val request = Request.Builder().url(httpUrl).build()
             val response = client.newCall(request).execute()
             val body = response.body?.string()
             if (body != null) {
