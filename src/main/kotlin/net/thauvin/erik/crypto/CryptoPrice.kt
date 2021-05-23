@@ -41,13 +41,18 @@ import java.io.IOException
 import java.time.LocalDate
 
 /**
- * The `CryptoPrice` class
+ * A small Kotlin/Java library for retrieving cryptocurrencies current market prices.
+ *
+ * @author [Erik C. Thauvin](https://erik.thauvin.net/)
  */
 open class CryptoPrice(val base: String, val currency: String, val amount: Double) {
     companion object {
         // Coinbase API URL
         private const val COINBASE_API_URL = "https://api.coinbase.com/v2/"
 
+        /**
+         * Convert JSON data object to [CryptoPrice].
+         */
         @JvmStatic
         @Throws(CryptoException::class)
         fun String.toPrice(): CryptoPrice {
@@ -115,6 +120,10 @@ open class CryptoPrice(val base: String, val currency: String, val amount: Doubl
 
         /**
          * Retrieve the current market price.
+         *
+         * @param base The cryptocurrency ticker symbol. (`BTC`, `ETH`, `ETH2`, etc.)
+         * @param currency The fiat currency ISO 4217 code. (`USD`, `GPB`, `EUR`, etc.)
+         * @param date The [LocalDate] for historical price data.
          */
         @JvmStatic
         @JvmOverloads

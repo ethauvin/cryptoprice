@@ -35,9 +35,9 @@ marketPrice(
 ```
 
 Parameters  | Description
-:---------- |:-------------------------------------------------------
-`base`      | The cryptocurrency ticker symbol (BTC, ETH, ETH2, etc.)
-`currency`  | The fiat currency ISO 4217 code.
+:---------- |:-------------------------------------------------------------
+`base`      | The cryptocurrency ticker symbol (`BTC`, `ETH`, `ETH2`, etc.)
+`currency`  | The fiat currency ISO 4217 code. (`USD`, `GBP`, `EUR`, etc.)
 `date`      | The `LocalDate` for historical price data.
 
 A `CryptoPrice` is returned defined as follows:
