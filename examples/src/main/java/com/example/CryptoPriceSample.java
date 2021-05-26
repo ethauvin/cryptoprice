@@ -12,11 +12,19 @@ public class CryptoPriceSample {
         try {
             // Get current Bitcoin market price.
             final CryptoPrice price = CryptoPrice.marketPrice("BTC");
-            System.out.println("The current Bitcoin price is " + price.getAmount() + " in " + price.getCurrency());
+            System.out.println("The current Bitcoin price is " + price.toCurrency());
 
             // Get current Bitcoin market price in Euros.
             final CryptoPrice euroPrice = CryptoPrice.marketPrice("BTC", "EUR");
-            System.out.println("The current Bitcoin price is " + euroPrice.getAmount() + " in Euros");
+            System.out.println("The current Bitcoin price is " + euroPrice.toCurrency());
+
+            System.out.println();
+
+            // Get current Ethereum market price in Pound sterling.
+            final CryptoPrice gbpPrice = CryptoPrice.marketPrice("ETH", "GBP");
+            System.out.println("The current Ethereum price is " + gbpPrice.toCurrency());
+
+            System.out.println();
 
             // Get current Bitcoin buy price using API.
             // See: https://developers.coinbase.com/api/v2#get-buy-price
@@ -27,14 +35,8 @@ public class CryptoPriceSample {
                                     Collections.emptyMap()
                             )
                     );
-            System.out.println("The current BTC buy price is " + buyPrice.getAmount()
+            System.out.println("The current " + buyPrice.getBase() + " buy price is " + buyPrice.getAmount()
                     + " in " + buyPrice.getCurrency());
-
-            System.out.println();
-
-            // Get current Ethereum market price in Pound sterling.
-            final CryptoPrice gbpPrice = CryptoPrice.marketPrice("ETH", "GBP");
-            System.out.println("The current Ethereum price is " + gbpPrice.getAmount() + " in Pound sterling");
 
         } catch (CryptoException | IOException e) {
             System.err.println(e.getMessage());
