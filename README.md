@@ -50,8 +50,11 @@ The parameter names match the [Coinbase API](https://developers.coinbase.com/api
 To display the amount as a fomatted currency use the `toCurrency` function:
 
 ```kotlin
-val price = CryptoPrice("BTC", "EUR", 12345.67.toBigDecimal())
-println(price.toCurrency()) // will print €12,345.67
+val euro = CryptoPrice("BTC", "EUR", 12345.67.toBigDecimal())
+println(euro.toCurrency()) // will print: €12,345.67
+
+val krone = CryptoPrice("BTC", "DKK", 12345.67.toBigDecimal())
+println(krone.toCurrency(Locale("da", "DK"))) // will print: 12.345,67 kr.
 ```
 ### Extending
 

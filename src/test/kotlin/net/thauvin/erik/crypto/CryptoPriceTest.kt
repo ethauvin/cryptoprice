@@ -85,35 +85,38 @@ class CryptoPriceTest {
     @Test
     @Throws(IllegalArgumentException::class)
     fun testToCurrency() {
-        val d = 12345.67.toBigDecimal()
+        val d = 12345.60.toBigDecimal()
         val usd = CryptoPrice("BTC", "USD", d)
-        assertEquals("$12,345.67", usd.toCurrency(), "EUR format")
+        assertEquals("$12,345.60", usd.toCurrency(), "EUR format")
 
         val eur = CryptoPrice("BTC", "EUR", d)
-        assertEquals("€12,345.67", eur.toCurrency(), "EUR format")
+        assertEquals("€12,345.60", eur.toCurrency(), "EUR format")
 
         val gbp = CryptoPrice("ETH", "GBP", d)
-        assertEquals("£12,345.67", gbp.toCurrency(), "GBP format")
+        assertEquals("£12,345.60", gbp.toCurrency(), "GBP format")
 
         val aud = CryptoPrice("BTC", "AUD", d)
-        assertEquals("A$12,345.67", aud.toCurrency(), "AUD format")
+        assertEquals("A$12,345.60", aud.toCurrency(), "AUD format")
 
         val dk = CryptoPrice("BTC", "DKK", d)
-        assertEquals("12.345,67 kr.", dk.toCurrency(Locale("da", "DK")), "EUR-DKK format")
+        assertEquals("12.345,60 kr.", dk.toCurrency(Locale("da", "DK")), "EUR-DKK format")
 
         val jp = CryptoPrice("BTC", "JPY", d)
-        assertEquals("￥12,345.67", jp.toCurrency(Locale.JAPAN), "EUR-JPY format")
+        assertEquals("￥12,345.60", jp.toCurrency(Locale.JAPAN), "EUR-JPY format")
+
+        assertEquals("$12,345.6000", usd.toCurrency(minFractionDigits = 4), "minFractionDigits = 4")
+        assertEquals("$12,345.6", usd.toCurrency(minFractionDigits = 0), "minFractionDigits = 0")
     }
 
     @Test
     @Throws(CryptoException::class)
     fun testToPrice() {
-        val d = "57515.69"
+        val d = "57515.60"
         val json = "{\"data\":{\"base\":\"BTC\",\"currency\":\"USD\",\"amount\":\"$d\"}}"
         val price = json.toPrice()
         assertEquals("BTC", price.base, "base is BTC")
         assertEquals("USD", price.currency, "currency is USD")
-        assertEquals(d, price.amount.toString(), "amount is 57515.69")
+        assertEquals(d, price.amount.toString(), "amount is 57515.60")
 
         assertFailsWith(
             message = "double conversion did not fail",

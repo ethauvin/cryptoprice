@@ -70,7 +70,7 @@ open class CryptoPrice(val base: String, val currency: String, val amount: BigDe
                     throw CryptoException(message = "Missing price data.")
                 }
             } catch (e: NumberFormatException) {
-                throw CryptoException(message = "Could not convert amount  to number.", cause = e)
+                throw CryptoException(message = "Could not convert amount to number.", cause = e)
             } catch (e: JSONException) {
                 throw CryptoException(message = "Could not parse price data.", cause = e)
             }
@@ -143,10 +143,10 @@ open class CryptoPrice(val base: String, val currency: String, val amount: BigDe
      */
     @JvmOverloads
     @Throws(IllegalArgumentException::class)
-    fun toCurrency(locale: Locale = Locale.getDefault(Locale.Category.FORMAT)): String {
+    fun toCurrency(locale: Locale = Locale.getDefault(Locale.Category.FORMAT), minFractionDigits: Int = 2): String {
         return NumberFormat.getCurrencyInstance(locale).let {
             it.setCurrency(Currency.getInstance(currency))
-            it.setMinimumFractionDigits(2)
+            it.setMinimumFractionDigits(minFractionDigits)
             it.format(amount)
         }
     }    
