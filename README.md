@@ -47,6 +47,12 @@ CryptoPrice(val base: String, val currency: String, val amount: Double)
 ```
 The parameter names match the [Coinbase API](https://developers.coinbase.com/api/v2#get-spot-price).
 
+To display the amount as a fomatted currency use the `toCurrency` function:
+
+```kotlin
+val price = CryptoPrice("BTC", "EUR", 12345.67)
+println(price.toCurrency()) // will print €12,345.67
+```
 ### Extending
 
 A generic `apiCall()` function is available to access other [API data endpoints](https://developers.coinbase.com/api/v2#data-endpoints). For example to retried the current [buy price](https://developers.coinbase.com/api/v2#get-buy-price) of a cryptocurrency:

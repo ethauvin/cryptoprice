@@ -38,7 +38,9 @@ import okhttp3.Request
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
+import java.text.NumberFormat
 import java.time.LocalDate
+import java.util.Currency
 
 /**
  * A small Kotlin/Java library for retrieving cryptocurrencies current market prices.
@@ -134,4 +136,15 @@ open class CryptoPrice(val base: String, val currency: String, val amount: Doubl
             return body.toPrice()
         }
     }
+
+    /**
+     * Return the [amount] as a currency formatted string. (eg: $1,203.33)
+     */
+    @Throws(IllegalArgumentException::class)
+    fun toCurrency(): String {
+        return NumberFormat.getCurrencyInstance().let {
+            it.setCurrency(Currency.getInstance(currency))
+            it.format(amount)
+        }
+    }    
 }

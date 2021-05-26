@@ -81,6 +81,19 @@ class CryptoPriceTest {
     }
 
     @Test
+    @Throws(IllegalArgumentException::class)
+    fun testToCurrency() {
+        val eur = CryptoPrice("BTC", "EUR", 12345.67)
+        assertEquals(eur.toCurrency(), "€12,345.67", "EUR format")
+        
+        val gbp = CryptoPrice("ETH", "GBP", 12345.67)
+        assertEquals(gbp.toCurrency(), "£12,345.67", "GBP format")
+        
+        val aud = CryptoPrice("BTC", "AUD", 12345.67)
+        assertEquals(aud.toCurrency(), "A$12,345.67", "AUD format")
+    }
+
+    @Test
     @Throws(CryptoException::class)
     fun testToPrice() {
         val d = 57515.69
