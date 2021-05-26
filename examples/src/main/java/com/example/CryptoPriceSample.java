@@ -10,18 +10,18 @@ import java.util.List;
 public class CryptoPriceSample {
     public static void main(String[] args) {
         try {
-            // Get current Bitcoin market price.
-            final CryptoPrice price = CryptoPrice.marketPrice("BTC");
+            // Get current Bitcoin spot price.
+            final CryptoPrice price = CryptoPrice.spotPrice("BTC");
             System.out.println("The current Bitcoin price is " + price.toCurrency());
 
-            // Get current Bitcoin market price in Euros.
-            final CryptoPrice euroPrice = CryptoPrice.marketPrice("BTC", "EUR");
+            // Get current Bitcoin spot price in Euros.
+            final CryptoPrice euroPrice = CryptoPrice.spotPrice("BTC", "EUR");
             System.out.println("The current Bitcoin price is " + euroPrice.toCurrency());
 
             System.out.println();
 
-            // Get current Ethereum market price in Pound sterling.
-            final CryptoPrice gbpPrice = CryptoPrice.marketPrice("ETH", "GBP");
+            // Get current Ethereum spot price in Pound sterling.
+            final CryptoPrice gbpPrice = CryptoPrice.spotPrice("ETH", "GBP");
             System.out.println("The current Ethereum price is " + gbpPrice.toCurrency());
 
             System.out.println();

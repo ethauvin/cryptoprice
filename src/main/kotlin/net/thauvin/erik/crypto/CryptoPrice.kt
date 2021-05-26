@@ -38,17 +38,18 @@ import okhttp3.Request
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
+import java.math.BigDecimal
 import java.text.NumberFormat
 import java.time.LocalDate
 import java.util.Currency
 import java.util.Locale
 
 /**
- * A small Kotlin/Java library for retrieving cryptocurrencies current market prices.
+ * A small Kotlin/Java library for retrieving cryptocurrencies current spot prices.
  *
  * @author [Erik C. Thauvin](https://erik.thauvin.net/)
  */
-open class CryptoPrice(val base: String, val currency: String, val amount: Double) {
+open class CryptoPrice(val base: String, val currency: String, val amount: BigDecimal) {
     companion object {
         // Coinbase API URL
         private const val COINBASE_API_URL = "https://api.coinbase.com/v2/"
@@ -63,7 +64,7 @@ open class CryptoPrice(val base: String, val currency: String, val amount: Doubl
                 val json = JSONObject(this)
                 if (json.has("data")) {
                     with(json.getJSONObject("data")) {
-                        return CryptoPrice(getString("base"), getString("currency"), getString("amount").toDouble())
+                        return CryptoPrice(getString("base"), getString("currency"), getString("amount").toBigDecimal())
                     }
                 } else {
                     throw CryptoException(message = "Missing price data.")
@@ -115,14 +116,14 @@ open class CryptoPrice(val base: String, val currency: String, val amount: Doubl
         @JvmStatic
         fun main(args: Array<String>) {
             args.forEach {
-                with(marketPrice(it)) {
+                with(spotPrice(it)) {
                     println("$base:\t" + "%10s".format(toCurrency()))
                 }
             }
         }
 
         /**
-         * Retrieve the current market price.
+         * Retrieve the current spot price.
          *
          * @param base The cryptocurrency ticker symbol. (`BTC`, `ETH`, `ETH2`, etc.)
          * @param currency The fiat currency ISO 4217 code. (`USD`, `GPB`, `EUR`, etc.)
@@ -131,7 +132,7 @@ open class CryptoPrice(val base: String, val currency: String, val amount: Doubl
         @JvmStatic
         @JvmOverloads
         @Throws(CryptoException::class, IOException::class)
-        fun marketPrice(base: String, currency: String = "USD", date: LocalDate? = null): CryptoPrice {
+        fun spotPrice(base: String, currency: String = "USD", date: LocalDate? = null): CryptoPrice {
             val params = if (date != null) mapOf("date" to "$date") else emptyMap()
             return apiCall(listOf("prices", "$base-$currency", "spot"), params).toPrice()
         }
@@ -145,6 +146,7 @@ open class CryptoPrice(val base: String, val currency: String, val amount: Doubl
     fun toCurrency(locale: Locale = Locale.getDefault(Locale.Category.FORMAT)): String {
         return NumberFormat.getCurrencyInstance(locale).let {
             it.setCurrency(Currency.getInstance(currency))
+            it.setMinimumFractionDigits(2)
             it.format(amount)
         }
     }    

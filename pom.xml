@@ -10,7 +10,7 @@
   <artifactId>cryptoprice</artifactId>
   <version>0.9.0-SNAPSHOT</version>
   <name>cryptoprice</name>
-  <description>Retrieve cryptocurrencies current market prices.</description>
+  <description>Retrieve cryptocurrencies current prices.</description>
   <url>https://github.com/ethauvin/cryptoprice</url>
   <licenses>
     <license>

@@ -18,7 +18,7 @@ plugins {
 
 defaultTasks(ApplicationPlugin.TASK_RUN_NAME)
 
-description = "Retrieve cryptocurrencies current market prices."
+description = "Retrieve cryptocurrencies current prices."
 group = "net.thauvin.erik"
 version = "0.9.0-SNAPSHOT"
 

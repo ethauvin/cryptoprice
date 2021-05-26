@@ -2,32 +2,32 @@
 
 [![Known Vulnerabilities](https://snyk.io/test/github/ethauvin/cryptoprice/badge.svg?targetFile=pom.xml)](https://snyk.io/test/github/ethauvin/cryptoprice?targetFile=pom.xml) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ethauvin_cryptoprice&metric=alert_status)](https://sonarcloud.io/dashboard?id=ethauvin_cryptoprice) [![GitHub CI](https://github.com/ethauvin/cryptoprice/actions/workflows/gradle.yml/badge.svg)](https://github.com/ethauvin/cryptoprice/actions/workflows/gradle.yml) [![CircleCI](https://circleci.com/gh/ethauvin/cryptoprice/tree/master.svg?style=shield)](https://circleci.com/gh/ethauvin/cryptoprice/tree/master)
 
-# Retrieve cryptocurrencies current market prices
+# Retrieve cryptocurrencies current prices
 
 A simple Kotlin/Java/Android implementation of the spot price [Coinbase Public API](https://developers.coinbase.com/api/v2#get-spot-price).
 
 ## Examples (TL;DR)
 
 ```kotlin
-import net.thauvin.erik.crypto.CryptoPrice.Companion.marketPrice
+import net.thauvin.erik.crypto.CryptoPrice.Companion.spotPrice
 
 // ...
 
-val btc = marketPrice("BTC") // Bitcoin
+val btc = spotPrice("BTC") // Bitcoin
 println(btc.amount)
 
-val eth = marketPrice("ETH", "EUR") // Ethereum in Euros
+val eth = spotPrice("ETH", "EUR") // Ethereum in Euros
 println(eth.amount)
 
 ```
  - View [Kotlin](https://github.com/ethauvin/cryptoprice/blob/master/examples/src/main/kotlin/com/example/CryptoPriceExample.kt) or [Java](https://github.com/ethauvin/cryptoprice/blob/master/examples/src/main/java/com/example/CryptoPriceSample.java) Examples.
 
-### Market Price
+### Spot Price
 
-The `marketPrice` function defines the following parameters:
+The `spotPrice` function defines the following parameters:
 
 ```kotlin
-marketPrice(
+spotPrice(
     base: String, // Required 
     currency: String = "USD",
     date: LocalDate? = null,
@@ -43,14 +43,14 @@ Parameters  | Description
 A `CryptoPrice` is returned defined as follows:
 
 ```kotlin
-CryptoPrice(val base: String, val currency: String, val amount: Double)
+CryptoPrice(val base: String, val currency: String, val amount: BigDecimal)
 ```
 The parameter names match the [Coinbase API](https://developers.coinbase.com/api/v2#get-spot-price).
 
 To display the amount as a fomatted currency use the `toCurrency` function:
 
 ```kotlin
-val price = CryptoPrice("BTC", "EUR", 12345.67)
+val price = CryptoPrice("BTC", "EUR", 12345.67.toBigDecimal())
 println(price.toCurrency()) // will print €12,345.67
 ```
 ### Extending
