@@ -41,6 +41,7 @@ import java.io.IOException
 import java.text.NumberFormat
 import java.time.LocalDate
 import java.util.Currency
+import java.util.Locale
 
 /**
  * A small Kotlin/Java library for retrieving cryptocurrencies current market prices.
@@ -68,7 +69,7 @@ open class CryptoPrice(val base: String, val currency: String, val amount: Doubl
                     throw CryptoException(message = "Missing price data.")
                 }
             } catch (e: NumberFormatException) {
-                throw CryptoException(message = "Could not convert price data to number.", cause = e)
+                throw CryptoException(message = "Could not convert amount  to number.", cause = e)
             } catch (e: JSONException) {
                 throw CryptoException(message = "Could not parse price data.", cause = e)
             }
@@ -113,9 +114,9 @@ open class CryptoPrice(val base: String, val currency: String, val amount: Doubl
 
         @JvmStatic
         fun main(args: Array<String>) {
-            listOf("BTC", "BCH", "BSV", "ETH", "ETH2", "ETC").forEach {
+            args.forEach {
                 with(marketPrice(it)) {
-                    println("$base: $amount")
+                    println("$base:\t" + "%10s".format(toCurrency()))
                 }
             }
         }
@@ -132,17 +133,17 @@ open class CryptoPrice(val base: String, val currency: String, val amount: Doubl
         @Throws(CryptoException::class, IOException::class)
         fun marketPrice(base: String, currency: String = "USD", date: LocalDate? = null): CryptoPrice {
             val params = if (date != null) mapOf("date" to "$date") else emptyMap()
-            val body = apiCall(listOf("prices", "$base-$currency", "spot"), params)
-            return body.toPrice()
+            return apiCall(listOf("prices", "$base-$currency", "spot"), params).toPrice()
         }
     }
 
     /**
      * Return the [amount] as a currency formatted string. (eg: $1,203.33)
      */
+    @JvmOverloads
     @Throws(IllegalArgumentException::class)
-    fun toCurrency(): String {
-        return NumberFormat.getCurrencyInstance().let {
+    fun toCurrency(locale: Locale = Locale.getDefault(Locale.Category.FORMAT)): String {
+        return NumberFormat.getCurrencyInstance(locale).let {
             it.setCurrency(Currency.getInstance(currency))
             it.format(amount)
         }

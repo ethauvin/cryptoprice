@@ -5,7 +5,7 @@ plugins {
 }
 
 // ./gradlew run 
-// ./gradlew runJava"
+// ./gradlew runJava
 
 defaultTasks(ApplicationPlugin.TASK_RUN_NAME)
 

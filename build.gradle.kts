@@ -53,7 +53,6 @@ java {
     withSourcesJar()
 }
 
-
 detekt {
     //toolVersion = "main-SNAPSHOT"
 }
@@ -74,6 +73,10 @@ val javadocJar by tasks.creating(Jar::class) {
 }
 
 tasks {
+    named<JavaExec>("run") {
+        args = listOf("BTC","ETH","LTC")
+    }
+
     withType<KotlinCompile>().configureEach {
         kotlinOptions.jvmTarget = java.targetCompatibility.toString()
     }

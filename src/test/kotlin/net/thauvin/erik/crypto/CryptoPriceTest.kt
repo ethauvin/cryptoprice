@@ -4,6 +4,7 @@ import net.thauvin.erik.crypto.CryptoPrice.Companion.apiCall
 import net.thauvin.erik.crypto.CryptoPrice.Companion.marketPrice
 import net.thauvin.erik.crypto.CryptoPrice.Companion.toPrice
 import java.time.LocalDate
+import java.util.Locale
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -17,8 +18,8 @@ class CryptoPriceTest {
     @Throws(CryptoException::class)
     fun testBTCPrice() {
         val price = marketPrice("BTC")
-        assertEquals(price.base, "BTC", "BTC")
-        assertEquals(price.currency, "USD", "is USD")
+        assertEquals("BTC", price.base, "BTC")
+        assertEquals("USD", price.currency, "is USD")
         assertTrue(price.amount > 0.00, "BTC > 0")
     }
 
@@ -26,8 +27,8 @@ class CryptoPriceTest {
     @Throws(CryptoException::class)
     fun testETHPrice() {
         val price = marketPrice("ETH", "EUR")
-        assertEquals(price.base, "ETH", "ETH")
-        assertEquals(price.currency, "EUR", "is EUR")
+        assertEquals("ETH", price.base, "ETH")
+        assertEquals("EUR", price.currency, "is EUR")
         assertTrue(price.amount > 0.00, "ETH > 0")
     }
 
@@ -35,8 +36,8 @@ class CryptoPriceTest {
     @Throws(CryptoException::class)
     fun testETH2Price() {
         val price = marketPrice("ETH2", "GBP")
-        assertEquals(price.base, "ETH2", "ETH2")
-        assertEquals(price.currency, "GBP", "is GBP")
+        assertEquals("ETH2", price.base, "ETH2")
+        assertEquals("GBP", price.currency, "is GBP")
         assertTrue(price.amount > 0.00, "GBP > 0")
     }
 
@@ -44,8 +45,8 @@ class CryptoPriceTest {
     @Throws(CryptoException::class)
     fun testBCHPrice() {
         val price = marketPrice("BCH", "GBP", LocalDate.now().minusDays(1))
-        assertEquals(price.base, "BCH", "BCH")
-        assertEquals(price.currency, "GBP", "is GBP")
+        assertEquals("BCH", price.base, "BCH")
+        assertEquals("GBP", price.currency, "is GBP")
         assertTrue(price.amount > 0.00, "BCH > 0")
     }
 
@@ -53,8 +54,8 @@ class CryptoPriceTest {
     @Throws(CryptoException::class)
     fun testApiCall() {
         val price = apiCall(listOf("prices", "BTC-USD", "buy"), emptyMap()).toPrice()
-        assertEquals(price.base, "BTC", "buy BTC")
-        assertEquals(price.currency, "USD", "buy BTC is USD")
+        assertEquals("BTC", price.base, "buy BTC")
+        assertEquals("USD", price.currency, "buy BTC is USD")
         assertTrue(price.amount > 0.00, "buy BTC > 0")
     }
 
@@ -83,14 +84,24 @@ class CryptoPriceTest {
     @Test
     @Throws(IllegalArgumentException::class)
     fun testToCurrency() {
-        val eur = CryptoPrice("BTC", "EUR", 12345.67)
-        assertEquals(eur.toCurrency(), "€12,345.67", "EUR format")
-        
-        val gbp = CryptoPrice("ETH", "GBP", 12345.67)
-        assertEquals(gbp.toCurrency(), "£12,345.67", "GBP format")
-        
-        val aud = CryptoPrice("BTC", "AUD", 12345.67)
-        assertEquals(aud.toCurrency(), "A$12,345.67", "AUD format")
+        val d = 12345.67
+        val usd = CryptoPrice("BTC", "USD", d)
+        assertEquals("$12,345.67", usd.toCurrency(), "EUR format")
+
+        val eur = CryptoPrice("BTC", "EUR", d)
+        assertEquals("€12,345.67", eur.toCurrency(), "EUR format")
+
+        val gbp = CryptoPrice("ETH", "GBP", d)
+        assertEquals("£12,345.67", gbp.toCurrency(), "GBP format")
+
+        val aud = CryptoPrice("BTC", "AUD", d)
+        assertEquals("A$12,345.67", aud.toCurrency(), "AUD format")
+
+        val fr = CryptoPrice("BTC", "EUR", d)
+        assertEquals("12 345,67 €", fr.toCurrency(Locale.FRANCE), "EUR-FR format")
+
+        val jp = CryptoPrice("BTC", "JPY", d)
+        assertEquals("￥12,346", jp.toCurrency(Locale.JAPAN), "EUR-JPY format")
     }
 
     @Test
@@ -99,9 +110,9 @@ class CryptoPriceTest {
         val d = 57515.69
         val json = "{\"data\":{\"base\":\"BTC\",\"currency\":\"USD\",\"amount\":\"$d\"}}"
         val price = json.toPrice()
-        assertEquals(price.base, "BTC", "base is BTC")
-        assertEquals(price.currency, "USD", "currency is USD")
-        assertEquals(price.amount, d, "amount is 57515.69")
+        assertEquals("BTC", price.base, "base is BTC")
+        assertEquals("USD", price.currency, "currency is USD")
+        assertEquals(d, price.amount, "amount is 57515.69")
 
         assertFailsWith(
             message = "double conversion did not fail",
