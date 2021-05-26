@@ -98,8 +98,8 @@ class CryptoPriceTest {
         val aud = CryptoPrice("BTC", "AUD", d)
         assertEquals("A$12,345.67", aud.toCurrency(), "AUD format")
 
-        val fr = CryptoPrice("BTC", "EUR", d)
-        assertEquals("12 345,67 €", fr.toCurrency(Locale.FRANCE), "EUR-FR format")
+        val dk = CryptoPrice("BTC", "DKK", d)
+        assertEquals("12.345,67 kr.", dk.toCurrency(Locale("da", "DK")), "EUR-DKK format")
 
         val jp = CryptoPrice("BTC", "JPY", d)
         assertEquals("￥12,345.67", jp.toCurrency(Locale.JAPAN), "EUR-JPY format")
