@@ -46,9 +46,13 @@ import java.util.Currency
 import java.util.Locale
 
 /**
- * A small Kotlin/Java library for retrieving cryptocurrencies current spot prices.
+ * Retrieves and holds a cryptocurrency current spot price.
  *
- * @author [Erik C. Thauvin](https://erik.thauvin.net/)
+ * @constructor Constructs a new [CryptoPrice] object.
+ *
+ * @param base The cryptocurrency ticker symbol, such as `BTC`, `ETH`, `LTC`, etc.
+ * @param currency The fiat currency ISO 4217 code, such as `USD`, `GPB`, `EUR`, etc.
+ * @param amount The cryptocurrency price.
  */
 open class CryptoPrice(val base: String, val currency: String, val amount: BigDecimal) {
     companion object {
@@ -56,7 +60,7 @@ open class CryptoPrice(val base: String, val currency: String, val amount: BigDe
         private const val COINBASE_API_URL = "https://api.coinbase.com/v2/"
 
         /**
-         * Convert JSON data object to [CryptoPrice].
+         * Converts JSON data object to [CryptoPrice].
          */
         @JvmStatic
         @Throws(CryptoException::class)
@@ -78,7 +82,7 @@ open class CryptoPrice(val base: String, val currency: String, val amount: BigDe
         }
 
         /**
-         * Make an API call.
+         * Makes an API call.
          */
         @JvmStatic
         @JvmOverloads
@@ -114,6 +118,9 @@ open class CryptoPrice(val base: String, val currency: String, val amount: BigDe
             }
         }
 
+        /**
+         * Prints the current prices for the specified cryptocurrencies.
+         */
         @JvmStatic
         fun main(args: Array<String>) {
             args.forEach {
@@ -124,10 +131,10 @@ open class CryptoPrice(val base: String, val currency: String, val amount: BigDe
         }
 
         /**
-         * Retrieve the current spot price.
+         * Retrieves the current spot price.
          *
-         * @param base The cryptocurrency ticker symbol. (`BTC`, `ETH`, `ETH2`, etc.)
-         * @param currency The fiat currency ISO 4217 code. (`USD`, `GPB`, `EUR`, etc.)
+         * @param base The cryptocurrency ticker symbol, such as `BTC`, `ETH`, `LTC`, etc.
+         * @param currency The fiat currency ISO 4217 code, such as `USD`, `GPB`, `EUR`, etc.
          * @param date The [LocalDate] for historical price data.
          */
         @JvmStatic
@@ -140,7 +147,7 @@ open class CryptoPrice(val base: String, val currency: String, val amount: BigDe
     }
 
     /**
-     * Return the [amount] as a currency formatted string. (eg: $1,203.33)
+     * Returns the [amount] as a currency formatted string, such as `$1,203.33`.
      */
     @JvmOverloads
     @Throws(IllegalArgumentException::class)
@@ -153,7 +160,7 @@ open class CryptoPrice(val base: String, val currency: String, val amount: BigDe
     }
 
     /**
-     * Return a JSON representation of the [CryptoPrice].
+     * Returns a JSON representation of the [CryptoPrice].
      */
     fun toJson(): String {
         return JSONStringer()
@@ -168,7 +175,7 @@ open class CryptoPrice(val base: String, val currency: String, val amount: BigDe
     }
 
     /**
-     * Return a JSON respresentation of the [CryptoPrice].
+     * Returns a JSON respresentation of the [CryptoPrice].
      */
     override fun toString(): String = toJson()
 }
