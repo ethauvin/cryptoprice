@@ -12,9 +12,11 @@ import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
 
 /**
- * The `CryptoPriceTest` class.
+ * [CryptoPrice] Tests
  */
 class CryptoPriceTest {
+    val jsonData = "{\"data\":{\"base\":\"BTC\",\"currency\":\"USD\",\"amount\":\"%s\"}}"
+
     @Test
     @Throws(CryptoException::class)
     fun testBTCPrice() {
@@ -109,14 +111,26 @@ class CryptoPriceTest {
     }
 
     @Test
+    fun testToJson() {
+        listOf("1234.5", "1234.56", "1234.567").forEach {
+            val json = jsonData.format(it)
+            with(json.toPrice()) {
+                assertEquals(json, toJson(), "toJson($it)")
+                assertEquals(json, toString(), "toString($it)")
+            }
+        }
+    }
+
+
+    @Test
     @Throws(CryptoException::class)
     fun testToPrice() {
         val d = "57515.60"
-        val json = "{\"data\":{\"base\":\"BTC\",\"currency\":\"USD\",\"amount\":\"$d\"}}"
+        val json = jsonData.format(d)
         val price = json.toPrice()
         assertEquals("BTC", price.base, "base is BTC")
         assertEquals("USD", price.currency, "currency is USD")
-        assertEquals(d, price.amount.toString(), "amount is 57515.60")
+        assertEquals(d, price.amount.toString(), "amount is $d")
 
         assertFailsWith(
             message = "double conversion did not fail",

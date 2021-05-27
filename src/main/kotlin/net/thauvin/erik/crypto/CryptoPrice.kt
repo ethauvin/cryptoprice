@@ -37,6 +37,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONException
 import org.json.JSONObject
+import org.json.JSONStringer
 import java.io.IOException
 import java.math.BigDecimal
 import java.text.NumberFormat
@@ -149,5 +150,25 @@ open class CryptoPrice(val base: String, val currency: String, val amount: BigDe
             it.setMinimumFractionDigits(minFractionDigits)
             it.format(amount)
         }
-    }    
+    }
+
+    /**
+     * Return a JSON representation of the [CryptoPrice].
+     */
+    fun toJson(): String {
+        return JSONStringer()
+                .`object`().key("data")
+                .`object`()
+                .key("base").value(base)
+                .key("currency").value(currency)
+                .key("amount").value(amount.toString())
+                .endObject()
+                .endObject()
+                .toString()
+    }
+
+    /**
+     * Return a JSON respresentation of the [CryptoPrice].
+     */
+    override fun toString(): String = toJson()
 }
