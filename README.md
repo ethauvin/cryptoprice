@@ -35,30 +35,69 @@ spotPrice(
 ```
 
 Parameters  | Description
-:---------- |:-------------------------------------------------------------
-`base`      | The cryptocurrency ticker symbol (`BTC`, `ETH`, `ETH2`, etc.)
+:---------- |:------------------------------------------------------------
+`base`      | The cryptocurrency ticker symbol (`BTC`, `ETH`, `LTC`, etc.)
 `currency`  | The fiat currency ISO 4217 code. (`USD`, `GBP`, `EUR`, etc.)
 `date`      | The `LocalDate` for historical price data.
 
-A `CryptoPrice` is returned defined as follows:
+A `CryptoPrice` object is returned defined as follows:
 
 ```kotlin
 CryptoPrice(val base: String, val currency: String, val amount: BigDecimal)
 ```
 The parameter names match the [Coinbase API](https://developers.coinbase.com/api/v2#get-spot-price).
 
-To display the amount as a fomatted currency use the `toCurrency` function:
+#### Format
+
+To display the amount as a formatted currency, use the `toCurrency` function:
 
 ```kotlin
-val euro = CryptoPrice("BTC", "EUR", 12345.67.toBigDecimal())
-println(euro.toCurrency()) // will print: €12,345.67
+val euro = CryptoPrice("BTC", "EUR", 23456.78.toBigDecimal())
+println(euro.toCurrency()) // €23,456.78
 
-val krone = CryptoPrice("BTC", "DKK", 12345.67.toBigDecimal())
-println(krone.toCurrency(Locale("da", "DK"))) // will print: 12.345,67 kr.
+val krone = CryptoPrice("BTC", "DKK", 123456.78.toBigDecimal())
+println(krone.toCurrency(Locale("da", "DK"))) // 123.456,78 kr.
 ```
+
+##### JSON
+
+To convert a `CryptoPrice` object back to JSON, use the `toJson` function:
+
+```kotlin
+val price = CryptoPrice("BTC", "USD", 34567.89.toBigDecimal())
+println(price.toJson())
+```
+
+*output:*
+
+```json
+{"data":{"base":"BTC","currency":"USD","amount":"34567.89"}}
+```
+
+The format matches the [Coinbase API](https://developers.coinbase.com/api/v2#get-spot-price). To specify a different (or no) object wrapper, use:
+
+```kotlin
+println(price.toJson("bitcoin"))
+println(price.toJson("")) // or price.toString()
+```
+
+*output:*
+
+```json
+{"bitcoin":{"base":"BTC","currency":"USD","amount":"34567.89"}}
+{"base":"BTC","currency":"USD","amount":"34567.89"}
+```
+
+Similarly, to create a `CryptoPrice` object from JSON, use the `toPrice` function:
+
+```kotlin
+val btc = """{"data":{"base":"BTC","currency":"USD","amount":"34567.89"}}""".toPrice()
+val eth = """{"ether":{"base":"ETH","currency":"USD","amount":"2345.67"}}""".toPrice("ether")
+```
+
 ### Extending
 
-A generic `apiCall()` function is available to access other [API data endpoints](https://developers.coinbase.com/api/v2#data-endpoints). For example to retried the current [buy price](https://developers.coinbase.com/api/v2#get-buy-price) of a cryptocurrency:
+A generic `apiCall()` function is available to access other [API data endpoints](https://developers.coinbase.com/api/v2#data-endpoints). For example to retrieve the current [buy price](https://developers.coinbase.com/api/v2#get-buy-price) of a cryptocurrency:
 
 ```kotlin
 apiCall(paths = listOf("prices", "BTC-USD", "buy"), params = emptyMap())
@@ -66,7 +105,7 @@ apiCall(paths = listOf("prices", "BTC-USD", "buy"), params = emptyMap())
 will return something like:
 
 ```json
-{"data":{"base":"BTC","currency":"USD","amount":"58977.17"}}
+{"data":{"base":"BTC","currency":"USD","amount":"34554.32"}}
 ```
 
 See the [examples](https://github.com/ethauvin/cryptoprice/blob/master/examples/) for more details.

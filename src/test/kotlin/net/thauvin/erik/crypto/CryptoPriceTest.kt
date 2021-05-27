@@ -3,7 +3,6 @@ package net.thauvin.erik.crypto
 import net.thauvin.erik.crypto.CryptoPrice.Companion.apiCall
 import net.thauvin.erik.crypto.CryptoPrice.Companion.spotPrice
 import net.thauvin.erik.crypto.CryptoPrice.Companion.toPrice
-import java.math.BigDecimal
 import java.time.LocalDate
 import java.util.Locale
 import kotlin.test.Test
@@ -15,11 +14,12 @@ import kotlin.test.assertTrue
  * [CryptoPrice] Tests
  */
 class CryptoPriceTest {
-    val jsonData = "{\"data\":{\"base\":\"BTC\",\"currency\":\"USD\",\"amount\":\"%s\"}}"
+    private val jsonPrice = "{\"base\":\"BTC\",\"currency\":\"USD\",\"amount\":\"%s\"}"
+    private val jsonData = "{\"data\":$jsonPrice}"
 
     @Test
     @Throws(CryptoException::class)
-    fun testBTCPrice() {
+    fun testBitcoinPrice() {
         val price = spotPrice("BTC")
         assertEquals("BTC", price.base, "BTC")
         assertEquals("USD", price.currency, "is USD")
@@ -28,7 +28,7 @@ class CryptoPriceTest {
 
     @Test
     @Throws(CryptoException::class)
-    fun testETHPrice() {
+    fun testEtherPrice() {
         val price = spotPrice("ETH", "EUR")
         assertEquals("ETH", price.base, "ETH")
         assertEquals("EUR", price.currency, "is EUR")
@@ -37,16 +37,16 @@ class CryptoPriceTest {
 
     @Test
     @Throws(CryptoException::class)
-    fun testETH2Price() {
-        val price = spotPrice("ETH2", "GBP")
-        assertEquals("ETH2", price.base, "ETH2")
+    fun testLitecoinPrice() {
+        val price = spotPrice("LTC", "GBP")
+        assertEquals("LTC", price.base, "LTC")
         assertEquals("GBP", price.currency, "is GBP")
-        assertTrue(price.amount.signum() > 0, "GBP > 0")
+        assertTrue(price.amount.signum() > 0, "LTC > 0")
     }
 
     @Test
     @Throws(CryptoException::class)
-    fun testBCHPrice() {
+    fun testBitcoinCashPrice() {
         val price = spotPrice("BCH", "GBP", LocalDate.now().minusDays(1))
         assertEquals("BCH", price.base, "BCH")
         assertEquals("GBP", price.currency, "is GBP")
@@ -89,7 +89,7 @@ class CryptoPriceTest {
     fun testToCurrency() {
         val d = 12345.60.toBigDecimal()
         val usd = CryptoPrice("BTC", "USD", d)
-        assertEquals("$12,345.60", usd.toCurrency(), "EUR format")
+        assertEquals("$12,345.60", usd.toCurrency(), "USD format")
 
         val eur = CryptoPrice("BTC", "EUR", d)
         assertEquals("€12,345.60", eur.toCurrency(), "EUR format")
@@ -97,10 +97,10 @@ class CryptoPriceTest {
         val gbp = CryptoPrice("ETH", "GBP", d)
         assertEquals("£12,345.60", gbp.toCurrency(), "GBP format")
 
-        val aud = CryptoPrice("BTC", "AUD", d)
+        val aud = CryptoPrice("LTC", "AUD", d)
         assertEquals("A$12,345.60", aud.toCurrency(), "AUD format")
 
-        val dk = CryptoPrice("BTC", "DKK", d)
+        val dk = CryptoPrice("BCH", "DKK", d)
         assertEquals("12.345,60 kr.", dk.toCurrency(Locale("da", "DK")), "EUR-DKK format")
 
         val jp = CryptoPrice("BTC", "JPY", d)
@@ -112,11 +112,11 @@ class CryptoPriceTest {
 
     @Test
     fun testToJson() {
-        listOf("1234.5", "1234.56", "1234.567").forEach {
-            val json = jsonData.format(it)
-            with(json.toPrice()) {
-                assertEquals(json, toJson(), "toJson($it)")
-                assertEquals(json, toString(), "toString($it)")
+        listOf("1234.5", "1234.56", "1234.567").forEachIndexed { i, d ->
+            val data = jsonData.format(d)
+            with(data.toPrice()) {
+                assertEquals(data, toJson(), "toJson($d)")
+                assertEquals(data.replace("data","price$i"), toJson("price$i"), "toJson(price$i)")
             }
         }
     }
@@ -126,16 +126,19 @@ class CryptoPriceTest {
     @Throws(CryptoException::class)
     fun testToPrice() {
         val d = "57515.60"
-        val json = jsonData.format(d)
-        val price = json.toPrice()
+        val data = jsonData.format(d)
+        val price = data.toPrice()
         assertEquals("BTC", price.base, "base is BTC")
         assertEquals("USD", price.currency, "currency is USD")
         assertEquals(d, price.amount.toString(), "amount is $d")
 
+        assertEquals(price, price.toString().toPrice(""), "toPrice('')")
+        assertEquals(price, price.toJson("test").toPrice("test"), "toPrice(test)")
+        
         assertFailsWith(
-            message = "double conversion did not fail",
+            message = "amount conversion did not fail",
             exceptionClass = CryptoException::class,
-            block = { json.replace("5", "a").toPrice() }
+            block = { data.replace("5", "a").toPrice() }
         )
 
         assertFailsWith(
@@ -147,7 +150,15 @@ class CryptoPriceTest {
         assertFailsWith(
             message = "no base did not fail",
             exceptionClass = CryptoException::class,
-            block = { json.replace("base", "foo").toPrice() }
+            block = { data.replace("base", "foo").toPrice() }
         )
+    }
+
+    @Test
+    fun testToString() {
+        val json = jsonPrice.format("1234.5") 
+        val price = json.toPrice("")
+        assertEquals(json, price.toString(), "toString()")
+        assertEquals(price.toString(), price.toJson(""), "toString() = toJson('')")
     }
 }

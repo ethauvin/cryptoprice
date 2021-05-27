@@ -61,18 +61,17 @@ open class CryptoPrice(val base: String, val currency: String, val amount: BigDe
 
         /**
          * Converts JSON data object to [CryptoPrice].
+         *
+         * @param wrapper Specifies the JSON object the price data is wrapped in.
          */
         @JvmStatic
+        @JvmOverloads
         @Throws(CryptoException::class)
-        fun String.toPrice(): CryptoPrice {
+        fun String.toPrice(wrapper: String = "data"): CryptoPrice {
             try {
-                val json = JSONObject(this)
-                if (json.has("data")) {
-                    with(json.getJSONObject("data")) {
-                        return CryptoPrice(getString("base"), getString("currency"), getString("amount").toBigDecimal())
-                    }
-                } else {
-                    throw CryptoException(message = "Missing price data.")
+                val json = if (wrapper.isNotBlank()) JSONObject(this).getJSONObject(wrapper) else JSONObject(this)
+                with(json) {
+                    return CryptoPrice(getString("base"), getString("currency"), getString("amount").toBigDecimal())
                 }
             } catch (e: NumberFormatException) {
                 throw CryptoException(message = "Could not convert amount to number.", cause = e)
@@ -83,6 +82,9 @@ open class CryptoPrice(val base: String, val currency: String, val amount: BigDe
 
         /**
          * Makes an API call.
+         *
+         * @param paths The list of path segments for the API URL. For example: `["prices", "BTC-USD", "spot"]`.
+         * @param params The map of query parameters.
          */
         @JvmStatic
         @JvmOverloads
@@ -147,35 +149,83 @@ open class CryptoPrice(val base: String, val currency: String, val amount: BigDe
     }
 
     /**
-     * Returns the [amount] as a currency formatted string, such as `$1,203.33`.
+     * Returns the [amount] as a currency formatted string.
+     *
+     * For example: `$1,203.33`.
+     *
+     * @param locale The desired locale.
+     * @param minFractionDigits The minimum number of digits allowed in the fraction portion of the currency.
      */
     @JvmOverloads
     @Throws(IllegalArgumentException::class)
     fun toCurrency(locale: Locale = Locale.getDefault(Locale.Category.FORMAT), minFractionDigits: Int = 2): String {
         return NumberFormat.getCurrencyInstance(locale).let {
-            it.setCurrency(Currency.getInstance(currency))
-            it.setMinimumFractionDigits(minFractionDigits)
+            it.currency = Currency.getInstance(currency)
+            it.minimumFractionDigits = minFractionDigits
             it.format(amount)
         }
     }
 
     /**
-     * Returns a JSON representation of the [CryptoPrice].
+     * Indicates whether some other object is _equal to_ this one.
      */
-    fun toJson(): String {
-        return JSONStringer()
-                .`object`().key("data")
-                .`object`()
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+        
+        other as CryptoPrice
+        
+        if (base != other.base) return false
+        if (currency != other.currency) return false
+        if (amount != other.amount) return false
+        
+        return true
+    }
+
+    /**
+     * Returns a hash code value for the object.
+     */
+    override fun hashCode(): Int {
+        var result = base.hashCode()
+        result = 31 * result + currency.hashCode()
+        result = 31 * result + amount.hashCode()
+        return result
+    }
+
+    /**
+     * Returns a JSON representation of the [CryptoPrice].
+     *
+     * For example, with the default `data` wrapper:
+     *
+     * ```
+     * {"data":{"base":"BTC","currency":"USD","amount":"58977.17"}}
+     * ```
+     *
+     * @param wrapper Specifies a JSON object to wrap the price data in.
+     */
+    @JvmOverloads
+    fun toJson(wrapper: String = "data"): String {
+        val json = JSONStringer()
+        if (wrapper.isNotBlank()) json.`object`().key(wrapper)
+        json.`object`()
                 .key("base").value(base)
                 .key("currency").value(currency)
                 .key("amount").value(amount.toString())
                 .endObject()
-                .endObject()
-                .toString()
+        if (wrapper.isNotBlank()) json.endObject()
+        return json.toString()
     }
 
     /**
      * Returns a JSON respresentation of the [CryptoPrice].
+     *
+     * For example:
+     *
+     * ```
+     * {"base":"BTC","currency":"USD","amount":"58977.17"}
+     * ```
+     *
+     * @see [toJson]
      */
-    override fun toString(): String = toJson()
+    override fun toString(): String = toJson("")
 }
