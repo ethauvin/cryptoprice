@@ -14,15 +14,15 @@ public class CryptoPriceSample {
             final CryptoPrice price = CryptoPrice.spotPrice("BTC");
             System.out.println("The current Bitcoin price is " + price.toCurrency());
 
-            // Get current Bitcoin spot price in Euros.
-            final CryptoPrice euroPrice = CryptoPrice.spotPrice("BTC", "EUR");
-            System.out.println("The current Bitcoin price is " + euroPrice.toCurrency());
-
             System.out.println();
 
             // Get current Ethereum spot price in Pound sterling.
             final CryptoPrice gbpPrice = CryptoPrice.spotPrice("ETH", "GBP");
             System.out.println("The current Ethereum price is " + gbpPrice.toCurrency());
+
+            // Get current Litecoin spot price in Euros.
+            final CryptoPrice euroPrice = CryptoPrice.spotPrice("LTC", "EUR");
+            System.out.println("The current Litecoin price is " + euroPrice.toCurrency());
 
             System.out.println();
 

@@ -9,15 +9,15 @@ fun main(@Suppress("UNUSED_PARAMETER") args: Array<String>) {
     val price = spotPrice("BTC")
     println("The current Bitcoin price is ${price.toCurrency()}")
 
-    // Get current Bitcoin spot price in Euro.
-    val euroPrice = spotPrice("BTC", "EUR")
-    println("The current Bitcoin price is ${euroPrice.toCurrency()}")
-
     println()
-
+    
     // Get current Ethereum spot price in Pound sterling.
     val gbpPrice = spotPrice("ETH", "GBP")
     println("The current Ehtereum price is ${gbpPrice.toCurrency()}")
+
+    // Get current Litecoin spot price in Euro.
+    val euroPrice = spotPrice("LTC", "EUR")
+    println("The current Litecoin price is ${euroPrice.toCurrency()}")
 
     println()
     

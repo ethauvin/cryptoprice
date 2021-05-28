@@ -22,6 +22,18 @@ println(eth.amount)
 ```
  - View [Kotlin](https://github.com/ethauvin/cryptoprice/blob/master/examples/src/main/kotlin/com/example/CryptoPriceExample.kt) or [Java](https://github.com/ethauvin/cryptoprice/blob/master/examples/src/main/java/com/example/CryptoPriceSample.java) Examples.
 
+### Gradle, Maven, etc.
+
+To use with [Gradle](https://gradle.org/), include the following dependency in your [build](https://github.com/ethauvin/cryptoprice/blob/master/examples/build.gradle.kts) file:
+
+```gradle
+dependencies {
+    implementation("net.thauvin.erik:cryptoprice:0.9.0")
+}
+```
+
+Instructions for using with Maven, Ivy, etc. can be found on [Maven Central](https://search.maven.org/artifact/net.thauvin.erik/cryptoprice/0.9.0/jar).
+
 ### Spot Price
 
 The `spotPrice` function defines the following parameters:
@@ -109,15 +121,3 @@ will return something like:
 ```
 
 See the [examples](https://github.com/ethauvin/cryptoprice/blob/master/examples/) for more details.
-
-### Gradle, Maven, etc.
-
-To use with [Gradle](https://gradle.org/), include the following dependency in your [build](https://github.com/ethauvin/cryptoprice/blob/master/examples/build.gradle.kts) file:
-
-```gradle
-dependencies {
-    implementation("net.thauvin.erik:cryptoprice:0.9.0")
-}
-```
-
-Instructions for using with Maven, Ivy, etc. can be found on [Maven Central](https://search.maven.org/artifact/net.thauvin.erik/cryptoprice/0.9.0/jar).
