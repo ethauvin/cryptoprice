@@ -74,7 +74,7 @@ println(price.toJson())
 {"data":{"base":"BTC","currency":"USD","amount":"34567.89"}}
 ```
 
-The format matches the [Coinbase API](https://developers.coinbase.com/api/v2#get-spot-price). To specify a different (or no) object wrapper, use:
+The `data` object matches the [Coinbase API](https://developers.coinbase.com/api/v2#get-spot-price). To specify a different (or no) key, use:
 
 ```kotlin
 println(price.toJson("bitcoin"))

@@ -62,14 +62,14 @@ open class CryptoPrice(val base: String, val currency: String, val amount: BigDe
         /**
          * Converts JSON data object to [CryptoPrice].
          *
-         * @param wrapper Specifies the JSON object the price data is wrapped in.
+         * @param key Specifies the JSON object key the price data is wrapped in.
          */
         @JvmStatic
         @JvmOverloads
         @Throws(CryptoException::class)
-        fun String.toPrice(wrapper: String = "data"): CryptoPrice {
+        fun String.toPrice(key: String = "data"): CryptoPrice {
             try {
-                val json = if (wrapper.isNotBlank()) JSONObject(this).getJSONObject(wrapper) else JSONObject(this)
+                val json = if (key.isNotBlank()) JSONObject(this).getJSONObject(key) else JSONObject(this)
                 with(json) {
                     return CryptoPrice(getString("base"), getString("currency"), getString("amount").toBigDecimal())
                 }
@@ -195,24 +195,24 @@ open class CryptoPrice(val base: String, val currency: String, val amount: BigDe
     /**
      * Returns a JSON representation of the [CryptoPrice].
      *
-     * For example, with the default `data` wrapper:
+     * For example, with the default `data` object key:
      *
      * ```
      * {"data":{"base":"BTC","currency":"USD","amount":"58977.17"}}
      * ```
      *
-     * @param wrapper Specifies a JSON object to wrap the price data in.
+     * @param key Specifies a JSON object key to wrap the price data in.
      */
     @JvmOverloads
-    fun toJson(wrapper: String = "data"): String {
+    fun toJson(key: String = "data"): String {
         val json = JSONStringer()
-        if (wrapper.isNotBlank()) json.`object`().key(wrapper)
+        if (key.isNotBlank()) json.`object`().key(key)
         json.`object`()
                 .key("base").value(base)
                 .key("currency").value(currency)
                 .key("amount").value(amount.toString())
                 .endObject()
-        if (wrapper.isNotBlank()) json.endObject()
+        if (key.isNotBlank()) json.endObject()
         return json.toString()
     }
 
