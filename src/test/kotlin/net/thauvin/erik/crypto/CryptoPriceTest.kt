@@ -8,6 +8,7 @@ import java.util.Locale
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 
 /**
@@ -91,11 +92,19 @@ class CryptoPriceTest {
         val usd = CryptoPrice("BTC", "USD", d)
         assertEquals("$12,345.60", usd.toCurrency(), "USD format")
 
+        assertEquals(usd, usd, "USD = USD")
+        assertNotEquals(usd, CryptoPrice("BTC", "USD", 12345.70.toBigDecimal()), ".60 !- .70")
+
         val eur = CryptoPrice("BTC", "EUR", d)
         assertEquals("€12,345.60", eur.toCurrency(), "EUR format")
 
+        assertNotEquals(usd.hashCode(), eur.hashCode(), "hashCode()")
+        assertNotEquals(usd, eur, "USD != EUR")
+
         val gbp = CryptoPrice("ETH", "GBP", d)
         assertEquals("£12,345.60", gbp.toCurrency(), "GBP format")
+
+        assertNotEquals(usd, gbp, "BTC != ETH")
 
         val aud = CryptoPrice("LTC", "AUD", d)
         assertEquals("A$12,345.60", aud.toCurrency(), "AUD format")
