@@ -1,7 +1,7 @@
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.5.10"
+    id("application")
     id("com.github.ben-manes.versions") version "0.39.0"
-    application
+    kotlin("jvm") version "1.5.10"
 }
 
 // ./gradlew run 

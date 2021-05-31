@@ -4,16 +4,16 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
+    id("application")
     id("com.github.ben-manes.versions") version "0.39.0"
     id("io.gitlab.arturbosch.detekt") version "1.17.1"
+    id("jacoco")
+    id("java")
+    id("maven-publish")
     id("org.jetbrains.dokka") version "1.4.32"
     id("org.sonarqube") version "3.2.0"
+    id("signing")
     kotlin("jvm") version "1.5.10"
-    application
-    `maven-publish`
-    jacoco
-    java
-    signing
 }
 
 defaultTasks(ApplicationPlugin.TASK_RUN_NAME)
@@ -33,14 +33,14 @@ repositories {
 }
 
 dependencies {
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation(platform(kotlin("bom")))
+    implementation(kotlin("stdlib-jdk8"))
 
     implementation("com.squareup.okhttp3:okhttp:4.9.1")
     implementation("org.json:json:20210307")
 
-    testImplementation("org.jetbrains.kotlin:kotlin-test")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
+    testImplementation(kotlin("test"))
+    testImplementation(kotlin("test-junit"))
 }
 
 application {
