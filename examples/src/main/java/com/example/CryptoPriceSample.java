@@ -38,7 +38,10 @@ public class CryptoPriceSample {
             System.out.println("The current " + buyPrice.getBase() + " buy price is " + buyPrice.getAmount()
                     + " in " + buyPrice.getCurrency());
 
-        } catch (CryptoException | IOException e) {
+        } catch (CryptoException e) {
+            System.err.println("HTTP Status Code: " + e.getStatusCode());
+            System.err.println(e.getMessage());
+        } catch (IOException e) {
             System.err.println(e.getMessage());
         }
     }

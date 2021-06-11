@@ -11,7 +11,7 @@ plugins {
     id("java")
     id("maven-publish")
     id("org.jetbrains.dokka") version "1.4.32"
-    id("org.sonarqube") version "3.2.0"
+    id("org.sonarqube") version "3.3"
     id("signing")
     kotlin("jvm") version "1.5.10"
 }
@@ -118,8 +118,25 @@ tasks {
         }
     }
 
+    val copyToDeploy by registering(Copy::class) {
+        from(configurations.runtimeClasspath) {
+            exclude("annotations-*.jar")
+        }
+        from(jar)
+        into(deployDir)
+    }
+
+    register("deploy") {
+        description = "Copies all needed files to the $deployDir directory."
+        group = PublishingPlugin.PUBLISH_TASK_GROUP
+        dependsOn(build, jar)
+        outputs.dir(deployDir)
+        inputs.files(copyToDeploy)
+        mustRunAfter(clean)
+    }
+
     "sonarqube" {
-        dependsOn("jacocoTestReport")
+        dependsOn(jacocoTestReport)
     }
 }
 

@@ -1,5 +1,5 @@
 /*
- * CryptoExtension.kt
+ * CryptoException.kt
  *
  * Copyright (c) 2021, Erik C. Thauvin (erik@thauvin.net)
  * All rights reserved.
@@ -37,7 +37,8 @@ package net.thauvin.erik.crypto
  */
 @Suppress("unused")
 class CryptoException : Exception {
-    var statusCode = NO_STATUS
+    var statusCode: Int
+        private set
 
     /** Constructs a new exception with the specified status code, message and cause. */
     constructor(statusCode: Int = NO_STATUS, message: String, cause: Throwable) : super(message, cause) {
@@ -56,7 +57,6 @@ class CryptoException : Exception {
 
     companion object {
         const val NO_STATUS = -1
-
         private const val serialVersionUID = 1L
     }
 }
