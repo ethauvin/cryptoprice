@@ -125,7 +125,7 @@ class CryptoPriceTest {
             val data = jsonData.format(d)
             with(data.toPrice()) {
                 assertEquals(data, toJson(), "toJson($d)")
-                assertEquals(data.replace("data","price$i"), toJson("price$i"), "toJson(price$i)")
+                assertEquals(data.replace("data", "price$i"), toJson("price$i"), "toJson(price$i)")
             }
         }
     }
@@ -143,7 +143,7 @@ class CryptoPriceTest {
 
         assertEquals(price, price.toString().toPrice(""), "toPrice('')")
         assertEquals(price, price.toJson("test").toPrice("test"), "toPrice(test)")
-        
+
         assertFailsWith(
             message = "amount conversion did not fail",
             exceptionClass = CryptoException::class,
@@ -165,7 +165,7 @@ class CryptoPriceTest {
 
     @Test
     fun testToString() {
-        val json = jsonPrice.format("1234.5") 
+        val json = jsonPrice.format("1234.5")
         val price = json.toPrice("")
         assertEquals(json, price.toString(), "toString()")
         assertEquals(price.toString(), price.toJson(""), "toString() = toJson('')")

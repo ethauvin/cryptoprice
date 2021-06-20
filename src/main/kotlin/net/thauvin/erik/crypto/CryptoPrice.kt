@@ -172,13 +172,13 @@ open class CryptoPrice(val base: String, val currency: String, val amount: BigDe
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
-        
+
         other as CryptoPrice
-        
+
         if (base != other.base) return false
         if (currency != other.currency) return false
         if (amount != other.amount) return false
-        
+
         return true
     }
 
@@ -208,10 +208,10 @@ open class CryptoPrice(val base: String, val currency: String, val amount: BigDe
         val json = JSONStringer()
         if (key.isNotBlank()) json.`object`().key(key)
         json.`object`()
-                .key("base").value(base)
-                .key("currency").value(currency)
-                .key("amount").value(amount.toString())
-                .endObject()
+            .key("base").value(base)
+            .key("currency").value(currency)
+            .key("amount").value(amount.toString())
+            .endObject()
         if (key.isNotBlank()) json.endObject()
         return json.toString()
     }
