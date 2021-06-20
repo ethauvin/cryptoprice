@@ -6,6 +6,8 @@ plugins {
 
 // ./gradlew run 
 // ./gradlew runJava
+// ./gradlew run --args="btc"
+// ./gradlew runJava --args="eth eur"
 
 defaultTasks(ApplicationPlugin.TASK_RUN_NAME)
 
@@ -26,7 +28,7 @@ application {
 tasks {
     register<JavaExec>("runJava") {
         group = "application"
-        main = "com.example.CryptoPriceSample"
+        mainClass.set("com.example.CryptoPriceSample")
         classpath = sourceSets.main.get().runtimeClasspath
     }
 }
