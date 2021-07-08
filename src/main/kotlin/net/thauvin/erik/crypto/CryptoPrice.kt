@@ -217,7 +217,7 @@ open class CryptoPrice(val base: String, val currency: String, val amount: BigDe
     }
 
     /**
-     * Returns a JSON respresentation of the [CryptoPrice].
+     * Returns a JSON representation of the [CryptoPrice].
      *
      * For example:
      *
