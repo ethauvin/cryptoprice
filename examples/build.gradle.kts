@@ -1,7 +1,9 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     id("application")
     id("com.github.ben-manes.versions") version "0.39.0"
-    kotlin("jvm") version "1.5.21"
+    kotlin("jvm") version "1.5.30"
 }
 
 // ./gradlew run 
@@ -26,6 +28,10 @@ application {
 }
 
 tasks {
+    withType<KotlinCompile>().configureEach {
+        kotlinOptions.jvmTarget = java.targetCompatibility.toString()
+    }
+
     register<JavaExec>("runJava") {
         group = "application"
         mainClass.set("com.example.CryptoPriceSample")
