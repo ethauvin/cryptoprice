@@ -35,26 +35,11 @@ package net.thauvin.erik.crypto
 /**
  * Thrown when an exceptional condition has occurred.
  */
-@Suppress("unused")
-class CryptoException : Exception {
-    var statusCode: Int
-        private set
-
-    /** Constructs a new exception with the specified status code, message and cause. */
-    constructor(statusCode: Int = NO_STATUS, message: String, cause: Throwable) : super(message, cause) {
-        this.statusCode = statusCode
-    }
-
-    /** Constructs a new exception with the specified status code and message. */
-    constructor(statusCode: Int = NO_STATUS, message: String) : super(message) {
-        this.statusCode = statusCode
-    }
-
-    /** Constructs a new exception with the specified status code and cause. */
-    constructor(statusCode: Int = NO_STATUS, cause: Throwable) : super(cause) {
-        this.statusCode = statusCode
-    }
-
+class CryptoException @JvmOverloads constructor(
+    var statusCode: Int = NO_STATUS,
+    message: String,
+    cause: Throwable? = null
+) : Exception(message, cause) {
     companion object {
         const val NO_STATUS = -1
         private const val serialVersionUID = 1L
