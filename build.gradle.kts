@@ -6,14 +6,14 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 plugins {
     id("application")
     id("com.github.ben-manes.versions") version "0.39.0"
-    id("io.gitlab.arturbosch.detekt") version "1.18.1"
-    id("jacoco")
+    id("io.gitlab.arturbosch.detekt") version "1.19.0-RC1"
     id("java")
     id("maven-publish")
-    id("org.jetbrains.dokka") version "1.5.30"
+    id("org.jetbrains.dokka") version "1.5.31"
+    id("org.jetbrains.kotlinx.kover") version "0.4.2"
     id("org.sonarqube") version "3.3"
     id("signing")
-    kotlin("jvm") version "1.5.31"
+    kotlin("jvm") version "1.6.0"
 }
 
 defaultTasks(ApplicationPlugin.TASK_RUN_NAME)
@@ -40,7 +40,6 @@ dependencies {
     implementation("org.json:json:20210307")
 
     testImplementation(kotlin("test"))
-    testImplementation(kotlin("test-junit"))
 }
 
 application {
@@ -63,6 +62,8 @@ sonarqube {
         property("sonar.organization", "ethauvin-github")
         property("sonar.host.url", "https://sonarcloud.io")
         property("sonar.sourceEncoding", "UTF-8")
+        property("sonar.coverage.jacoco.xmlReportPaths", "${project.buildDir}/reports/kover/report.xml")
+
     }
 }
 
@@ -90,18 +91,6 @@ tasks {
 
     withType<GenerateMavenPom> {
         destination = file("$projectDir/pom.xml")
-    }
-
-    jacoco {
-        toolVersion = "0.8.7"
-    }
-
-    jacocoTestReport {
-        dependsOn(test)
-        reports {
-            xml.required.set(true)
-            html.required.set(true)
-        }
     }
 
     clean {
@@ -136,7 +125,7 @@ tasks {
     }
 
     "sonarqube" {
-        dependsOn(jacocoTestReport)
+        dependsOn(koverReport)
     }
 }
 
