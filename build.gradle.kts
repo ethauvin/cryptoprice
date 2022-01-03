@@ -1,19 +1,21 @@
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 
+
 plugins {
     id("application")
-    id("com.github.ben-manes.versions") version "0.39.0"
-    id("io.gitlab.arturbosch.detekt") version "1.19.0-RC1"
+    id("com.github.ben-manes.versions") version "0.40.0"
+    id("io.gitlab.arturbosch.detekt") version "1.19.0"
     id("java")
     id("maven-publish")
-    id("org.jetbrains.dokka") version "1.5.31"
-    id("org.jetbrains.kotlinx.kover") version "0.4.2"
+    id("org.jetbrains.dokka") version "1.6.10"
+    id("org.jetbrains.kotlinx.kover") version "0.4.4"
     id("org.sonarqube") version "3.3"
     id("signing")
-    kotlin("jvm") version "1.6.0"
+    kotlin("jvm") version "1.6.10"
 }
 
 defaultTasks(ApplicationPlugin.TASK_RUN_NAME)
@@ -27,6 +29,13 @@ val gitHub = "ethauvin/$name"
 val mavenUrl = "https://github.com/$gitHub"
 val publicationName = "mavenJava"
 
+fun isNonStable(version: String): Boolean {
+    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
+    val regex = "^[0-9,.v-]+(-r)?$".toRegex()
+    val isStable = stableKeyword || regex.matches(version)
+    return isStable.not()
+}
+
 repositories {
     mavenCentral()
     maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots") }
@@ -36,8 +45,8 @@ dependencies {
     implementation(platform(kotlin("bom")))
     implementation(kotlin("stdlib-jdk8"))
 
-    implementation("com.squareup.okhttp3:okhttp:4.9.1")
-    implementation("org.json:json:20210307")
+    implementation("com.squareup.okhttp3:okhttp:4.9.3")
+    implementation("org.json:json:20211205")
 
     testImplementation(kotlin("test"))
 }
@@ -63,7 +72,6 @@ sonarqube {
         property("sonar.host.url", "https://sonarcloud.io")
         property("sonar.sourceEncoding", "UTF-8")
         property("sonar.coverage.jacoco.xmlReportPaths", "${project.buildDir}/reports/kover/report.xml")
-
     }
 }
 
@@ -76,6 +84,12 @@ val javadocJar by tasks.creating(Jar::class) {
 tasks {
     named<JavaExec>("run") {
         args = listOf("BTC","ETH","LTC")
+    }
+
+    withType<DependencyUpdatesTask> {
+        rejectVersionIf {
+            isNonStable(candidate.version)
+        }
     }
 
     withType<KotlinCompile>().configureEach {
