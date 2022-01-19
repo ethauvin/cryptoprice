@@ -21,7 +21,7 @@ fun main(args: Array<String>) {
 
             // Get current Ethereum spot price in Pound sterling.
             val gbpPrice = spotPrice("ETH", "GBP")
-            println("The current Ehtereum price is ${gbpPrice.toCurrency()}")
+            println("The current Ethereum price is ${gbpPrice.toCurrency()}")
 
             // Get current Litecoin spot price in Euro.
             val euroPrice = spotPrice("LTC", "EUR")

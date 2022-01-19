@@ -7,7 +7,7 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
     id("application")
-    id("com.github.ben-manes.versions") version "0.40.0"
+    id("com.github.ben-manes.versions") version "0.41.0"
     id("io.gitlab.arturbosch.detekt") version "1.19.0"
     id("java")
     id("maven-publish")
@@ -22,7 +22,7 @@ defaultTasks(ApplicationPlugin.TASK_RUN_NAME)
 
 description = "Retrieve cryptocurrencies current prices."
 group = "net.thauvin.erik"
-version = "0.9.0-SNAPSHOT"
+version = "0.9.0"
 
 val deployDir = "deploy"
 val gitHub = "ethauvin/$name"
