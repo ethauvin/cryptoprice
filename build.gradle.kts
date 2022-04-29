@@ -7,15 +7,15 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
     id("application")
-    id("com.github.ben-manes.versions") version "0.41.0"
-    id("io.gitlab.arturbosch.detekt") version "1.19.0"
+    id("com.github.ben-manes.versions") version "0.42.0"
+    id("io.gitlab.arturbosch.detekt") version "1.20.0"
     id("java")
     id("maven-publish")
-    id("org.jetbrains.dokka") version "1.6.10"
-    id("org.jetbrains.kotlinx.kover") version "0.4.4"
+    id("org.jetbrains.dokka") version "1.6.21"
+    id("org.jetbrains.kotlinx.kover") version "0.5.0"
     id("org.sonarqube") version "3.3"
     id("signing")
-    kotlin("jvm") version "1.6.10"
+    kotlin("jvm") version "1.6.21"
 }
 
 defaultTasks(ApplicationPlugin.TASK_RUN_NAME)
@@ -46,7 +46,7 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
-    implementation("org.json:json:20211205")
+    implementation("org.json:json:20220320")
 
     testImplementation(kotlin("test"))
 }
