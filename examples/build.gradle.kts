@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("application")
     id("com.github.ben-manes.versions") version "0.42.0"
-    kotlin("jvm") version "1.6.21"
+    kotlin("jvm") version "1.7.10"
 }
 
 // ./gradlew run 
@@ -20,7 +20,8 @@ repositories {
 }
 
 dependencies {
-    implementation("net.thauvin.erik:cryptoprice:0.9.0")
+    implementation("net.thauvin.erik:cryptoprice:1.0.0-SNAPSHOT")
+    implementation("org.json:json:20220320")
 }
 
 java {
