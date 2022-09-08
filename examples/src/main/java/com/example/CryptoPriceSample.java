@@ -6,20 +6,22 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.Currency;
 import java.util.List;
+import java.util.Locale;
 
 public class CryptoPriceSample {
     public static void main(final String[] args) {
         try {
             if (args.length > 0) {
-                final CryptoPrice price;
+                final String currency;
                 if (args.length == 2) {
-                    price = CryptoPrice.spotPrice(args[0], args[1]);
+                    currency = args[1];
                 } else {
-                    price = CryptoPrice.spotPrice(args[0]);
+                    currency = Currency.getInstance(Locale.getDefault()).getCurrencyCode();
                 }
-                System.out.println("The current " + price.getBase() + " price is " + price.getAmount() + " in "
-                        + price.getCurrency());
+                final var price = CryptoPrice.spotPrice(args[0], currency);
+                System.out.println("The current " + price.getBase() + " price is " + price.toCurrency());
             } else {
                 // Get current Bitcoin spot price.
                 final var price = CryptoPrice.spotPrice("BTC");
@@ -42,11 +44,13 @@ public class CryptoPriceSample {
                 final var response = CryptoPrice.apiCall(List.of("exchange-rates"),
                         Collections.singletonMap("currency", "USD"));
                 final var rates = new JSONObject(response).getJSONObject("data").getJSONObject("rates");
-                System.out.printf("The USD-EUR exchange rate is: %s%n", rates.getString("EUR"));
+                System.out.println("The USD-EUR exchange rate is: " + rates.getString("EUR"));
             }
         } catch (CryptoException e) {
             System.err.println("HTTP Status Code: " + e.getStatusCode());
             System.err.println(e.getMessage());
+        } catch (IllegalArgumentException e) {
+            System.err.println("Could not display the specified currency: " + args[1]);
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }

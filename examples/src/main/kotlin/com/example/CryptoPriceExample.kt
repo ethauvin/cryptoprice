@@ -7,12 +7,14 @@ import net.thauvin.erik.crypto.CryptoPrice.Companion.sellPrice
 import net.thauvin.erik.crypto.CryptoPrice.Companion.spotPrice
 import org.json.JSONObject
 import java.io.IOException
+import java.util.*
 
 fun main(args: Array<String>) {
     try {
         if (args.isNotEmpty()) {
-            val price = if (args.size == 2) spotPrice(args[0], args[1]) else spotPrice(args[0])
-            println("The current ${price.base} price is ${price.amount} in ${price.currency}")
+            val currency = if (args.size == 2) args[1] else Currency.getInstance(Locale.getDefault()).currencyCode
+            val price = spotPrice(args[0], currency)
+            println("The current ${price.base} price is ${price.toCurrency()}")
         } else {
             // Get current Bitcoin spot price.
             val price = spotPrice("BTC")
@@ -39,6 +41,8 @@ fun main(args: Array<String>) {
     } catch (e: CryptoException) {
         System.err.println("HTTP Status Code: ${e.statusCode}")
         System.err.println(e.message)
+    } catch (e: IllegalArgumentException) {
+        System.err.println("Could not display the specified currency: ${args[1]}")
     } catch (e: IOException) {
         System.err.println(e.message)
     }
