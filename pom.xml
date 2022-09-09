@@ -8,7 +8,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>net.thauvin.erik</groupId>
   <artifactId>cryptoprice</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
   <name>cryptoprice</name>
   <description>Retrieve cryptocurrencies prices.</description>
   <url>https://github.com/ethauvin/cryptoprice</url>

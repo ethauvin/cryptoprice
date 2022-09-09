@@ -22,7 +22,7 @@ defaultTasks(ApplicationPlugin.TASK_RUN_NAME)
 
 description = "Retrieve cryptocurrencies prices."
 group = "net.thauvin.erik"
-version = "1.0.0-SNAPSHOT"
+version = "1.0.0"
 
 val deployDir = "deploy"
 val gitHub = "ethauvin/$name"
