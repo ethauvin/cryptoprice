@@ -130,7 +130,7 @@ apiCall(listOf("exchange-rates"), mapOf("currency" to "usd"))
 will return something like:
 
 ```json
-{"data":{"currency":"BTC","rates":{"AED":"36.73","AFN":"589.50",…}}}
+{"data":{"currency":"BTC","rates":{"AED":"36.73","AFN":"589.50","...":"..."}}}
 ```
 
 See the [examples](https://github.com/ethauvin/cryptoprice/blob/master/examples/) for more details.
