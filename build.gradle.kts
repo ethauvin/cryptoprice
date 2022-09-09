@@ -8,21 +8,21 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 plugins {
     id("application")
     id("com.github.ben-manes.versions") version "0.42.0"
-    id("io.gitlab.arturbosch.detekt") version "1.20.0"
+    id("io.gitlab.arturbosch.detekt") version "1.21.0"
     id("java")
     id("maven-publish")
-    id("org.jetbrains.dokka") version "1.6.21"
-    id("org.jetbrains.kotlinx.kover") version "0.5.0"
-    id("org.sonarqube") version "3.3"
+    id("org.jetbrains.dokka") version "1.7.10"
+    id("org.jetbrains.kotlinx.kover") version "0.6.0"
+    id("org.sonarqube") version "3.4.0.2513"
     id("signing")
-    kotlin("jvm") version "1.6.21"
+    kotlin("jvm") version "1.7.10"
 }
 
 defaultTasks(ApplicationPlugin.TASK_RUN_NAME)
 
-description = "Retrieve cryptocurrencies current prices."
+description = "Retrieve cryptocurrencies prices."
 group = "net.thauvin.erik"
-version = "0.9.0"
+version = "1.0.0"
 
 val deployDir = "deploy"
 val gitHub = "ethauvin/$name"
@@ -43,9 +43,9 @@ repositories {
 
 dependencies {
     implementation(platform(kotlin("bom")))
-    implementation(kotlin("stdlib-jdk8"))
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
-    implementation("com.squareup.okhttp3:okhttp:4.9.3")
+    implementation("com.squareup.okhttp3:okhttp:4.10.0")
     implementation("org.json:json:20220320")
 
     testImplementation(kotlin("test"))
@@ -71,7 +71,7 @@ sonarqube {
         property("sonar.organization", "ethauvin-github")
         property("sonar.host.url", "https://sonarcloud.io")
         property("sonar.sourceEncoding", "UTF-8")
-        property("sonar.coverage.jacoco.xmlReportPaths", "${project.buildDir}/reports/kover/report.xml")
+        property("sonar.coverage.jacoco.xmlReportPaths", "${project.buildDir}/reports/kover/xml/report.xml")
     }
 }
 
@@ -132,7 +132,7 @@ tasks {
     register("deploy") {
         description = "Copies all needed files to the $deployDir directory."
         group = PublishingPlugin.PUBLISH_TASK_GROUP
-        dependsOn(build, jar)
+        dependsOn(clean, build, jar)
         outputs.dir(deployDir)
         inputs.files(copyToDeploy)
         mustRunAfter(clean)

@@ -33,11 +33,13 @@
 package net.thauvin.erik.crypto
 
 import net.thauvin.erik.crypto.CryptoPrice.Companion.apiCall
+import net.thauvin.erik.crypto.CryptoPrice.Companion.buyPrice
+import net.thauvin.erik.crypto.CryptoPrice.Companion.sellPrice
 import net.thauvin.erik.crypto.CryptoPrice.Companion.spotPrice
 import net.thauvin.erik.crypto.CryptoPrice.Companion.toPrice
 import org.json.JSONObject
 import java.time.LocalDate
-import java.util.Locale
+import java.util.*
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -54,28 +56,34 @@ class CryptoPriceTest {
     @Test
     @Throws(CryptoException::class)
     fun testBitcoinPrice() {
-        val price = spotPrice("BTC")
-        assertEquals("BTC", price.base, "BTC")
-        assertEquals("USD", price.currency, "is USD")
-        assertTrue(price.amount.signum() > 0, "BTC > 0")
+        val prices = listOf(spotPrice("BTC"), buyPrice("BTC"), sellPrice("BTC"))
+        for (price in prices) {
+            assertEquals("BTC", price.base, "BTC")
+            assertEquals("USD", price.currency, "is USD")
+            assertTrue(price.amount.signum() > 0, "BTC > 0")
+        }
     }
 
     @Test
     @Throws(CryptoException::class)
     fun testEtherPrice() {
-        val price = spotPrice("ETH", "EUR")
-        assertEquals("ETH", price.base, "ETH")
-        assertEquals("EUR", price.currency, "is EUR")
-        assertTrue(price.amount.signum() > 0, "ETH > 0")
+        val prices = listOf(spotPrice("ETH", "EUR"), buyPrice("ETH", "EUR"), sellPrice("ETH", "EUR"))
+        for (price in prices) {
+            assertEquals("ETH", price.base, "ETH")
+            assertEquals("EUR", price.currency, "is EUR")
+            assertTrue(price.amount.signum() > 0, "ETH > 0")
+        }
     }
 
     @Test
     @Throws(CryptoException::class)
     fun testLitecoinPrice() {
-        val price = spotPrice("LTC", "GBP")
-        assertEquals("LTC", price.base, "LTC")
-        assertEquals("GBP", price.currency, "is GBP")
-        assertTrue(price.amount.signum() > 0, "LTC > 0")
+        val prices = listOf(spotPrice("LTC", "GBP"), buyPrice("LTC", "GBP"), sellPrice("LTC", "GBP"))
+        for (price in prices) {
+            assertEquals("LTC", price.base, "LTC")
+            assertEquals("GBP", price.currency, "is GBP")
+            assertTrue(price.amount.signum() > 0, "LTC > 0")
+        }
     }
 
     @Test
@@ -102,7 +110,7 @@ class CryptoPriceTest {
 
     @Test
     @Throws(CryptoException::class)
-    fun testSpotPrice() {
+    fun testPrices() {
         assertFailsWith(
             message = "FOO did not fail",
             exceptionClass = CryptoException::class,
@@ -112,11 +120,11 @@ class CryptoPriceTest {
         assertFailsWith(
             message = "BAR did not fail",
             exceptionClass = CryptoException::class,
-            block = { spotPrice("BTC", "BAR") }
+            block = { buyPrice("BTC", "BAR") }
         )
 
         try {
-            spotPrice("FOOBAR")
+            sellPrice("FOOBAR")
         } catch (e: CryptoException) {
             assertNotEquals(400, e.statusCode, "FOOBAR status code is not 400")
         }

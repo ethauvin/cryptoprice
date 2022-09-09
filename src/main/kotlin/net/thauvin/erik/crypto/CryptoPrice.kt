@@ -42,11 +42,10 @@ import java.io.IOException
 import java.math.BigDecimal
 import java.text.NumberFormat
 import java.time.LocalDate
-import java.util.Currency
-import java.util.Locale
+import java.util.*
 
 /**
- * Retrieves and holds a cryptocurrency current spot price.
+ * Retrieves and holds a cryptocurrency price.
  *
  * @constructor Constructs a new [CryptoPrice] object.
  *
@@ -117,6 +116,19 @@ open class CryptoPrice(val base: String, val currency: String, val amount: BigDe
         }
 
         /**
+         * Retrieves the buy price.
+         *
+         * @param base The cryptocurrency ticker symbol, such as `BTC`, `ETH`, `LTC`, etc.
+         * @param currency The fiat currency ISO 4217 code, such as `USD`, `GPB`, `EUR`, etc.
+         */
+        @JvmStatic
+        @JvmOverloads
+        @Throws(CryptoException::class, IOException::class)
+        fun buyPrice(base: String, currency: String = "USD"): CryptoPrice {
+            return apiCall(listOf("prices", "$base-$currency", "buy"), emptyMap()).toPrice()
+        }
+
+        /**
          * Prints the current prices for the specified cryptocurrencies.
          */
         @JvmStatic
@@ -129,7 +141,20 @@ open class CryptoPrice(val base: String, val currency: String, val amount: BigDe
         }
 
         /**
-         * Retrieves the current spot price.
+         * Retrieves the sell price.
+         *
+         * @param base The cryptocurrency ticker symbol, such as `BTC`, `ETH`, `LTC`, etc.
+         * @param currency The fiat currency ISO 4217 code, such as `USD`, `GPB`, `EUR`, etc.
+         */
+        @JvmStatic
+        @JvmOverloads
+        @Throws(CryptoException::class, IOException::class)
+        fun sellPrice(base: String, currency: String = "USD"): CryptoPrice {
+            return apiCall(listOf("prices", "$base-$currency", "sell"), emptyMap()).toPrice()
+        }
+
+        /**
+         * Retrieves the spot price.
          *
          * @param base The cryptocurrency ticker symbol, such as `BTC`, `ETH`, `LTC`, etc.
          * @param currency The fiat currency ISO 4217 code, such as `USD`, `GPB`, `EUR`, etc.
