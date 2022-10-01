@@ -1,6 +1,6 @@
-[![License (3-Clause BSD)](https://img.shields.io/badge/license-BSD%203--Clause-blue.svg?style=flat-square)](https://opensource.org/licenses/BSD-3-Clause) [![Release](https://img.shields.io/github/release/ethauvin/cryptoprice.svg)](https://github.com/ethauvin/cryptoprice/releases/latest) [![Maven Central](https://img.shields.io/maven-central/v/net.thauvin.erik/cryptoprice.svg?label=maven%20central&color=blue)](https://search.maven.org/search?q=g:%22net.thauvin.erik%22%20AND%20a:%22cryptoprice%22) <!-- [![Nexus Snapshot](https://img.shields.io/nexus/s/net.thauvin.erik/cryptoprice?server=https%3A%2F%2Foss.sonatype.org%2F)](https://oss.sonatype.org/content/repositories/snapshots/net/thauvin/erik/cryptoprice/) -->
+[![License (3-Clause BSD)](https://img.shields.io/badge/license-BSD%203--Clause-blue.svg?style=flat-square)](https://opensource.org/licenses/BSD-3-Clause) [![Release](https://img.shields.io/github/release/ethauvin/cryptoprice.svg)](https://github.com/ethauvin/cryptoprice/releases/latest) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/net.thauvin.erik/cryptoprice/badge.svg?color=blue)](https://maven-badges.herokuapp.com/maven-central/net.thauvin.erik/cryptoprice) <!-- [![Nexus Snapshot](https://img.shields.io/nexus/s/net.thauvin.erik/cryptoprice?server=https%3A%2F%2Foss.sonatype.org%2F)](https://oss.sonatype.org/content/repositories/snapshots/net/thauvin/erik/cryptoprice/) -->
 
-[![Known Vulnerabilities](https://snyk.io/test/github/ethauvin/cryptoprice/badge.svg?targetFile=pom.xml)](https://snyk.io/test/github/ethauvin/cryptoprice?targetFile=pom.xml) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ethauvin_cryptoprice&metric=alert_status)](https://sonarcloud.io/dashboard?id=ethauvin_cryptoprice) [![GitHub CI](https://github.com/ethauvin/cryptoprice/actions/workflows/gradle.yml/badge.svg)](https://github.com/ethauvin/cryptoprice/actions/workflows/gradle.yml) [![CircleCI](https://circleci.com/gh/ethauvin/cryptoprice/tree/master.svg?style=shield)](https://circleci.com/gh/ethauvin/cryptoprice/tree/master)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ethauvin_cryptoprice&metric=alert_status)](https://sonarcloud.io/dashboard?id=ethauvin_cryptoprice) [![GitHub CI](https://github.com/ethauvin/cryptoprice/actions/workflows/gradle.yml/badge.svg)](https://github.com/ethauvin/cryptoprice/actions/workflows/gradle.yml) [![CircleCI](https://circleci.com/gh/ethauvin/cryptoprice/tree/master.svg?style=shield)](https://circleci.com/gh/ethauvin/cryptoprice/tree/master)
 
 # Retrieve cryptocurrencies current (buy, sell or spot) prices
 
@@ -30,12 +30,16 @@ println(eth.amount)
 To use with [Gradle](https://gradle.org/), include the following dependency in your [build](https://github.com/ethauvin/cryptoprice/blob/master/examples/build.gradle.kts) file:
 
 ```gradle
+repositories {
+    mavenCentral()
+}
+
 dependencies {
     implementation("net.thauvin.erik:cryptoprice:1.0.0")
 }
 ```
 
-Instructions for using with Maven, Ivy, etc. can be found on [Maven Central](https://search.maven.org/search?q=g:%22net.thauvin.erik%22%20AND%20a:%22cryptoprice%22).
+Instructions for using with Maven, Ivy, etc. can be found on [Maven Central](https://maven-badges.herokuapp.com/maven-central/net.thauvin.erik/cryptoprice).
 
 ### Prices
 

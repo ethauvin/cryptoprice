@@ -15,7 +15,7 @@ plugins {
     id("org.jetbrains.kotlinx.kover") version "0.6.0"
     id("org.sonarqube") version "3.4.0.2513"
     id("signing")
-    kotlin("jvm") version "1.7.10"
+    kotlin("jvm") version "1.7.20"
 }
 
 defaultTasks(ApplicationPlugin.TASK_RUN_NAME)
@@ -46,7 +46,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
-    implementation("org.json:json:20220320")
+    implementation("org.json:json:20220924")
 
     testImplementation(kotlin("test"))
 }
@@ -132,7 +132,7 @@ tasks {
     register("deploy") {
         description = "Copies all needed files to the $deployDir directory."
         group = PublishingPlugin.PUBLISH_TASK_GROUP
-        dependsOn(clean, build, jar)
+        dependsOn(clean, wrapper, build, jar)
         outputs.dir(deployDir)
         inputs.files(copyToDeploy)
         mustRunAfter(clean)
