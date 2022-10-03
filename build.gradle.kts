@@ -49,6 +49,7 @@ dependencies {
     implementation("org.json:json:20220924")
 
     testImplementation(kotlin("test"))
+    testImplementation("com.willowtreeapps.assertk:assertk-jvm:0.25")
 }
 
 application {
