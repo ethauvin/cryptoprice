@@ -37,6 +37,7 @@ import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.isEqualTo
 import assertk.assertions.isGreaterThan
+import assertk.assertions.isNotNull
 import assertk.assertions.prop
 import net.thauvin.erik.crypto.CryptoPrice.Companion.apiCall
 import net.thauvin.erik.crypto.CryptoPrice.Companion.buyPrice
@@ -142,8 +143,10 @@ class CryptoPriceTest {
         try {
             sellPrice("FOOBAR")
         } catch (e: CryptoException) {
-            assertThat(e, "sellPrice(FOOBAR)").prop(CryptoException::statusCode).isEqualTo(404)
-            assertThat(e.message!!, "sellPrice(FOOBAR)").contains("invalid", true)
+            assertThat(e, "sellPrice(FOOBAR)").all {
+                prop(CryptoException::statusCode).isEqualTo(404)
+                prop(CryptoException::message).isNotNull().contains("invalid", true)
+            }
         }
     }
 
