@@ -1,8 +1,7 @@
 /*
  * CryptoPrice.kt
  *
- * Copyright (c) 2021-2022, Erik C. Thauvin (erik@thauvin.net)
- * All rights reserved.
+ * Copyright 2021-2023 Erik C. Thauvin (erik@thauvin.net)
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
