@@ -134,6 +134,13 @@ class CryptoPriceTest {
             block = { spotPrice("FOO") }
         )
 
+        try {
+            spotPrice("BAR")
+        } catch (e: CryptoException) {
+            assertThat(e.id, "spotPrice(bar) error id").isEqualTo("not_found")
+            assertThat(e.message, "spotPrice(bar) error message").isEqualTo("Invalid base currency")
+        }
+
         assertFailsWith(
             message = "buyPrice(BTC,BAR)",
             exceptionClass = CryptoException::class,
@@ -183,7 +190,11 @@ class CryptoPriceTest {
         assertEquals("A$12,345.60", aud.toCurrency(), "CryptoPrice(LTC,AUD)")
 
         val dk = CryptoPrice("BCH", "DKK", d)
-        assertEquals("12.345,60 kr.", dk.toCurrency(Locale("da", "DK")), "CryptoPrice(BCH,DKK)")
+        assertEquals(
+            "12.345,60 kr.", dk.toCurrency(
+                Locale.Builder().setLanguage("da").setRegion("DK").build()
+            ), "CryptoPrice(BCH,DKK)"
+        )
 
         val jp = CryptoPrice("BTC", "JPY", d)
         assertEquals("￥12,345.60", jp.toCurrency(Locale.JAPAN), "CryptoPrice(BTC,JPY)")

@@ -37,6 +37,7 @@ package net.thauvin.erik.crypto
  */
 class CryptoException @JvmOverloads constructor(
     var statusCode: Int = NO_STATUS,
+    var id: String,
     message: String,
     cause: Throwable? = null
 ) : Exception(message, cause) {

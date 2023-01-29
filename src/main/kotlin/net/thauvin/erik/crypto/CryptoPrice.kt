@@ -73,9 +73,9 @@ open class CryptoPrice(val base: String, val currency: String, val amount: BigDe
                     return CryptoPrice(getString("base"), getString("currency"), getString("amount").toBigDecimal())
                 }
             } catch (e: NumberFormatException) {
-                throw CryptoException(message = "Could not convert amount to number.", cause = e)
+                throw CryptoException(id = "convert_error", message = "Could not convert amount to number.", cause = e)
             } catch (e: JSONException) {
-                throw CryptoException(message = "Could not parse price data.", cause = e)
+                throw CryptoException(id = "parse_error", message = "Could not parse price data.", cause = e)
             }
         }
 
@@ -101,17 +101,24 @@ open class CryptoPrice(val base: String, val currency: String, val amount: BigDe
 
             val request = Request.Builder().url(httpUrl).build()
             val response = client.newCall(request).execute()
-            val body = response.body?.string() ?: throw CryptoException(response.code, "Empty response.")
+            val body = response.body?.string() ?: throw CryptoException(
+                response.code,
+                id = "empty_response",
+                message = "Empty response."
+            )
             try {
                 val json = JSONObject(body)
                 if (response.isSuccessful) {
                     return body
                 } else {
                     val data = json.getJSONArray("errors")
-                    throw CryptoException(response.code, data.getJSONObject(0).getString("message"))
+                    throw CryptoException(
+                        response.code, data.getJSONObject(0).getString("id"),
+                        data.getJSONObject(0).getString("message")
+                    )
                 }
             } catch (e: JSONException) {
-                throw CryptoException(response.code, "Could not parse data.", e)
+                throw CryptoException(response.code, id = "parse_error", "Could not parse data.", e)
             }
         }
 
