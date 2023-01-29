@@ -7,22 +7,22 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
     id("application")
-    id("com.github.ben-manes.versions") version "0.42.0"
-    id("io.gitlab.arturbosch.detekt") version "1.21.0"
+    id("com.github.ben-manes.versions") version "0.44.0"
+    id("io.gitlab.arturbosch.detekt") version "1.22.0"
     id("java")
     id("maven-publish")
-    id("org.jetbrains.dokka") version "1.7.10"
+    id("org.jetbrains.dokka") version "1.7.20"
     id("org.jetbrains.kotlinx.kover") version "0.6.1"
-    id("org.sonarqube") version "3.4.0.2513"
+    id("org.sonarqube") version "3.5.0.2730"
     id("signing")
-    kotlin("jvm") version "1.7.20"
+    kotlin("jvm") version "1.8.0"
 }
 
 defaultTasks(ApplicationPlugin.TASK_RUN_NAME)
 
-description = "Retrieve cryptocurrencies prices."
+description = "Retrieve cryptocurrencies prices"
 group = "net.thauvin.erik"
-version = "1.0.0"
+version = "1.0.1-SNAPSHOT"
 
 val deployDir = "deploy"
 val gitHub = "ethauvin/$name"
@@ -168,8 +168,8 @@ publishing {
                     }
                 }
                 scm {
-                    connection.set("scm:git:git://github.com/$gitHub.git")
-                    developerConnection.set("scm:git:git@github.com:$gitHub.git")
+                    connection.set("scm:git://github.com/$gitHub.git")
+                    developerConnection.set("scm:git@github.com:$gitHub.git")
                     url.set(mavenUrl)
                 }
                 issueManagement {

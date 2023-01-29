@@ -1,10 +1,16 @@
-[![License (3-Clause BSD)](https://img.shields.io/badge/license-BSD%203--Clause-blue.svg?style=flat-square)](https://opensource.org/licenses/BSD-3-Clause) [![Release](https://img.shields.io/github/release/ethauvin/cryptoprice.svg)](https://github.com/ethauvin/cryptoprice/releases/latest) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/net.thauvin.erik/cryptoprice/badge.svg?color=blue)](https://maven-badges.herokuapp.com/maven-central/net.thauvin.erik/cryptoprice) <!-- [![Nexus Snapshot](https://img.shields.io/nexus/s/net.thauvin.erik/cryptoprice?server=https%3A%2F%2Foss.sonatype.org%2F)](https://oss.sonatype.org/content/repositories/snapshots/net/thauvin/erik/cryptoprice/) -->
+[![License (3-Clause BSD)](https://img.shields.io/badge/license-BSD%203--Clause-blue.svg?style=flat-square)](https://opensource.org/licenses/BSD-3-Clause)
+[![Kotlin](https://img.shields.io/badge/kotlin-1.8.0-blue)](https://kotlinlang.org/)
+[![Nexus Snapshot](https://img.shields.io/nexus/s/net.thauvin.erik/cryptoprice?label=snapshot&server=https%3A%2F%2Foss.sonatype.org%2F)](https://oss.sonatype.org/content/repositories/snapshots/net/thauvin/erik/cryptoprice/)
+[![Release](https://img.shields.io/github/release/ethauvin/cryptoprice.svg)](https://github.com/ethauvin/cryptoprice/releases/latest)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/net.thauvin.erik/cryptoprice/badge.svg?color=blue)](https://maven-badges.herokuapp.com/maven-central/net.thauvin.erik/cryptoprice)
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ethauvin_cryptoprice&metric=alert_status)](https://sonarcloud.io/dashboard?id=ethauvin_cryptoprice) [![GitHub CI](https://github.com/ethauvin/cryptoprice/actions/workflows/gradle.yml/badge.svg)](https://github.com/ethauvin/cryptoprice/actions/workflows/gradle.yml) [![CircleCI](https://circleci.com/gh/ethauvin/cryptoprice/tree/master.svg?style=shield)](https://circleci.com/gh/ethauvin/cryptoprice/tree/master)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ethauvin_cryptoprice&metric=alert_status)](https://sonarcloud.io/dashboard?id=ethauvin_cryptoprice)
+[![GitHub CI](https://github.com/ethauvin/cryptoprice/actions/workflows/gradle.yml/badge.svg)](https://github.com/ethauvin/cryptoprice/actions/workflows/gradle.yml)
+[![CircleCI](https://circleci.com/gh/ethauvin/cryptoprice/tree/master.svg?style=shield)](https://circleci.com/gh/ethauvin/cryptoprice/tree/master)
 
 # Retrieve cryptocurrencies current (buy, sell or spot) prices
 
-A simple Kotlin/Java/Android implementation of the prices [Coinbase Public API](https://docs.cloud.coinbase.com/sign-in-with-coinbase/docs/api-prices).
+A simple  implementation of the prices [Coinbase Public API](https://docs.cloud.coinbase.com/sign-in-with-coinbase/docs/api-prices).
 
 ## Examples (TL;DR)
 
@@ -32,6 +38,7 @@ To use with [Gradle](https://gradle.org/), include the following dependency in y
 ```gradle
 repositories {
     mavenCentral()
+    maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots") } // only needed for SNAPSHOT
 }
 
 dependencies {
@@ -85,7 +92,7 @@ val euro = CryptoPrice("BTC", "EUR", 23456.78.toBigDecimal())
 println(euro.toCurrency()) // €23,456.78
 
 val krone = CryptoPrice("BTC", "DKK", 123456.78.toBigDecimal())
-println(krone.toCurrency(Locale("da", "DK"))) // 123.456,78 kr.
+println(krone.toCurrency(Locale.Builder().setLanguage("da").setRegion("DK").build())) // 123.456,78 kr.
 ```
 
 ##### JSON
