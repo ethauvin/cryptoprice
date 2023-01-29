@@ -48,7 +48,7 @@ public class CryptoPriceSample {
             }
         } catch (CryptoException e) {
             System.err.println("HTTP Status Code: " + e.getStatusCode());
-            System.err.println(e.getMessage());
+            System.err.println(e.getMessage() + " (" + e.getId() + ')');
         } catch (IllegalArgumentException e) {
             System.err.println("Could not display the specified currency: " + args[1]);
         } catch (IOException e) {

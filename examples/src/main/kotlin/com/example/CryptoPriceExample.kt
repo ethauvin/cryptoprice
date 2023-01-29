@@ -40,7 +40,7 @@ fun main(args: Array<String>) {
         }
     } catch (e: CryptoException) {
         System.err.println("HTTP Status Code: ${e.statusCode}")
-        System.err.println(e.message)
+        System.err.println("${e.message} (${e.id})")
     } catch (e: IllegalArgumentException) {
         System.err.println("Could not display the specified currency: ${args[1]}")
     } catch (e: IOException) {
