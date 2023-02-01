@@ -99,25 +99,26 @@ open class CryptoPrice(val base: String, val currency: String, val amount: BigDe
             }.build()
 
             val request = Request.Builder().url(httpUrl).build()
-            val response = client.newCall(request).execute()
-            val body = response.body?.string() ?: throw CryptoException(
-                response.code,
-                id = "empty_response",
-                message = "Empty response."
-            )
-            try {
-                val json = JSONObject(body)
-                if (response.isSuccessful) {
-                    return body
-                } else {
-                    val data = json.getJSONArray("errors")
-                    throw CryptoException(
-                        response.code, data.getJSONObject(0).getString("id"),
-                        data.getJSONObject(0).getString("message")
-                    )
+            client.newCall(request).execute().use { response ->
+                val body = response.body?.string() ?: throw CryptoException(
+                    response.code,
+                    id = "empty_response",
+                    message = "Empty response."
+                )
+                try {
+                    val json = JSONObject(body)
+                    if (response.isSuccessful) {
+                        return body
+                    } else {
+                        val data = json.getJSONArray("errors")
+                        throw CryptoException(
+                            response.code, data.getJSONObject(0).getString("id"),
+                            data.getJSONObject(0).getString("message")
+                        )
+                    }
+                } catch (e: JSONException) {
+                    throw CryptoException(response.code, id = "parse_error", "Could not parse data.", e)
                 }
-            } catch (e: JSONException) {
-                throw CryptoException(response.code, id = "parse_error", "Could not parse data.", e)
             }
         }
 
