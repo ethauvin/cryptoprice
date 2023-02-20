@@ -7,15 +7,15 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
     id("application")
-    id("com.github.ben-manes.versions") version "0.44.0"
+    id("com.github.ben-manes.versions") version "0.46.0"
     id("io.gitlab.arturbosch.detekt") version "1.22.0"
     id("java")
     id("maven-publish")
     id("org.jetbrains.dokka") version "1.7.20"
     id("org.jetbrains.kotlinx.kover") version "0.6.1"
-    id("org.sonarqube") version "3.5.0.2730"
+    id("org.sonarqube") version "4.0.0.2929"
     id("signing")
-    kotlin("jvm") version "1.8.0"
+    kotlin("jvm") version "1.8.10"
 }
 
 defaultTasks(ApplicationPlugin.TASK_RUN_NAME)
@@ -104,6 +104,14 @@ tasks {
         }
     }
 
+    withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+        this.jvmTarget = java.targetCompatibility.toString()
+    }   
+  
+    withType<io.gitlab.arturbosch.detekt.DetektCreateBaselineTask>().configureEach {
+        this.jvmTarget = java.targetCompatibility.toString()
+    }   
+
     withType<GenerateMavenPom> {
         destination = file("$projectDir/pom.xml")
     }
@@ -139,7 +147,7 @@ tasks {
         mustRunAfter(clean)
     }
 
-    "sonarqube" {
+    "sonar" {
         dependsOn(koverReport)
     }
 }
