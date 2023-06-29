@@ -7,15 +7,15 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
     id("application")
-    id("com.github.ben-manes.versions") version "0.46.0"
-    id("io.gitlab.arturbosch.detekt") version "1.22.0"
+    id("com.github.ben-manes.versions") version "0.47.0"
+    id("io.gitlab.arturbosch.detekt") version "1.23.0"
     id("java")
     id("maven-publish")
-    id("org.jetbrains.dokka") version "1.7.20"
-    id("org.jetbrains.kotlinx.kover") version "0.6.1"
-    id("org.sonarqube") version "4.0.0.2929"
+    id("org.jetbrains.dokka") version "1.8.20"
+    id("org.jetbrains.kotlinx.kover") version "0.7.2"
+    id("org.sonarqube") version "4.2.1.3168"
     id("signing")
-    kotlin("jvm") version "1.8.10"
+    kotlin("jvm") version "1.8.22"
 }
 
 defaultTasks(ApplicationPlugin.TASK_RUN_NAME)
@@ -45,11 +45,11 @@ dependencies {
     implementation(platform(kotlin("bom")))
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
-    implementation("com.squareup.okhttp3:okhttp:4.10.0")
-    implementation("org.json:json:20220924")
+    implementation("com.squareup.okhttp3:okhttp:4.11.0")
+    implementation("org.json:json:20230618")
 
     testImplementation(kotlin("test"))
-    testImplementation("com.willowtreeapps.assertk:assertk-jvm:0.25")
+    testImplementation("com.willowtreeapps.assertk:assertk-jvm:0.26.1")
 }
 
 application {
@@ -176,8 +176,8 @@ publishing {
                     }
                 }
                 scm {
-                    connection.set("scm:git://github.com/$gitHub.git")
-                    developerConnection.set("scm:git@github.com:$gitHub.git")
+                    connection.set("scm:git:https://github.com/$gitHub.git")
+                    developerConnection.set("scm:git:git@github.com:$gitHub.git")
                     url.set(mavenUrl)
                 }
                 issueManagement {
