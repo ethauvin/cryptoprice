@@ -83,7 +83,7 @@ sonarqube {
         property("sonar.organization", "ethauvin-github")
         property("sonar.host.url", "https://sonarcloud.io")
         property("sonar.sourceEncoding", "UTF-8")
-        property("sonar.coverage.jacoco.xmlReportPaths", "${project.buildDir}/reports/kover/xml/report.xml")
+        property("sonar.coverage.jacoco.xmlReportPaths", "${project.buildDir}/reports/kover/report.xml")
     }
 }
 
