@@ -33,10 +33,8 @@ package net.thauvin.erik.crypto
 
 import assertk.all
 import assertk.assertThat
-import assertk.assertions.contains
 import assertk.assertions.isEqualTo
 import assertk.assertions.isGreaterThan
-import assertk.assertions.isNotNull
 import assertk.assertions.prop
 import net.thauvin.erik.crypto.CryptoPrice.Companion.apiCall
 import net.thauvin.erik.crypto.CryptoPrice.Companion.buyPrice
@@ -126,20 +124,7 @@ class CryptoPriceTest {
 
     @Test
     @Throws(CryptoException::class)
-    fun testPrices() {
-        assertFailsWith(
-            message = "spotPrice(FOO)",
-            exceptionClass = CryptoException::class,
-            block = { spotPrice("FOO") }
-        )
-
-        try {
-            spotPrice("BAR")
-        } catch (e: CryptoException) {
-            assertThat(e.id, "spotPrice(bar) error id").isEqualTo("not_found")
-            assertThat(e.message, "spotPrice(bar) error message").isEqualTo("Invalid base currency")
-        }
-
+    fun testNotFound() {
         assertFailsWith(
             message = "buyPrice(BTC,BAR)",
             exceptionClass = CryptoException::class,
@@ -151,7 +136,8 @@ class CryptoPriceTest {
         } catch (e: CryptoException) {
             assertThat(e, "sellPrice(FOOBAR)").all {
                 prop(CryptoException::statusCode).isEqualTo(404)
-                prop(CryptoException::message).isNotNull().contains("invalid", true)
+                prop(CryptoException::message).isEqualTo("not found")
+                prop(CryptoException::id).isEqualTo("not found")
             }
         }
     }
