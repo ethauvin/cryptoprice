@@ -7,15 +7,15 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
     id("application")
-    id("com.github.ben-manes.versions") version "0.47.0"
-    id("io.gitlab.arturbosch.detekt") version "1.23.0"
+    id("com.github.ben-manes.versions") version "0.48.0"
+    id("io.gitlab.arturbosch.detekt") version "1.23.1"
     id("java")
     id("maven-publish")
-    id("org.jetbrains.dokka") version "1.8.20"
-    id("org.jetbrains.kotlinx.kover") version "0.7.2"
-    id("org.sonarqube") version "4.2.1.3168"
+    id("org.jetbrains.dokka") version "1.9.0"
+    id("org.jetbrains.kotlinx.kover") version "0.7.3"
+    id("org.sonarqube") version "4.3.1.3277"
     id("signing")
-    kotlin("jvm") version "1.8.22"
+    kotlin("jvm") version "1.9.10"
 }
 
 defaultTasks(ApplicationPlugin.TASK_RUN_NAME)
@@ -49,7 +49,7 @@ dependencies {
     implementation("org.json:json:20230618")
 
     testImplementation(kotlin("test"))
-    testImplementation("com.willowtreeapps.assertk:assertk-jvm:0.26.1")
+    testImplementation("com.willowtreeapps.assertk:assertk-jvm:0.27.0")
 }
 
 application {

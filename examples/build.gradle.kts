@@ -2,8 +2,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("application")
-    id("com.github.ben-manes.versions") version "0.47.0"
-    kotlin("jvm") version "1.8.10"
+    id("com.github.ben-manes.versions") version "0.48.0"
+    kotlin("jvm") version "1.9.10"
 }
 
 // ./gradlew run 
@@ -21,7 +21,7 @@ repositories {
 
 dependencies {
     implementation("net.thauvin.erik:cryptoprice:1.0.1-SNAPSHOT")
-    implementation("org.json:json:20230227")
+    implementation("org.json:json:20230618")
 }
 
 java {
