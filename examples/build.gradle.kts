@@ -20,7 +20,7 @@ repositories {
 }
 
 dependencies {
-    implementation("net.thauvin.erik:cryptoprice:1.0.1-SNAPSHOT")
+    implementation("net.thauvin.erik:cryptoprice:1.0.1")
     implementation("org.json:json:20230618")
 }
 

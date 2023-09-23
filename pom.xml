@@ -8,7 +8,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>net.thauvin.erik</groupId>
   <artifactId>cryptoprice</artifactId>
-  <version>1.0.1-SNAPSHOT</version>
+  <version>1.0.1</version>
   <name>cryptoprice</name>
   <description>Retrieve cryptocurrencies prices</description>
   <url>https://github.com/ethauvin/cryptoprice</url>
@@ -40,7 +40,7 @@
       <dependency>
         <groupId>org.jetbrains.kotlin</groupId>
         <artifactId>kotlin-bom</artifactId>
-        <version>1.8.22</version>
+        <version>1.9.10</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -50,7 +50,7 @@
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
       <artifactId>kotlin-stdlib-jdk8</artifactId>
-      <version>1.8.22</version>
+      <version>1.9.10</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
