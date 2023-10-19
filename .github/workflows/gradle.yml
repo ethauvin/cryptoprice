@@ -39,7 +39,7 @@ jobs:
       - name: Test with Gradle
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: build check --stacktrace --sonar
+          arguments: build check --stacktrace --scan
 
       - name: SonarCloud
         if: success() && matrix.java-version == env.SONAR_JDK
