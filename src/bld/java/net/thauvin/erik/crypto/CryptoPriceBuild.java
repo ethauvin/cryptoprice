@@ -47,7 +47,10 @@ public class CryptoPriceBuild extends Project {
                 .include(dependency("org.junit.platform", "junit-platform-console-standalone", version(1, 10, 1)));
 
         publishOperation()
-                .repository(version.isSnapshot() ? SONATYPE_SNAPSHOTS_LEGACY : SONATYPE_RELEASES_LEGACY)
+                .repository(version.isSnapshot() ? repository(SONATYPE_SNAPSHOTS_LEGACY.location())
+                        .withCredentials(property("sonatype.user"), property("sonatype.password"))
+                        : repository(SONATYPE_RELEASES_LEGACY.location())
+                        .withCredentials(property("sonatype.user"), property("sonatype.password")))
                 .info()
                 .groupId("net.thauvin.erik")
                 .artifactId(name)
