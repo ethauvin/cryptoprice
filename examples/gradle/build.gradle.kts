@@ -6,11 +6,6 @@ plugins {
     kotlin("jvm") version "1.9.10"
 }
 
-// ./gradlew run 
-// ./gradlew runJava
-// ./gradlew run --args="btc"
-// ./gradlew runJava --args="eth eur"
-
 defaultTasks(ApplicationPlugin.TASK_RUN_NAME)
 
 repositories {

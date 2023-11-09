@@ -145,9 +145,13 @@ open class CryptoPrice(val base: String, val currency: String, val amount: BigDe
          */
         @JvmStatic
         fun main(args: Array<String>) {
-            args.forEach {
-                with(spotPrice(it)) {
-                    println("$base:\t" + "%10s".format(toCurrency()))
+            if (args.isEmpty()) {
+                println("Please specify one or more ticker symbols as arguments.")
+            } else {
+                args.forEach {
+                    with(spotPrice(it)) {
+                        println("$base:\t" + "%10s".format(toCurrency()))
+                    }
                 }
             }
         }
