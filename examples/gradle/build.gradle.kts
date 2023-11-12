@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("application")
     id("com.github.ben-manes.versions") version "0.49.0"
-    kotlin("jvm") version "1.9.10"
+    kotlin("jvm") version "1.9.20"
 }
 
 defaultTasks(ApplicationPlugin.TASK_RUN_NAME)
@@ -15,7 +15,7 @@ repositories {
 }
 
 dependencies {
-    implementation("net.thauvin.erik:cryptoprice:1.0.1")
+    implementation("net.thauvin.erik:cryptoprice:1.0.1-SNAPSHOT")
     implementation("org.json:json:20231013")
 }
 

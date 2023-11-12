@@ -12,7 +12,7 @@ To compile & run the Kotlin example:
 To compile & run the Java example:
 
 ```text
-./gradlew run
+./gradlew runJava
 ./gradlew runJava --args="btc"
 ./gradlew runJava --args="eth eur"
 ```
