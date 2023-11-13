@@ -5,7 +5,7 @@
 [![Nexus Snapshot](https://img.shields.io/nexus/s/net.thauvin.erik/cryptoprice?label=snapshot&server=https%3A%2F%2Foss.sonatype.org%2F)](https://oss.sonatype.org/content/repositories/snapshots/net/thauvin/erik/cryptoprice/)
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ethauvin_cryptoprice&metric=alert_status)](https://sonarcloud.io/dashboard?id=ethauvin_cryptoprice)
-[![GitHub CI](https://github.com/ethauvin/cryptoprice/actions/workflows/gradle.yml/badge.svg)](https://github.com/ethauvin/cryptoprice/actions/workflows/gradle.yml)
+[![GitHub CI](https://github.com/ethauvin/cryptoprice/actions/workflows/bld.yml/badge.svg)](https://github.com/ethauvin/cryptoprice/actions/workflows/bld.yml)
 [![CircleCI](https://circleci.com/gh/ethauvin/cryptoprice/tree/master.svg?style=shield)](https://circleci.com/gh/ethauvin/cryptoprice/tree/master)
 
 # Retrieve cryptocurrencies current (buy, sell or spot) prices
