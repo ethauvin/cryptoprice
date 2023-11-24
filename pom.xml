@@ -18,7 +18,7 @@
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
       <artifactId>kotlin-stdlib</artifactId>
-      <version>1.9.20</version>
+      <version>1.9.21</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -43,7 +43,7 @@
     </developer>
   </developers>
   <scm>
-    <connection>scm:git:https://github.com/ethauvin/cryptoprice</connection>
+    <connection>scm:git:https://github.com/ethauvin/cryptoprice.git</connection>
     <developerConnection>scm:git:git@github.com:ethauvin/cryptoprice.git</developerConnection>
     <url>https://github.com/ethauvin/cryptoprice</url>
   </scm>

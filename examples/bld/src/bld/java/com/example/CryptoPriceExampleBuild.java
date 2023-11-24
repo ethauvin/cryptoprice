@@ -1,10 +1,9 @@
 package com.example;
 
-import rife.bld.BaseProject;
 import rife.bld.BuildCommand;
 import rife.bld.extension.CompileKotlinOperation;
-import rife.bld.extension.CompileKotlinOptions;
 import rife.bld.operations.RunOperation;
+import rife.bld.BaseProject;
 
 import java.util.List;
 
@@ -26,7 +25,6 @@ public class CryptoPriceExampleBuild extends BaseProject {
         repositories = List.of(MAVEN_LOCAL, MAVEN_CENTRAL, SONATYPE_SNAPSHOTS_LEGACY);
 
         scope(compile)
-                .include(dependency("org.jetbrains.kotlin", "kotlin-stdlib", version(1, 9, 20)))
                 .include(dependency("net.thauvin.erik", "cryptoprice", version(1, 0, 2, "SNAPSHOT")))
                 .include(dependency("org.json", "json", "20231013"));
     }
@@ -39,11 +37,6 @@ public class CryptoPriceExampleBuild extends BaseProject {
     public void compile() throws Exception {
         new CompileKotlinOperation()
                 .fromProject(this)
-                .compileOptions(
-                        new CompileKotlinOptions()
-                                .jdkRelease(javaRelease)
-                                .verbose(true)
-                )
                 .execute();
 
         // Also compile the Java source code

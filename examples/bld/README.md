@@ -1,7 +1,7 @@
 ## Kotlin Example
 To compile & run the Kotlin example:
 
-```text
+```console
 ./bld compile
 
 ./bld run
@@ -13,7 +13,7 @@ To compile & run the Kotlin example:
 
 To compile & run the Java example:
 
-```text
+```console
 ./bld compile
 
 ./bld run-java

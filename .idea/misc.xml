@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="EntryPointsManager">
     <pattern value="net.thauvin.erik.crypto.CryptoPriceBuild" />
@@ -13,6 +14,7 @@
         <option value="$PROJECT_DIR$/../../java/bld-checkstyle/config/pmd.xml" />
         <option value="$PROJECT_DIR$/../../java/bld-exec/config/pmd.xml" />
         <option value="$PROJECT_DIR$/../../java/bld-testng/config/pmd.xml" />
+        <option value="$PROJECT_DIR$/../../java/bld-generated-version/config/pmd.xml" />
       </list>
     </option>
     <option name="skipTestSources" value="false" />
