@@ -3,6 +3,8 @@
   <component name="EntryPointsManager">
     <pattern value="net.thauvin.erik.crypto.CryptoPriceBuild" />
     <pattern value="net.thauvin.erik.crypto.CryptoPriceBuild" method="jacoco" />
+    <pattern value="net.thauvin.erik.crypto.CryptoPriceBuild" method="detekt" />
+    <pattern value="net.thauvin.erik.crypto.CryptoPriceBuild" method="detektBaseline" />
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="PDMPlugin">

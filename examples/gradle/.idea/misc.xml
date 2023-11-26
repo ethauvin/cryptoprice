@@ -2,6 +2,16 @@
 <project version="4">
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="PDMPlugin">
+    <option name="customRuleSets">
+      <list>
+        <option value="K:\java\semver\config\pmd.xml" />
+        <option value="$PROJECT_DIR$/../../../../java/bld-pitest/config/pmd.xml" />
+        <option value="$PROJECT_DIR$/../../../../java/bld-jacoco-report/config/pmd.xml" />
+        <option value="$PROJECT_DIR$/../../../../java/bld-checkstyle/config/pmd.xml" />
+        <option value="$PROJECT_DIR$/../../../../java/bld-exec/config/pmd.xml" />
+        <option value="$PROJECT_DIR$/../../../../java/bld-testng/config/pmd.xml" />
+      </list>
+    </option>
     <option name="skipTestSources" value="false" />
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="20" project-jdk-type="JavaSDK" />

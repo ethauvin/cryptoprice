@@ -113,12 +113,16 @@ open class CryptoPrice(val base: String, val currency: String, val amount: BigDe
                         if (json.has("errors")) {
                             val data = json.getJSONArray("errors")
                             throw CryptoException(
-                                response.code, data.getJSONObject(0).getString("id"),
+                                response.code,
+                                data.getJSONObject(0).getString("id"),
                                 data.getJSONObject(0).getString("message")
                             )
                         } else {
-                            throw CryptoException(response.code, json.getString("error"),
-                                json.getString("message"))
+                            throw CryptoException(
+                                response.code,
+                                json.getString("error"),
+                                json.getString("message")
+                            )
                         }
                     }
                 } catch (e: JSONException) {

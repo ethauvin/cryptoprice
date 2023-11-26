@@ -1,5 +1,5 @@
 ## Kotlin Example
-To compile & run the Kotlin example:
+To run the Kotlin example:
 
 ```console
 ./gradlew run
@@ -9,7 +9,7 @@ To compile & run the Kotlin example:
 
 ## Java Example
 
-To compile & run the Java example:
+To run the Java example:
 
 ```console
 ./gradlew runJava
