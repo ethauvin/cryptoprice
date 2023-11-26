@@ -39,7 +39,7 @@ To use with [bld](https://rife2.com/bld), include the following dependency in yo
 repositories = List.of(MAVEN_CENTRAL);
 
 scope(compile)
-    .include(dependency("net.thauvin.erik:cryptoprice:1.0.1"));
+    .include(dependency("net.thauvin.erik:cryptoprice:1.0.2"));
 ```
 Be sure to use the [bld Kotlin extension](https://github.com/rife2/bld-kotlin) in your project.
 
@@ -54,7 +54,7 @@ repositories {
 }
 
 dependencies {
-    implementation("net.thauvin.erik:cryptoprice:1.0.1")
+    implementation("net.thauvin.erik:cryptoprice:1.0.2")
 }
 ```
 
