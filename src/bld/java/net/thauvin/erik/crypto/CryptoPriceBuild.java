@@ -27,7 +27,7 @@ public class CryptoPriceBuild extends Project {
     public CryptoPriceBuild() {
         pkg = "net.thauvin.erik.crypto";
         name = "cryptoprice";
-        version = version(1, 0, 2, "SNAPSHOT");
+        version = version(1, 0, 2);
 
         mainClass = "net.thauvin.erik.crypto.CryptoPrice";
 
