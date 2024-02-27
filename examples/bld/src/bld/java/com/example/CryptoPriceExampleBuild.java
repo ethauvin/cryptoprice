@@ -26,7 +26,7 @@ public class CryptoPriceExampleBuild extends BaseProject {
 
         scope(compile)
                 .include(dependency("net.thauvin.erik", "cryptoprice", version(1, 0, 3, "SNAPSHOT")))
-                .include(dependency("org.json", "json", "20231013"));
+                .include(dependency("org.json", "json", "20240205"));
     }
 
     public static void main(String[] args) {
