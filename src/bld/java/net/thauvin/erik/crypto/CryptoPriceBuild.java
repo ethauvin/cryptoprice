@@ -25,6 +25,7 @@ import static rife.bld.dependencies.Scope.test;
 
 public class CryptoPriceBuild extends Project {
     final File srcMainKotlin = new File(srcMainDirectory(), "kotlin");
+
     public CryptoPriceBuild() {
         pkg = "net.thauvin.erik.crypto";
         name = "cryptoprice";
@@ -43,7 +44,7 @@ public class CryptoPriceBuild extends Project {
                 .include(dependency("org.json", "json", "20240303"))
                 .include(dependency("com.squareup.okhttp3", "okhttp", version(4, 12, 0)));
         scope(test)
-                .include(dependency("com.willowtreeapps.assertk", "assertk-jvm", version(0, 28, 0)))
+                .include(dependency("com.willowtreeapps.assertk", "assertk-jvm", version(0, 28, 1)))
                 .include(dependency("org.jetbrains.kotlin", "kotlin-test-junit5", kotlin))
                 .include(dependency("org.junit.jupiter", "junit-jupiter", version(5, 10, 2)))
                 .include(dependency("org.junit.platform", "junit-platform-console-standalone", version(1, 10, 2)));
