@@ -40,7 +40,7 @@ public class CryptoPriceBuild extends Project {
         final var kotlin = version(1, 9, 24);
         scope(compile)
                 .include(dependency("org.jetbrains.kotlin", "kotlin-stdlib", kotlin))
-                .include(dependency("org.json", "json", "20240205"))
+                .include(dependency("org.json", "json", "20240303"))
                 .include(dependency("com.squareup.okhttp3", "okhttp", version(4, 12, 0)));
         scope(test)
                 .include(dependency("com.willowtreeapps.assertk", "assertk-jvm", version(0, 28, 0)))
