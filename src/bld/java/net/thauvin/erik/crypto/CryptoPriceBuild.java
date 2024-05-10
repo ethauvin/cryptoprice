@@ -24,6 +24,7 @@ import static rife.bld.dependencies.Scope.compile;
 import static rife.bld.dependencies.Scope.test;
 
 public class CryptoPriceBuild extends Project {
+    final File srcMainKotlin = new File(srcMainDirectory(), "kotlin");
     public CryptoPriceBuild() {
         pkg = "net.thauvin.erik.crypto";
         name = "cryptoprice";
@@ -36,7 +37,7 @@ public class CryptoPriceBuild extends Project {
         autoDownloadPurge = true;
         repositories = List.of(MAVEN_LOCAL, MAVEN_CENTRAL);
 
-        final var kotlin = version(1, 9, 22);
+        final var kotlin = version(1, 9, 24);
         scope(compile)
                 .include(dependency("org.jetbrains.kotlin", "kotlin-stdlib", kotlin))
                 .include(dependency("org.json", "json", "20240205"))
@@ -78,7 +79,7 @@ public class CryptoPriceBuild extends Project {
                 .signKey(property("sign.key"))
                 .signPassphrase(property("sign.passphrase"));
 
-        jarSourcesOperation().sourceDirectories(new File(srcMainDirectory(), "kotlin"));
+        jarSourcesOperation().sourceDirectories(srcMainKotlin);
     }
 
     public static void main(final String[] args) {
@@ -113,6 +114,7 @@ public class CryptoPriceBuild extends Project {
     public void jacoco() throws IOException {
         new JacocoReportOperation()
                 .fromProject(this)
+                .sourceFiles(srcMainKotlin)
                 .execute();
     }
 

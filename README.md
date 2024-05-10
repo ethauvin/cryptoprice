@@ -1,5 +1,5 @@
 [![License (3-Clause BSD)](https://img.shields.io/badge/license-BSD%203--Clause-blue.svg?style=flat-square)](https://opensource.org/licenses/BSD-3-Clause)
-[![Kotlin](https://img.shields.io/badge/kotlin-1.9.21-7f52ff)](https://kotlinlang.org/)
+[![Kotlin](https://img.shields.io/badge/kotlin-1.9.24-7f52ff)](https://kotlinlang.org/)
 [![bld](https://img.shields.io/badge/1.9.1-FA9052?label=bld&labelColor=2392FF)](https://rife2.com/bld)
 [![Release](https://img.shields.io/github/release/ethauvin/cryptoprice.svg)](https://github.com/ethauvin/cryptoprice/releases/latest)
 [![Maven Central](https://img.shields.io/maven-central/v/net.thauvin.erik/cryptoprice)](https://central.sonatype.com/artifact/net.thauvin.erik/cryptoprice)
