@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("application")
     id("com.github.ben-manes.versions") version "0.51.0"
-    kotlin("jvm") version "1.9.24"
+    kotlin("jvm") version "2.0.0"
 }
 
 defaultTasks(ApplicationPlugin.TASK_RUN_NAME)
@@ -28,11 +28,11 @@ application {
     mainClass.set("com.example.CryptoPriceExampleKt")
 }
 
-tasks {
-    withType<KotlinCompile>().configureEach {
-        kotlinOptions.jvmTarget = java.targetCompatibility.toString()
-    }
+kotlin {
+    compilerOptions.jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
+}
 
+tasks {
     register<JavaExec>("runJava") {
         group = "application"
         mainClass.set("com.example.CryptoPriceSample")
