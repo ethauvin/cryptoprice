@@ -80,7 +80,6 @@ class CryptoPriceTest {
                 prop(CryptoPrice::currency).isEqualTo("EUR")
                 prop(CryptoPrice::amount).isGreaterThan(BigDecimal(0))
             }
-
         }
     }
 
