@@ -11,7 +11,7 @@
 
 # Retrieve cryptocurrencies current (buy, sell or spot) prices
 
-A simple implementation of the prices [Coinbase Public API](https://docs.cloud.coinbase.com/sign-in-with-coinbase/docs/api-prices).
+A simple implementation of the prices [Coinbase Public API](https://docs.cdp.coinbase.com/coinbase-app/docs/api-prices).
 
 ## Examples (TL;DR)
 
@@ -94,7 +94,7 @@ A `CryptoPrice` object is returned defined as follows:
 ```kotlin
 CryptoPrice(val base: String, val currency: String, val amount: BigDecimal)
 ```
-The parameter names match the [Coinbase API](https://docs.cloud.coinbase.com/sign-in-with-coinbase/docs/api-prices).
+The parameter names match the [Coinbase API](https://docs.cdp.coinbase.com/coinbase-app/docs/api-prices).
 
 #### Format
 
@@ -123,7 +123,7 @@ println(price.toJson())
 {"data":{"base":"BTC","currency":"USD","amount":"34567.89"}}
 ```
 
-The `data` object matches the [Coinbase API](https://docs.cloud.coinbase.com/sign-in-with-coinbase/docs/api-prices). To specify a different (or no) key, use:
+The `data` object matches the [Coinbase API](https://docs.cdp.coinbase.com/coinbase-app/docs/api-prices). To specify a different (or no) key, use:
 
 ```kotlin
 println(price.toJson("bitcoin"))
@@ -146,7 +146,7 @@ val eth = """{"ether":{"base":"ETH","currency":"USD","amount":"2345.67"}}""".toP
 
 ### Extending
 
-A generic `apiCall()` function is available to access other [data API endpoints](https://docs.cloud.coinbase.com/sign-in-with-coinbase/docs/api-currencies). For example to retrieve the [exchange rates](https://docs.cloud.coinbase.com/sign-in-with-coinbase/docs/api-exchange-rates#get-exchange-rates):
+A generic `apiCall()` function is available to access other [data API endpoints](https://docs.cdp.coinbase.com/coinbase-app/docs/api-currencies). For example to retrieve the [exchange rates](https://docs.cdp.coinbase.com/coinbase-app/docs/api-exchange-rates):
 
 ```kotlin
 apiCall(listOf("exchange-rates"), mapOf("currency" to "usd"))
