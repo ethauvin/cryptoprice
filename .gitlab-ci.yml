@@ -1,11 +1,24 @@
-image: openjdk:17
+image: fedora:latest
+
+variables:
+  CI_NAME: "GitLab CI"
 
 stages:
   - test
 
+before_script:
+  - dnf -qy update && dnf -y install zip
+  - curl -s "https://get.sdkman.io" | bash
+  - echo sdkman_auto_answer=true > $HOME/.sdkman/etc/config
+  - echo sdkman_auto_selfupdate=true >> $HOME/.sdkman/etc/config
+  - source "$HOME/.sdkman/bin/sdkman-init.sh"
+  - sdk install java
+  - sdk install kotlin
+  - source "$HOME/.sdkman/bin/sdkman-init.sh"
+
 test:
   stage: test
   script:
-      - ./bld download
-      - ./bld compile
-      - ./bld test
+    - ./bld download
+    - ./bld compile
+    - ./bld test
