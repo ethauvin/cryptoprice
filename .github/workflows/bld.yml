@@ -13,8 +13,8 @@ jobs:
 
     strategy:
       matrix:
-        java-version: [ 17, 21, 22 ]
-        kotlin-version: [ 1.9.24, 2.0.0 ]
+        java-version: [17, 21, 22]
+        kotlin-version: [1.9.24, 2.0.20]
 
     steps:
       - name: Checkout source repository
