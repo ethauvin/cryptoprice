@@ -85,6 +85,7 @@ public class CryptoPriceBuild extends Project {
                         .withCredentials(property("sonatype.user"), property("sonatype.password"))
                         : repository(SONATYPE_RELEASES_LEGACY.location())
                         .withCredentials(property("sonatype.user"), property("sonatype.password")))
+                .repository(repository("github"))
                 .info()
                 .groupId("net.thauvin.erik")
                 .artifactId(name)
@@ -162,6 +163,12 @@ public class CryptoPriceBuild extends Project {
     @Override
     public void publish() throws Exception {
         super.publish();
+        pomRoot();
+    }
+
+    @Override
+    public void publishLocal() throws Exception {
+        super.publishLocal();
         pomRoot();
     }
 
