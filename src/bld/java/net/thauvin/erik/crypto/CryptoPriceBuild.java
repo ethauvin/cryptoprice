@@ -69,7 +69,7 @@ public class CryptoPriceBuild extends Project {
         autoDownloadPurge = true;
         repositories = List.of(MAVEN_LOCAL, MAVEN_CENTRAL);
 
-        final var kotlin = version(2, 0, 20);
+        final var kotlin = version(2, 1, 0);
         scope(compile)
                 .include(dependency("org.jetbrains.kotlin", "kotlin-stdlib", kotlin))
                 .include(dependency("org.json", "json", "20240303"))
@@ -77,8 +77,8 @@ public class CryptoPriceBuild extends Project {
         scope(test)
                 .include(dependency("com.willowtreeapps.assertk", "assertk-jvm", version(0, 28, 1)))
                 .include(dependency("org.jetbrains.kotlin", "kotlin-test-junit5", kotlin))
-                .include(dependency("org.junit.jupiter", "junit-jupiter", version(5, 11, 0)))
-                .include(dependency("org.junit.platform", "junit-platform-console-standalone", version(1, 11, 0)));
+                .include(dependency("org.junit.jupiter", "junit-jupiter", version(5, 11, 4)))
+                .include(dependency("org.junit.platform", "junit-platform-console-standalone", version(1, 11, 4)));
 
         publishOperation()
                 .repository(version.isSnapshot() ? repository(SONATYPE_SNAPSHOTS_LEGACY.location())
