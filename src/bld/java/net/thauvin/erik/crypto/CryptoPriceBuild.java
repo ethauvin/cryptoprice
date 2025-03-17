@@ -69,7 +69,7 @@ public class CryptoPriceBuild extends Project {
         autoDownloadPurge = true;
         repositories = List.of(MAVEN_LOCAL, MAVEN_CENTRAL);
 
-        final var kotlin = version(2, 1, 0);
+        final var kotlin = version(2, 1, 10);
         scope(compile)
                 .include(dependency("org.jetbrains.kotlin", "kotlin-stdlib", kotlin))
                 .include(dependency("org.json", "json", "20240303"))
