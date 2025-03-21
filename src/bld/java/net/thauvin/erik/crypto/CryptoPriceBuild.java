@@ -121,8 +121,7 @@ public class CryptoPriceBuild extends Project {
     @BuildCommand(summary = "Compiles the Kotlin project")
     @Override
     public void compile() throws Exception {
-        final var options = new CompileOptions();
-        options.jvmOptions().add("--enable-native-access=ALL-UNNAMED");
+        final var options = new CompileOptions().jvmOptions("--enable-native-access=ALL-UNNAMED");
         new CompileKotlinOperation()
                 .fromProject(this)
                 .compileOptions(options)
