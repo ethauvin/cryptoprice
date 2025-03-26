@@ -4,7 +4,7 @@ on: [ push, pull_request, workflow_dispatch ]
 
 env:
   COVERAGE_JDK: "21"
-  COVERAGE_KOTLIN: "2.0.21"
+  COVERAGE_KOTLIN: "2.1.20"
 
 jobs:
   build-bld-project:
@@ -44,7 +44,6 @@ jobs:
         run: |
           ./gradlew run
           ./gradlew runJava
-
 
       - name: Download dependencies
         run: ./bld download
