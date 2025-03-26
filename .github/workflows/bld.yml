@@ -39,7 +39,7 @@ jobs:
           ./bld compile run
           ./bld run-java
 
-      - name: Run example [bld examples]
+      - name: Run example [gradle examples]
         working-directory: examples/gradle
         if: matrix.java-version != '24'
         run: |
@@ -58,7 +58,8 @@ jobs:
 
       - name: Remove pom.xml
         if: success() && matrix.java-version == env.COVERAGE_JDK && matrix.kotlin-version == env.COVERAGE_KOTLIN
-        run: rm -rf pom.xmlAdd debug logging
+            && matrix.os == 'unbuntu-latest'
+        run: rm -rf pom.xml
 
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
