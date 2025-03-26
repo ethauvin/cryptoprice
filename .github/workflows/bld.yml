@@ -35,12 +35,17 @@ jobs:
 
       - name: Compile and run [bld examples]
         working-directory: examples/bld
-        run: ./bld compile run
+        run: |
+          ./bld compile run
+          ./bld run-java
 
       - name: Run example [bld examples]
         working-directory: examples/gradle
         if: matrix.java-version != '24'
-        run: ./gradlew run
+        run: |
+            ./gradlew run
+            ./gradlew runJava
+          
 
       - name: Download dependencies
         run: ./bld download
