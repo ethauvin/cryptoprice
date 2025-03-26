@@ -42,6 +42,8 @@ import java.math.BigDecimal
 import java.text.NumberFormat
 import java.time.LocalDate
 import java.util.*
+import java.util.logging.Level
+import java.util.logging.Logger
 
 /**
  * Retrieves and holds a cryptocurrency price.
@@ -56,6 +58,9 @@ open class CryptoPrice(val base: String, val currency: String, val amount: BigDe
     companion object {
         // Coinbase API URL
         private const val COINBASE_API_URL = "https://api.coinbase.com/v2/"
+
+        /** The logger instance. **/
+        val logger: Logger by lazy { Logger.getLogger(CryptoPrice::class.java.simpleName) }
 
         /**
          * Converts JSON data object to [CryptoPrice].
@@ -105,6 +110,9 @@ open class CryptoPrice(val base: String, val currency: String, val amount: BigDe
                     id = "empty_response",
                     message = "Empty response."
                 )
+                if (logger.isLoggable(Level.FINE)) {
+                    logger.fine(body)
+                }
                 try {
                     val json = JSONObject(body)
                     if (response.isSuccessful) {

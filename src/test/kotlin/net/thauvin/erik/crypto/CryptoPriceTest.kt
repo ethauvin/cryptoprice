@@ -42,9 +42,12 @@ import net.thauvin.erik.crypto.CryptoPrice.Companion.sellPrice
 import net.thauvin.erik.crypto.CryptoPrice.Companion.spotPrice
 import net.thauvin.erik.crypto.CryptoPrice.Companion.toPrice
 import org.json.JSONObject
+import org.junit.jupiter.api.BeforeAll
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.util.*
+import java.util.logging.ConsoleHandler
+import java.util.logging.Level
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -238,5 +241,17 @@ class CryptoPriceTest {
         val price = json.toPrice("")
         assertEquals(json, price.toString(), "toString()")
         assertEquals(price.toString(), price.toJson(""), "toString() = toJson('')")
+    }
+
+    companion object {
+        @JvmStatic
+        @BeforeAll
+        fun beforeAll() {
+            with(CryptoPrice.logger) {
+                addHandler(ConsoleHandler().apply { level = Level.FINE })
+                level = Level.FINE
+                useParentHandlers = false
+            }
+        }
     }
 }
