@@ -1,8 +1,7 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" ?>
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
-    <ID>NestedBlockDepth:CryptoPrice.kt$CryptoPrice.Companion$@JvmStatic @JvmOverloads @Throws(CryptoException::class, IOException::class) fun apiCall(paths: List&lt;String>, params: Map&lt;String, String> = emptyMap()): String</ID>
-    <ID>ThrowsCount:CryptoPrice.kt$CryptoPrice.Companion$@JvmStatic @JvmOverloads @Throws(CryptoException::class, IOException::class) fun apiCall(paths: List&lt;String>, params: Map&lt;String, String> = emptyMap()): String</ID>
+    <ID>ThrowsCount:CryptoPrice.kt$CryptoPrice.Companion$private fun handleResponse(response: okhttp3.Response, body: String): String</ID>
   </CurrentIssues>
 </SmellBaseline>

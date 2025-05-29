@@ -72,9 +72,17 @@ open class CryptoPrice(val base: String, val currency: String, val amount: BigDe
         @Throws(CryptoException::class)
         fun String.toPrice(key: String = "data"): CryptoPrice {
             try {
-                val json = if (key.isNotBlank()) JSONObject(this).getJSONObject(key) else JSONObject(this)
+                val json = if (key.isNotBlank()) {
+                    JSONObject(this).getJSONObject(key)
+                } else {
+                    JSONObject(this)
+                }
                 with(json) {
-                    return CryptoPrice(getString("base"), getString("currency"), getString("amount").toBigDecimal())
+                    return CryptoPrice(
+                        getString("base"),
+                        getString("currency"),
+                        getString("amount").toBigDecimal()
+                    )
                 }
             } catch (e: NumberFormatException) {
                 throw CryptoException(id = "convert_error", message = "Could not convert amount to number.", cause = e)
@@ -93,49 +101,62 @@ open class CryptoPrice(val base: String, val currency: String, val amount: BigDe
         @JvmOverloads
         @Throws(CryptoException::class, IOException::class)
         fun apiCall(paths: List<String>, params: Map<String, String> = emptyMap()): String {
-            val client = OkHttpClient()
-            val httpUrl = COINBASE_API_URL.toHttpUrl().newBuilder().apply {
-                paths.forEach {
-                    addPathSegment(it)
-                }
-                params.forEach {
-                    addQueryParameter(it.key, it.value)
-                }
-            }.build()
+            val httpClient = OkHttpClient()
+            val request = buildRequest(paths, params)
 
-            val request = Request.Builder().url(httpUrl).build()
-            client.newCall(request).execute().use { response ->
+            return httpClient.newCall(request).execute().use { response ->
                 val body = response.body?.string() ?: throw CryptoException(
                     response.code,
                     id = "empty_response",
                     message = "Empty response."
                 )
+
                 if (logger.isLoggable(Level.FINE)) {
                     logger.fine(body)
                 }
-                try {
-                    val json = JSONObject(body)
-                    if (response.isSuccessful) {
-                        return body
-                    } else {
-                        if (json.has("errors")) {
-                            val data = json.getJSONArray("errors")
-                            throw CryptoException(
-                                response.code,
-                                data.getJSONObject(0).getString("id"),
-                                data.getJSONObject(0).getString("message")
-                            )
-                        } else {
-                            throw CryptoException(
-                                response.code,
-                                json.getString("error"),
-                                json.getString("message")
-                            )
-                        }
-                    }
-                } catch (e: JSONException) {
-                    throw CryptoException(response.code, id = "parse_error", "Could not parse data.", e)
+
+                handleResponse(response, body)
+            }
+        }
+
+        private fun buildRequest(paths: List<String>, params: Map<String, String>): Request {
+            val httpUrl = COINBASE_API_URL.toHttpUrl().newBuilder().apply {
+                paths.forEach { addPathSegment(it) }
+                params.forEach { (key, value) -> addQueryParameter(key, value) }
+            }.build()
+
+            return Request.Builder().url(httpUrl).build()
+        }
+
+
+        private fun handleResponse(response: okhttp3.Response, body: String): String {
+            try {
+                val json = JSONObject(body)
+                if (response.isSuccessful) {
+                    return body
                 }
+
+                if (json.has("errors")) {
+                    val data = json.getJSONArray("errors").getJSONObject(0)
+                    throw CryptoException(
+                        response.code,
+                        data.getString("id"),
+                        data.getString("message")
+                    )
+                } else {
+                    throw CryptoException(
+                        response.code,
+                        json.getString("error"),
+                        json.getString("message")
+                    )
+                }
+            } catch (e: JSONException) {
+                throw CryptoException(
+                    response.code,
+                    id = "parse_error",
+                    "Could not parse data.",
+                    e
+                )
             }
         }
 
@@ -207,7 +228,10 @@ open class CryptoPrice(val base: String, val currency: String, val amount: BigDe
      */
     @JvmOverloads
     @Throws(IllegalArgumentException::class)
-    fun toCurrency(locale: Locale = Locale.getDefault(Locale.Category.FORMAT), minFractionDigits: Int = 2): String {
+    fun toCurrency(
+        locale: Locale = Locale.getDefault(Locale.Category.FORMAT),
+        minFractionDigits: Int = 2
+    ): String {
         return NumberFormat.getCurrencyInstance(locale).let {
             it.currency = Currency.getInstance(currency)
             it.minimumFractionDigits = minFractionDigits
