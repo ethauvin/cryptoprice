@@ -33,13 +33,9 @@ package net.thauvin.erik.crypto;
 
 import rife.bld.BuildCommand;
 import rife.bld.Project;
-import rife.bld.extension.CompileKotlinOperation;
-import rife.bld.extension.DetektOperation;
-import rife.bld.extension.DokkaOperation;
-import rife.bld.extension.JacocoReportOperation;
+import rife.bld.extension.*;
 import rife.bld.extension.dokka.LoggingLevel;
 import rife.bld.extension.dokka.OutputFormat;
-import rife.bld.extension.kotlin.CompileOptions;
 import rife.bld.operations.exceptions.ExitStatusException;
 import rife.bld.publish.PomBuilder;
 import rife.bld.publish.PublishDeveloper;
@@ -49,6 +45,8 @@ import rife.tools.exceptions.FileUtilsErrorException;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
@@ -59,6 +57,7 @@ import static rife.bld.dependencies.Scope.compile;
 import static rife.bld.dependencies.Scope.test;
 
 public class CryptoPriceBuild extends Project {
+    static final String TEST_RESULTS_DIR = "build/test-results/test/";
     final File srcMainKotlin = new File(srcMainDirectory(), "kotlin");
 
     public CryptoPriceBuild() {
@@ -69,14 +68,15 @@ public class CryptoPriceBuild extends Project {
         mainClass = "net.thauvin.erik.crypto.CryptoPrice";
 
         javaRelease = 11;
-        downloadSources = true;
+
         autoDownloadPurge = true;
+        downloadSources = true;
         repositories = List.of(MAVEN_LOCAL, MAVEN_CENTRAL);
 
-        final var kotlin = version(2, 1, 20);
+        final var kotlin = version(2, 1, 21);
         scope(compile)
                 .include(dependency("org.jetbrains.kotlin", "kotlin-stdlib", kotlin))
-                .include(dependency("org.json", "json", "20250107"))
+                .include(dependency("org.json", "json", "20250517"))
                 .include(dependency("com.squareup.okhttp3", "okhttp", version(4, 12, 0)));
         scope(test)
                 .include(dependency("com.willowtreeapps.assertk", "assertk-jvm", version(0, 28, 1)))
@@ -134,10 +134,9 @@ public class CryptoPriceBuild extends Project {
     @BuildCommand(summary = "Compiles the Kotlin project")
     @Override
     public void compile() throws Exception {
-        new CompileKotlinOperation()
-                .fromProject(this)
-                .compileOptions(new CompileOptions().verbose(true))
-                .execute();
+        final var op = new CompileKotlinOperation().fromProject(this);
+        op.compileOptions().languageVersion("1.9").verbose(true);
+        op.execute();
     }
 
     @BuildCommand(summary = "Checks source with Detekt")
@@ -153,14 +152,6 @@ public class CryptoPriceBuild extends Project {
                 .fromProject(this)
                 .baseline("detekt-baseline.xml")
                 .createBaseline(true)
-                .execute();
-    }
-
-    @BuildCommand(summary = "Generates JaCoCo Reports")
-    public void jacoco() throws Exception {
-        new JacocoReportOperation()
-                .fromProject(this)
-                .sourceFiles(srcMainKotlin)
                 .execute();
     }
 
@@ -192,5 +183,57 @@ public class CryptoPriceBuild extends Project {
     public void pomRoot() throws FileUtilsErrorException {
         PomBuilder.generateInto(publishOperation().fromProject(this).info(), dependencies(),
                 new File(workDirectory, "pom.xml"));
+    }
+
+    @BuildCommand(summary = "Generates JaCoCo Reports")
+    public void jacoco() throws Exception {
+        final var op = new JacocoReportOperation().fromProject(this);
+        op.testToolOptions("--reports-dir=" + TEST_RESULTS_DIR);
+
+        Exception ex = null;
+        try {
+            op.execute();
+        } catch (Exception e) {
+            ex = e;
+        }
+
+        renderWithXunitViewer();
+
+        if (ex != null) {
+            throw ex;
+        }
+    }
+
+    private void renderWithXunitViewer() throws Exception {
+        final var xunitViewer = new File("/usr/bin/xunit-viewer");
+        if (xunitViewer.exists() && xunitViewer.canExecute()) {
+            final var reportsDir = "build/reports/tests/test/";
+
+            Files.createDirectories(Path.of(reportsDir));
+
+            new ExecOperation()
+                    .fromProject(this)
+                    .command(xunitViewer.getPath(), "-r", TEST_RESULTS_DIR, "-o", reportsDir + "index.html")
+                    .execute();
+        }
+    }
+
+    @Override
+    public void test() throws Exception {
+        final var op = testOperation().fromProject(this);
+        op.testToolOptions().reportsDir(new File(TEST_RESULTS_DIR));
+
+        Exception ex = null;
+        try {
+            op.execute();
+        } catch (Exception e) {
+            ex = e;
+        }
+
+        renderWithXunitViewer();
+
+        if (ex != null) {
+            throw ex;
+        }
     }
 }
