@@ -1,5 +1,5 @@
 [![License (3-Clause BSD)](https://img.shields.io/badge/license-BSD%203--Clause-blue.svg?style=flat-square)](https://opensource.org/licenses/BSD-3-Clause)
-[![Kotlin](https://img.shields.io/badge/kotlin-2.1.21-7f52ff)](https://kotlinlang.org/)
+[![Kotlin](https://img.shields.io/badge/kotlin-2.2.0-7f52ff)](https://kotlinlang.org/)
 [![bld](https://img.shields.io/badge/2.2.1-FA9052?label=bld&labelColor=2392FF)](https://rife2.com/bld)
 [![Release](https://img.shields.io/github/release/ethauvin/cryptoprice.svg)](https://github.com/ethauvin/cryptoprice/releases/latest)
 [![Maven Central](https://img.shields.io/maven-central/v/net.thauvin.erik/cryptoprice)](https://central.sonatype.com/artifact/net.thauvin.erik/cryptoprice)
@@ -11,7 +11,7 @@
 
 # Retrieve cryptocurrencies current (buy, sell or spot) prices
 
-A simple implementation of the prices [Coinbase Public API](https://docs.cdp.coinbase.com/coinbase-app/docs/api-prices).
+A simple implementation of the prices [Coinbase Public API](https://docs.cdp.coinbase.com/coinbase-app/track-apis/prices).
 
 ## Examples (TL;DR)
 
@@ -83,18 +83,18 @@ sellPrice(
 )
 ```
 
-Parameters  | Description
-:---------- |:------------------------------------------------------------
-`base`      | The cryptocurrency ticker symbol (`BTC`, `ETH`, `LTC`, etc.)
-`currency`  | The fiat currency ISO 4217 code. (`USD`, `GBP`, `EUR`, etc.)
-`date`      | The `LocalDate` for historical price data.
+| Parameters | Description                                                  |
+|:-----------|:-------------------------------------------------------------|
+| `base`     | The cryptocurrency ticker symbol (`BTC`, `ETH`, `LTC`, etc.) |
+| `currency` | The fiat currency ISO 4217 code. (`USD`, `GBP`, `EUR`, etc.) |
+| `date`     | The `LocalDate` for historical price data.                   |
 
 A `CryptoPrice` object is returned defined as follows:
 
 ```kotlin
 CryptoPrice(val base: String, val currency: String, val amount: BigDecimal)
 ```
-The parameter names match the [Coinbase API](https://docs.cdp.coinbase.com/coinbase-app/docs/api-prices).
+The parameter names match the [Coinbase API](https://docs.cdp.coinbase.com/coinbase-app/track-apis/prices).
 
 #### Format
 
@@ -123,7 +123,7 @@ println(price.toJson())
 {"data":{"base":"BTC","currency":"USD","amount":"34567.89"}}
 ```
 
-The `data` object matches the [Coinbase API](https://docs.cdp.coinbase.com/coinbase-app/docs/api-prices). To specify a different (or no) key, use:
+The `data` object matches the [Coinbase API](https://docs.cdp.coinbase.com/coinbase-app/track-apis/prices). To specify a different (or no) key, use:
 
 ```kotlin
 println(price.toJson("bitcoin"))
@@ -146,7 +146,7 @@ val eth = """{"ether":{"base":"ETH","currency":"USD","amount":"2345.67"}}""".toP
 
 ### Extending
 
-A generic `apiCall()` function is available to access other [data API endpoints](https://docs.cdp.coinbase.com/coinbase-app/docs/api-currencies). For example to retrieve the [exchange rates](https://docs.cdp.coinbase.com/coinbase-app/docs/api-exchange-rates):
+A generic `apiCall()` function is available to access other [data API endpoints](https://docs.cdp.coinbase.com/coinbase-app/track-apis/currencies). For example to retrieve the [exchange rates](https://docs.cdp.coinbase.com/coinbase-app/track-apis/exchange-rates):
 
 ```kotlin
 apiCall(listOf("exchange-rates"), mapOf("currency" to "usd"))
