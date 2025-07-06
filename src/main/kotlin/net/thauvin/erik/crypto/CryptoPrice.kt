@@ -105,11 +105,10 @@ open class CryptoPrice(val base: String, val currency: String, val amount: BigDe
             val request = buildRequest(paths, params)
 
             return httpClient.newCall(request).execute().use { response ->
-                val body = response.body?.string() ?: throw CryptoException(
-                    response.code,
-                    id = "empty_response",
-                    message = "Empty response."
-                )
+                val body = response.body.string()
+                if (body.isBlank()) {
+                    throw CryptoException(response.code, id = "empty_response", message = "Empty response.")
+                }
 
                 if (logger.isLoggable(Level.FINE)) {
                     logger.fine(body)
