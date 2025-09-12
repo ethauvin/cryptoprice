@@ -42,40 +42,28 @@ import net.thauvin.erik.crypto.CryptoPrice.Companion.sellPrice
 import net.thauvin.erik.crypto.CryptoPrice.Companion.spotPrice
 import net.thauvin.erik.crypto.CryptoPrice.Companion.toPrice
 import org.json.JSONObject
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.extension.ExtendWith
+import org.junit.jupiter.api.extension.RegisterExtension
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
+import rife.bld.extension.testing.LoggingExtension
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.util.*
-import java.util.concurrent.atomic.AtomicBoolean
-import java.util.logging.ConsoleHandler
-import java.util.logging.Level
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertNotEquals
 
-/**
- * [CryptoPrice] Tests
- */
+@ExtendWith(LoggingExtension::class)
 class CryptoPriceTests {
     companion object {
-        val isFirstRun = AtomicBoolean(true)
-
-        @JvmStatic
-        @BeforeAll
-        fun beforeAll() {
-            if (isFirstRun.getAndSet(false)) {
-                with(CryptoPrice.logger) {
-                    addHandler(ConsoleHandler().apply { level = Level.FINE })
-                    level = Level.FINE
-                    useParentHandlers = false
-                }
-            }
-        }
+        @RegisterExtension
+        @JvmField
+        @Suppress("unused")
+        val loggingExtension = LoggingExtension(CryptoPrice.logger)
     }
 
     @Nested
