@@ -9,6 +9,7 @@
     <pattern value="net.thauvin.erik.crypto.CryptoPriceBuild" method="detekt" />
     <pattern value="net.thauvin.erik.crypto.CryptoPriceBuild" method="detektBaseline" />
     <pattern value="net.thauvin.erik.crypto.CryptoPrice.Companion" method="main" />
+    <pattern value="net.thauvin.erik.crypto.CryptoPriceBuild" method="reporter" />
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">

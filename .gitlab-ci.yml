@@ -21,4 +21,4 @@ test:
   script:
     - ./bld download
     - ./bld compile
-    - ./bld test
+    - ./bld test || ./bld reporter --all

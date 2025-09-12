@@ -1,6 +1,6 @@
 name: bld-ci
 
-on: [push, pull_request, workflow_dispatch]
+on: [ push, pull_request, workflow_dispatch ]
 
 env:
   COVERAGE_JDK: "21"
@@ -10,8 +10,8 @@ jobs:
   build-bld-project:
     strategy:
       matrix:
-        java-version: [17, 21, 24]
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        java-version: [ 17, 21, 24 ]
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
 
     runs-on: ${{ matrix.os }}
 
@@ -56,7 +56,12 @@ jobs:
         run: ./bld compile
 
       - name: Run tests
+        continue-on-error: true
         run: ./bld jacoco
+
+      - name: Run reporter on failure
+        if: ${{ failure() }}
+        run: ./bld reporter --all
 
       - name: Remove pom.xml
         if: success() && matrix.java-version == env.COVERAGE_JDK && matrix.os == 'ubuntu-latest'

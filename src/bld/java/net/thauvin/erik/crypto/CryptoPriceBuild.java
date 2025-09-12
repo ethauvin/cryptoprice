@@ -212,17 +212,28 @@ public class CryptoPriceBuild extends Project {
     }
 
     private void renderWithXunitViewer() throws Exception {
-        final var xunitViewer = new File("/usr/bin/xunit-viewer");
-        if (xunitViewer.exists() && xunitViewer.canExecute()) {
-            final var reportsDir = "build/reports/tests/test/";
+        final var npmPackagesEnv = System.getenv("NPM_PACKAGES");
+        if (npmPackagesEnv != null && !npmPackagesEnv.isEmpty()) {
+            final var xunitViewer = Path.of(npmPackagesEnv, "bin", "xunit-viewer").toFile();
+            if (xunitViewer.exists() && xunitViewer.canExecute()) {
+                final var reportsDir = "build/reports/tests/test/";
 
-            Files.createDirectories(Path.of(reportsDir));
+                Files.createDirectories(Path.of(reportsDir));
 
-            new ExecOperation()
-                    .fromProject(this)
-                    .command(xunitViewer.getPath(), "-r", TEST_RESULTS_DIR, "-o", reportsDir + "index.html")
-                    .execute();
+                new ExecOperation()
+                        .fromProject(this)
+                        .command(xunitViewer.getPath(), "-r", TEST_RESULTS_DIR, "-o", reportsDir + "index.html")
+                        .execute();
+            }
         }
+    }
+
+    @BuildCommand(summary = "Runs the JUnit reporter")
+    public void reporter() throws Exception {
+        new JUnitReporterOperation()
+                .fromProject(this)
+                .failOnSummary(true)
+                .execute();
     }
 
     @Override
