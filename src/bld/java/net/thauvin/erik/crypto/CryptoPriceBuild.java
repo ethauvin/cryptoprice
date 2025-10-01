@@ -62,7 +62,8 @@ public class CryptoPriceBuild extends Project {
 
     public CryptoPriceBuild() {
         pkg = "net.thauvin.erik.crypto";
-        name = "cryptoprice";
+        name="CryptoPrice";
+        archiveBaseName = "cryptoprice";
         version = version(1, 0, 3, "SNAPSHOT");
 
         mainClass = "net.thauvin.erik.crypto.CryptoPrice";
@@ -98,9 +99,9 @@ public class CryptoPriceBuild extends Project {
                 .repository(repository("github"))
                 .info()
                 .groupId("net.thauvin.erik")
-                .artifactId(name)
+                .artifactId(archiveBaseName)
                 .description("Retrieve cryptocurrencies prices")
-                .url("https://github.com/ethauvin/" + name)
+                .url("https://github.com/ethauvin/" + archiveBaseName)
                 .developer(new PublishDeveloper()
                         .id("ethauvin")
                         .name("Erik C. Thauvin")
@@ -112,9 +113,9 @@ public class CryptoPriceBuild extends Project {
                         .url("https://opensource.org/licenses/BSD-3-Clause")
                 )
                 .scm(new PublishScm()
-                        .connection("scm:git:https://github.com/ethauvin/" + name + ".git")
-                        .developerConnection("scm:git:git@github.com:ethauvin/" + name + ".git")
-                        .url("https://github.com/ethauvin/" + name)
+                        .connection("scm:git:https://github.com/ethauvin/" + archiveBaseName + ".git")
+                        .developerConnection("scm:git:git@github.com:ethauvin/" + archiveBaseName + ".git")
+                        .url("https://github.com/ethauvin/" + archiveBaseName)
                 )
                 .signKey(property("sign.key"))
                 .signPassphrase(property("sign.passphrase"));
