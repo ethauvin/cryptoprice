@@ -10,7 +10,7 @@ jobs:
   build-bld-project:
     strategy:
       matrix:
-        java-version: [ 17, 21, 24 ]
+        java-version: [ 17, 21, 25 ]
         os: [ ubuntu-latest, windows-latest, macos-latest ]
 
     runs-on: ${{ matrix.os }}
