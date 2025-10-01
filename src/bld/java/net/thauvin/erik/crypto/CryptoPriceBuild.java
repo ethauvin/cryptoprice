@@ -82,7 +82,7 @@ public class CryptoPriceBuild extends Project {
                         version(5, 1, 0)));
         scope(test)
                 .include(dependency("com.uwyn.rife2", "bld-extensions-testing-helpers",
-                        version(0, 9, 3, "SNAPSHOT")))
+                        version(0, 9, 4)))
                 .include(dependency("com.willowtreeapps.assertk", "assertk-jvm",
                         version(0, 28, 1)))
                 .include(dependency("org.jetbrains.kotlin", "kotlin-test-junit5", kotlin))
