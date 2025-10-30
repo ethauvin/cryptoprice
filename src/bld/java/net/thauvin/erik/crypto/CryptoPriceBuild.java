@@ -45,8 +45,6 @@ import rife.tools.exceptions.FileUtilsErrorException;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
@@ -195,36 +193,7 @@ public class CryptoPriceBuild extends Project {
     public void jacoco() throws Exception {
         final var op = new JacocoReportOperation().fromProject(this);
         op.testToolOptions("--reports-dir=" + TEST_RESULTS_DIR);
-
-        Exception ex = null;
-        try {
-            op.execute();
-        } catch (Exception e) {
-            ex = e;
-        }
-
-        renderWithXunitViewer();
-
-        if (ex != null) {
-            throw ex;
-        }
-    }
-
-    private void renderWithXunitViewer() throws Exception {
-        final var npmPackagesEnv = System.getenv("NPM_PACKAGES");
-        if (npmPackagesEnv != null && !npmPackagesEnv.isEmpty()) {
-            final var xunitViewer = Path.of(npmPackagesEnv, "bin", "xunit-viewer").toFile();
-            if (xunitViewer.exists() && xunitViewer.canExecute()) {
-                final var reportsDir = "build/reports/tests/test/";
-
-                Files.createDirectories(Path.of(reportsDir));
-
-                new ExecOperation()
-                        .fromProject(this)
-                        .command(xunitViewer.getPath(), "-r", TEST_RESULTS_DIR, "-o", reportsDir + "index.html")
-                        .execute();
-            }
-        }
+        op.execute();
     }
 
     @BuildCommand(summary = "Runs the JUnit reporter")
@@ -239,18 +208,6 @@ public class CryptoPriceBuild extends Project {
     public void test() throws Exception {
         final var op = testOperation().fromProject(this);
         op.testToolOptions().reportsDir(new File(TEST_RESULTS_DIR));
-
-        Exception ex = null;
-        try {
-            op.execute();
-        } catch (Exception e) {
-            ex = e;
-        }
-
-        renderWithXunitViewer();
-
-        if (ex != null) {
-            throw ex;
-        }
+        op.execute();
     }
 }
