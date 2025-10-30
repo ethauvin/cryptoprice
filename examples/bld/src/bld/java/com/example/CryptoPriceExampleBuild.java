@@ -18,7 +18,7 @@ public class CryptoPriceExampleBuild extends BaseProject {
 
         mainClass = "com.example.CryptoPriceExampleKt";
 
-        javaRelease = 11;
+        javaRelease = 17;
         downloadSources = true;
         
         autoDownloadPurge = true;

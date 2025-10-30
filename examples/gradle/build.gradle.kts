@@ -19,17 +19,12 @@ dependencies {
     implementation("org.json:json:20240303")
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
-}
-
 application {
     mainClass.set("com.example.CryptoPriceExampleKt")
 }
 
 kotlin {
-    compilerOptions.jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
+    jvmToolchain(17)
 }
 
 tasks {

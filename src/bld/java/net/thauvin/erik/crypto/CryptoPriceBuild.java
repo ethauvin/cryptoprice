@@ -66,7 +66,7 @@ public class CryptoPriceBuild extends Project {
 
         mainClass = "net.thauvin.erik.crypto.CryptoPrice";
 
-        javaRelease = 11;
+        javaRelease = 17;
 
         autoDownloadPurge = true;
         downloadSources = true;
