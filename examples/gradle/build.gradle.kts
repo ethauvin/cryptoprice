@@ -23,10 +23,6 @@ application {
     mainClass.set("com.example.CryptoPriceExampleKt")
 }
 
-kotlin {
-    jvmToolchain(17)
-}
-
 tasks {
     register<JavaExec>("runJava") {
         group = "application"
