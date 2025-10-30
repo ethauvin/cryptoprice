@@ -5,7 +5,7 @@
   <groupId>net.thauvin.erik</groupId>
   <artifactId>cryptoprice</artifactId>
   <version>1.0.3-SNAPSHOT</version>
-  <name>cryptoprice</name>
+  <name>CryptoPrice</name>
   <description>Retrieve cryptocurrencies prices</description>
   <url>https://github.com/ethauvin/cryptoprice</url>
   <licenses>
