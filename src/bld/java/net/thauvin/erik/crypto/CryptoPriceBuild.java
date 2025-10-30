@@ -80,7 +80,7 @@ public class CryptoPriceBuild extends Project {
                 .include(dependency("org.jetbrains.kotlin", "kotlin-stdlib", kotlin))
                 .include(dependency("org.json", "json", "20250517"))
                 .include(dependency("com.squareup.okhttp3", "okhttp-jvm",
-                        version(5, 1, 0)));
+                        version(5, 2, 1)));
         scope(test)
                 .include(dependency("com.uwyn.rife2", "bld-extensions-testing-helpers",
                         version(0, 9, 4)))
