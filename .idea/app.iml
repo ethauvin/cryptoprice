@@ -11,8 +11,6 @@
       <sourceFolder url="file://$MODULE_DIR$/src/test/resources" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/kotlin" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/kotlin" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/src/main/kotlin/net/thauvin/erik/crypto" type="kotlin-source" />
-      <sourceFolder url="file://$MODULE_DIR$/src/test/kotlin/net/thauvin/erik/crypto" type="kotlin-test" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
