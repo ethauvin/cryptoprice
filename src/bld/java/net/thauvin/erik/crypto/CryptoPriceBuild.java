@@ -51,8 +51,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static rife.bld.dependencies.Repository.*;
-import static rife.bld.dependencies.Scope.compile;
-import static rife.bld.dependencies.Scope.test;
+import static rife.bld.dependencies.Scope.*;
 
 public class CryptoPriceBuild extends Project {
     static final String TEST_RESULTS_DIR = "build/test-results/test/";
@@ -78,7 +77,10 @@ public class CryptoPriceBuild extends Project {
                 .include(dependency("org.jetbrains.kotlin", "kotlin-stdlib", kotlin))
                 .include(dependency("org.json", "json", "20250517"))
                 .include(dependency("com.squareup.okhttp3", "okhttp-jvm",
-                        version(5, 3, 0)));
+                        version(5, 3, 2)));
+        scope(provided)
+                .include(dependency("com.github.spotbugs", "spotbugs-annotations",
+                        version(4, 9, 8)));
         scope(test)
                 .include(dependency("com.uwyn.rife2", "bld-extensions-testing-helpers",
                         version(0, 9, 4)))
@@ -186,7 +188,7 @@ public class CryptoPriceBuild extends Project {
     @BuildCommand(value = "pom-root", summary = "Generates the POM file in the root directory")
     public void pomRoot() throws FileUtilsErrorException {
         PomBuilder.generateInto(publishOperation().fromProject(this).info(), dependencies(),
-                new File(workDirectory, "pom.xml"));
+                new File("pom.xml"));
     }
 
     @BuildCommand(summary = "Generates JaCoCo Reports")
@@ -201,6 +203,15 @@ public class CryptoPriceBuild extends Project {
         new JUnitReporterOperation()
                 .fromProject(this)
                 .failOnSummary(true)
+                .execute();
+    }
+
+    @BuildCommand(summary = "Runs SpotBugs on this project")
+    public void spotbugs() throws Exception {
+        new SpotBugsOperation()
+                .fromProject(this)
+                .home("/opt/spotbugs")
+                .sourcePath(srcMainKotlin)
                 .execute();
     }
 

@@ -31,6 +31,7 @@
 
 package net.thauvin.erik.crypto
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -118,6 +119,7 @@ open class CryptoPrice(val base: String, val currency: String, val amount: BigDe
             }
         }
 
+        @SuppressFBWarnings("PDP_POORLY_DEFINED_PARAMETER")
         private fun buildRequest(paths: List<String>, params: Map<String, String>): Request {
             val httpUrl = COINBASE_API_URL.toHttpUrl().newBuilder().apply {
                 paths.forEach { addPathSegment(it) }
@@ -180,8 +182,8 @@ open class CryptoPrice(val base: String, val currency: String, val amount: BigDe
             if (args.isEmpty()) {
                 println("Please specify one or more ticker symbols as arguments.")
             } else {
-                args.forEach {
-                    with(spotPrice(it)) {
+                for (arg in args) {
+                    with(spotPrice(arg)) {
                         println("$base:\t" + "%10s".format(toCurrency()))
                     }
                 }
@@ -227,6 +229,7 @@ open class CryptoPrice(val base: String, val currency: String, val amount: BigDe
      */
     @JvmOverloads
     @Throws(IllegalArgumentException::class)
+    @SuppressFBWarnings("DRE_DECLARED_RUNTIME_EXCEPTION")
     fun toCurrency(
         locale: Locale = Locale.getDefault(Locale.Category.FORMAT),
         minFractionDigits: Int = 2
@@ -260,8 +263,7 @@ open class CryptoPrice(val base: String, val currency: String, val amount: BigDe
     override fun hashCode(): Int {
         var result = base.hashCode()
         result = 31 * result + currency.hashCode()
-        result = 31 * result + amount.hashCode()
-        return result
+        return 31 * result + amount.hashCode()
     }
 
     /**
