@@ -69,13 +69,13 @@ public class CryptoPriceBuild extends Project {
 
         autoDownloadPurge = true;
         downloadSources = true;
-        repositories = List.of(MAVEN_LOCAL, MAVEN_CENTRAL, RIFE2_SNAPSHOTS, RIFE2_RELEASES);
+        repositories = List.of(MAVEN_LOCAL, MAVEN_CENTRAL, RIFE2_SNAPSHOTS);
 
         final var kotlin = version(2, 3, 0);
         final var junit = version(6, 0, 1);
         scope(compile)
                 .include(dependency("org.jetbrains.kotlin", "kotlin-stdlib", kotlin))
-                .include(dependency("org.json", "json", "20250517"))
+                .include(dependency("org.json", "json", "20251224"))
                 .include(dependency("com.squareup.okhttp3", "okhttp-jvm",
                         version(5, 3, 2)));
         scope(provided)
