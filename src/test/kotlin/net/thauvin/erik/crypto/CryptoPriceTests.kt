@@ -1,7 +1,7 @@
 /*
  * CryptoPriceTests.kt
  *
- * Copyright 2021-2025 Erik C. Thauvin (erik@thauvin.net)
+ * Copyright 2021-2026 Erik C. Thauvin (erik@thauvin.net)
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -62,7 +62,6 @@ class CryptoPriceTests {
     companion object {
         @RegisterExtension
         @JvmField
-        @Suppress("unused")
         val loggingExtension = LoggingExtension(CryptoPrice.logger)
     }
 
