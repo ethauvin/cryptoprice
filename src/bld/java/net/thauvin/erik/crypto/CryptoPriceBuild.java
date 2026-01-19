@@ -36,6 +36,7 @@ import rife.bld.Project;
 import rife.bld.extension.*;
 import rife.bld.extension.dokka.LoggingLevel;
 import rife.bld.extension.dokka.OutputFormat;
+import rife.bld.extension.tools.IOUtils;
 import rife.bld.operations.exceptions.ExitStatusException;
 import rife.bld.publish.PomBuilder;
 import rife.bld.publish.PublishDeveloper;
@@ -54,8 +55,9 @@ import static rife.bld.dependencies.Repository.*;
 import static rife.bld.dependencies.Scope.*;
 
 public class CryptoPriceBuild extends Project {
-    static final String TEST_RESULTS_DIR = "build/test-results/test/";
+
     final File srcMainKotlin = new File(srcMainDirectory(), "kotlin");
+    final File testResultsDirectory = IOUtils.resolveFile(buildDirectory(), "test-results", "test");
 
     public CryptoPriceBuild() {
         pkg = "net.thauvin.erik.crypto";
@@ -83,7 +85,7 @@ public class CryptoPriceBuild extends Project {
                         version(4, 9, 8)));
         scope(test)
                 .include(dependency("com.uwyn.rife2", "bld-extensions-testing-helpers",
-                        version(0, 9, 5)))
+                        version(0, 9, 6, "SNAPSHOT")))
                 .include(dependency("com.willowtreeapps.assertk", "assertk-jvm",
                         version(0, 28, 1)))
                 .include(dependency("org.jetbrains.kotlin", "kotlin-test-junit5", kotlin))
@@ -123,20 +125,6 @@ public class CryptoPriceBuild extends Project {
         jarSourcesOperation().sourceDirectories(srcMainKotlin);
     }
 
-    public static void main(final String[] args) {
-        // Enable detailed logging for the extensions
-        final var level = Level.ALL;
-        final var logger = Logger.getLogger("rife.bld.extension");
-        final var consoleHandler = new ConsoleHandler();
-
-        consoleHandler.setLevel(level);
-        logger.addHandler(consoleHandler);
-        logger.setLevel(level);
-        logger.setUseParentHandlers(false);
-
-        new CryptoPriceBuild().start(args);
-    }
-
     @BuildCommand(summary = "Compiles the Kotlin project")
     @Override
     public void compile() throws Exception {
@@ -145,20 +133,11 @@ public class CryptoPriceBuild extends Project {
         op.execute();
     }
 
-    @BuildCommand(summary = "Checks source with Detekt")
-    public void detekt() throws ExitStatusException, IOException, InterruptedException {
-        new DetektOperation()
-                .fromProject(this)
-                .execute();
-    }
-
-    @BuildCommand(value = "detekt-baseline", summary = "Creates the Detekt baseline")
-    public void detektBaseline() throws ExitStatusException, IOException, InterruptedException {
-        new DetektOperation()
-                .fromProject(this)
-                .baseline("detekt-baseline.xml")
-                .createBaseline(true)
-                .execute();
+    @Override
+    public void test() throws Exception {
+        final var op = testOperation().fromProject(this);
+        op.testToolOptions().reportsDir(testResultsDirectory);
+        op.execute();
     }
 
     @Override
@@ -185,17 +164,47 @@ public class CryptoPriceBuild extends Project {
         pomRoot();
     }
 
-    @BuildCommand(value = "pom-root", summary = "Generates the POM file in the root directory")
-    public void pomRoot() throws FileUtilsErrorException {
-        PomBuilder.generateInto(publishOperation().fromProject(this).info(), dependencies(),
-                new File("pom.xml"));
+    public static void main(final String[] args) {
+        // Enable detailed logging for the extensions
+        final var level = Level.ALL;
+        final var logger = Logger.getLogger("rife.bld.extension");
+        final var consoleHandler = new ConsoleHandler();
+
+        consoleHandler.setLevel(level);
+        logger.addHandler(consoleHandler);
+        logger.setLevel(level);
+        logger.setUseParentHandlers(false);
+
+        new CryptoPriceBuild().start(args);
+    }
+
+    @BuildCommand(summary = "Checks source with Detekt")
+    public void detekt() throws ExitStatusException, IOException, InterruptedException {
+        new DetektOperation()
+                .fromProject(this)
+                .execute();
+    }
+
+    @BuildCommand(value = "detekt-baseline", summary = "Creates the Detekt baseline")
+    public void detektBaseline() throws ExitStatusException, IOException, InterruptedException {
+        new DetektOperation()
+                .fromProject(this)
+                .baseline("detekt-baseline.xml")
+                .createBaseline(true)
+                .execute();
     }
 
     @BuildCommand(summary = "Generates JaCoCo Reports")
     public void jacoco() throws Exception {
         final var op = new JacocoReportOperation().fromProject(this);
-        op.testToolOptions("--reports-dir=" + TEST_RESULTS_DIR);
+        op.testToolOptions("--reports-dir=" + testResultsDirectory.getAbsolutePath());
         op.execute();
+    }
+
+    @BuildCommand(value = "pom-root", summary = "Generates the POM file in the root directory")
+    public void pomRoot() throws FileUtilsErrorException {
+        PomBuilder.generateInto(publishOperation().fromProject(this).info(), dependencies(),
+                new File("pom.xml"));
     }
 
     @BuildCommand(summary = "Runs the JUnit reporter")
@@ -213,12 +222,5 @@ public class CryptoPriceBuild extends Project {
                 .home("/opt/spotbugs")
                 .sourcePath(srcMainKotlin)
                 .execute();
-    }
-
-    @Override
-    public void test() throws Exception {
-        final var op = testOperation().fromProject(this);
-        op.testToolOptions().reportsDir(new File(TEST_RESULTS_DIR));
-        op.execute();
     }
 }
