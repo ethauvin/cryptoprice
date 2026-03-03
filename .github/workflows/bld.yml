@@ -1,6 +1,6 @@
 name: bld-ci
 
-on: [ push, pull_request, workflow_dispatch ]
+on: [push, pull_request, workflow_dispatch]
 
 env:
   COVERAGE_JDK: "21"
@@ -10,8 +10,8 @@ jobs:
   build-bld-project:
     strategy:
       matrix:
-        java-version: [ 17, 21, 24 ]
-        os: [ ubuntu-latest, windows-latest, macos-latest ]
+        java-version: [17, 21, 24]
+        os: [ubuntu-latest, windows-latest, macos-latest]
 
     runs-on: ${{ matrix.os }}
 
@@ -66,6 +66,10 @@ jobs:
       - name: Remove pom.xml
         if: success() && matrix.java-version == env.COVERAGE_JDK && matrix.os == 'ubuntu-latest'
         run: rm -rf pom.xml
+
+      - name: Add Sonar jdkHome
+        if: success() && matrix.java-version == env.COVERAGE_JDK && matrix.os == 'ubuntu-latest'
+        run: printf "\nsonar.java.jdkHome=${{ env.JAVA_HOME }}\n" >> sonar-project.properties
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarqube-scan-action@v7.0.0
