@@ -41,6 +41,7 @@ import net.thauvin.erik.crypto.CryptoPrice.Companion.buyPrice
 import net.thauvin.erik.crypto.CryptoPrice.Companion.sellPrice
 import net.thauvin.erik.crypto.CryptoPrice.Companion.spotPrice
 import net.thauvin.erik.crypto.CryptoPrice.Companion.toPrice
+import nl.jqno.equalsverifier.EqualsVerifier
 import org.json.JSONObject
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
@@ -63,6 +64,11 @@ class CryptoPriceTests {
         @RegisterExtension
         @JvmField
         val loggingExtension = LoggingExtension(CryptoPrice.logger)
+    }
+
+    @Test
+    fun equalsVerifier() {
+        EqualsVerifier.forClass(CryptoPrice::class.java).verify()
     }
 
     @Nested

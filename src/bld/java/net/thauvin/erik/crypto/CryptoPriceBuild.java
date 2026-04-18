@@ -88,6 +88,9 @@ public class CryptoPriceBuild extends Project {
                         version(0, 9, 6)))
                 .include(dependency("com.willowtreeapps.assertk", "assertk-jvm",
                         version(0, 28, 1)))
+                .include(dependency("nl.jqno.equalsverifier", "equalsverifier",
+                        version(4, 5)))
+                .include(dependency("org.jetbrains.kotlin", "kotlin-reflect", kotlin))
                 .include(dependency("org.jetbrains.kotlin", "kotlin-test-junit5", kotlin))
                 .include(dependency("org.junit.jupiter", "junit-jupiter", junit))
                 .include(dependency("org.junit.platform", "junit-platform-console-standalone", junit))

@@ -55,7 +55,7 @@ import java.util.logging.Logger
  * @param currency The fiat currency ISO 4217 code, such as `USD`, `GPB`, `EUR`, etc.
  * @param amount The cryptocurrency price.
  */
-open class CryptoPrice(val base: String, val currency: String, val amount: BigDecimal) {
+data class CryptoPrice(val base: String, val currency: String, val amount: BigDecimal) {
     companion object {
         // Coinbase API URL
         private const val COINBASE_API_URL = "https://api.coinbase.com/v2/"
@@ -246,13 +246,11 @@ open class CryptoPrice(val base: String, val currency: String, val amount: BigDe
      */
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as CryptoPrice
+        if (other !is CryptoPrice) return false
 
         if (base != other.base) return false
         if (currency != other.currency) return false
-        if (amount != other.amount) return false
+        if (amount.compareTo(other.amount) != 0) return false
 
         return true
     }
@@ -260,10 +258,12 @@ open class CryptoPrice(val base: String, val currency: String, val amount: BigDe
     /**
      * Returns a hash code value for the object.
      */
+    @SuppressFBWarnings("USBR_UNNECESSARY_STORE_BEFORE_RETURN")
     override fun hashCode(): Int {
         var result = base.hashCode()
         result = 31 * result + currency.hashCode()
-        return 31 * result + amount.hashCode()
+        result = 31 * result + amount.stripTrailingZeros().hashCode()
+        return result
     }
 
     /**
