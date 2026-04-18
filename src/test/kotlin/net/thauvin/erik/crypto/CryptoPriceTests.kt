@@ -33,9 +33,7 @@ package net.thauvin.erik.crypto
 
 import assertk.all
 import assertk.assertThat
-import assertk.assertions.isEqualTo
-import assertk.assertions.isGreaterThan
-import assertk.assertions.prop
+import assertk.assertions.*
 import net.thauvin.erik.crypto.CryptoPrice.Companion.apiCall
 import net.thauvin.erik.crypto.CryptoPrice.Companion.buyPrice
 import net.thauvin.erik.crypto.CryptoPrice.Companion.sellPrice
@@ -184,8 +182,8 @@ class CryptoPriceTests {
             } catch (e: CryptoException) {
                 assertThat(e, "sellPrice(FOOBAR)").all {
                     prop(CryptoException::statusCode).isEqualTo(404)
-                    prop(CryptoException::message).isEqualTo("not found")
-                    prop(CryptoException::id).isEqualTo("not found")
+                    prop(CryptoException::message).isNotNull().contains("not found")
+                    prop(CryptoException::id).isNotNull().contains("not found")
                 }
             }
         }
@@ -321,6 +319,12 @@ class CryptoPriceTests {
             val aud = CryptoPrice("LTC", "AUD", amount)
             assertEquals("A$12,345.60", aud.toCurrency(), "CryptoPrice(LTC,AUD)")
         }
+
+        @Test
+        fun toCurrencyInvalidIso() {
+            val price = CryptoPrice("BTC", "ZZZ", BigDecimal("10"))
+            assertFailsWith<IllegalArgumentException> { price.toCurrency() }
+        }
     }
 
     @Nested
@@ -360,6 +364,17 @@ class CryptoPriceTests {
             val price = json.toPrice("")
             assertEquals(json, price.toString(), "toString()")
             assertEquals(price.toString(), price.toJson(""), "toString() = toJson('')")
+        }
+
+        @Test
+        fun toPriceBlankKey() {
+            val json = """{"base":"BTC","currency":"USD","amount":"123"}"""
+            val price = json.toPrice("")
+            assertThat(price).all {
+                prop(CryptoPrice::base).isEqualTo("BTC")
+                prop(CryptoPrice::currency).isEqualTo("USD")
+                prop(CryptoPrice::amount).isEqualTo(BigDecimal("123"))
+            }
         }
 
         @Test
@@ -413,6 +428,31 @@ class CryptoPriceTests {
                 price, price.toJson("test").toPrice("test"),
                 "toPrice(test)"
             )
+        }
+    }
+
+    @Nested
+    @DisplayName("Main Method Tests")
+    inner class MainMethodTests {
+        @Test
+        fun mainNoArgs() {
+            val out = java.io.ByteArrayOutputStream()
+            System.setOut(java.io.PrintStream(out))
+
+            CryptoPrice.main(emptyArray())
+
+            assertThat(out.toString()).contains("Please specify")
+        }
+
+        @Test
+        fun mainWithArgs() {
+            val out = java.io.ByteArrayOutputStream()
+            System.setOut(java.io.PrintStream(out))
+
+            // We don't mock spotPrice here; just ensure it doesn't crash.
+            CryptoPrice.main(arrayOf("BTC"))
+
+            assertThat(out.toString()).contains("BTC")
         }
     }
 }

@@ -31,17 +31,37 @@
 
 package net.thauvin.erik.crypto
 
+import net.thauvin.erik.crypto.CryptoException.Companion.NO_STATUS
+
+
 /**
- * Thrown when an exceptional condition has occurred.
+ * Represents an error returned by the Coinbase API or encountered while
+ * processing cryptocurrency data.
+ *
+ * Includes:
+ * - [statusCode]: Optional HTTP status code (or [NO_STATUS] if not applicable)
+ * - [id]: Coinbase error identifier (e.g., `"not_found"`, `"invalid_request"`)
+ *
+ * The exception message provides the human‑readable description.
  */
 class CryptoException @JvmOverloads constructor(
-    var statusCode: Int = NO_STATUS,
-    var id: String,
+    val statusCode: Int = NO_STATUS,
+    val id: String,
     message: String,
     cause: Throwable? = null
 ) : Exception(message, cause) {
+
     companion object {
+        /** Indicates that no HTTP status code is associated with the error. */
         const val NO_STATUS = -1
+
+        @Suppress("unused")
         private const val serialVersionUID = 1L
     }
+
+    /**
+     * Returns a structured representation of the exception for debugging.
+     */
+    override fun toString(): String =
+        "CryptoException(statusCode=$statusCode, id='$id', message='${message}')"
 }

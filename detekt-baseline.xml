@@ -3,5 +3,6 @@
   <ManuallySuppressedIssues/>
   <CurrentIssues>
     <ID>ThrowsCount:CryptoPrice.kt$CryptoPrice.Companion$private fun handleResponse(response: okhttp3.Response, body: String): String</ID>
+    <ID>WildcardImport:CryptoPriceTests.kt$import assertk.assertions.*</ID>
   </CurrentIssues>
 </SmellBaseline>

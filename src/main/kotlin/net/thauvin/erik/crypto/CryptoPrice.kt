@@ -57,10 +57,12 @@ import java.util.logging.Logger
  */
 data class CryptoPrice(val base: String, val currency: String, val amount: BigDecimal) {
     companion object {
-        // Coinbase API URL
         private const val COINBASE_API_URL = "https://api.coinbase.com/v2/"
 
-        /** The logger instance. **/
+        /** Shared OkHttp client instance. **/
+        private val httpClient: OkHttpClient by lazy { OkHttpClient() }
+
+        /** Logger instance. **/
         val logger: Logger by lazy { Logger.getLogger(CryptoPrice::class.java.simpleName) }
 
         /**
@@ -78,42 +80,43 @@ data class CryptoPrice(val base: String, val currency: String, val amount: BigDe
                 } else {
                     JSONObject(this)
                 }
-                with(json) {
-                    return CryptoPrice(
-                        getString("base"),
-                        getString("currency"),
-                        getString("amount").toBigDecimal()
-                    )
-                }
+
+                return CryptoPrice(
+                    json.getString("base"),
+                    json.getString("currency"),
+                    json.getString("amount").toBigDecimal()
+                )
             } catch (e: NumberFormatException) {
-                throw CryptoException(id = "convert_error", message = "Could not convert amount to number.", cause = e)
+                throw CryptoException(
+                    id = "convert_error",
+                    message = "Could not convert amount to number.",
+                    cause = e
+                )
             } catch (e: JSONException) {
-                throw CryptoException(id = "parse_error", message = "Could not parse price data.", cause = e)
+                throw CryptoException(
+                    id = "parse_error",
+                    message = "Could not parse price data.",
+                    cause = e
+                )
             }
         }
 
         /**
          * Makes an API call.
          *
-         * @param paths The list of path segments for the API URL. For example: `["prices", "BTC-USD", "spot"]`.
+         * @param paths The list of path segments for the API URL.
          * @param params The map of query parameters.
          */
         @JvmStatic
         @JvmOverloads
         @Throws(CryptoException::class, IOException::class)
         fun apiCall(paths: List<String>, params: Map<String, String> = emptyMap()): String {
-            val httpClient = OkHttpClient()
             val request = buildRequest(paths, params)
 
             return httpClient.newCall(request).execute().use { response ->
                 val body = response.body.string()
-                if (body.isBlank()) {
-                    throw CryptoException(response.code, id = "empty_response", message = "Empty response.")
-                }
 
-                if (logger.isLoggable(Level.FINE)) {
-                    logger.fine(body)
-                }
+                logger.takeIf { it.isLoggable(Level.FINE) }?.fine(body)
 
                 handleResponse(response, body)
             }
@@ -129,10 +132,10 @@ data class CryptoPrice(val base: String, val currency: String, val amount: BigDe
             return Request.Builder().url(httpUrl).build()
         }
 
-
         private fun handleResponse(response: okhttp3.Response, body: String): String {
             try {
                 val json = JSONObject(body)
+
                 if (response.isSuccessful) {
                     return body
                 }
@@ -141,42 +144,52 @@ data class CryptoPrice(val base: String, val currency: String, val amount: BigDe
                     val data = json.getJSONArray("errors").getJSONObject(0)
                     throw CryptoException(
                         response.code,
-                        data.getString("id"),
-                        data.getString("message")
-                    )
-                } else {
-                    throw CryptoException(
-                        response.code,
-                        json.getString("error"),
-                        json.getString("message")
+                        data.optString("id", "unknown_error"),
+                        data.optString("message", "Unknown error.")
                     )
                 }
+
+                throw CryptoException(
+                    response.code,
+                    json.optString("error", "unknown_error"),
+                    json.optString("message", "Unknown error.")
+                )
             } catch (e: JSONException) {
                 throw CryptoException(
                     response.code,
                     id = "parse_error",
-                    "Could not parse data.",
-                    e
+                    message = "Could not parse data.",
+                    cause = e
                 )
             }
         }
 
-        /**
-         * Retrieves the buy price.
-         *
-         * @param base The cryptocurrency ticker symbol, such as `BTC`, `ETH`, `LTC`, etc.
-         * @param currency The fiat currency ISO 4217 code, such as `USD`, `GPB`, `EUR`, etc.
-         */
+        /** Retrieves the buy price. */
         @JvmStatic
         @JvmOverloads
         @Throws(CryptoException::class, IOException::class)
         fun buyPrice(base: String, currency: String = "USD"): CryptoPrice {
-            return apiCall(listOf("prices", "$base-$currency", "buy"), emptyMap()).toPrice()
+            return apiCall(listOf("prices", "$base-$currency", "buy")).toPrice()
         }
 
-        /**
-         * Prints the current prices for the specified cryptocurrencies.
-         */
+        /** Retrieves the sell price. */
+        @JvmStatic
+        @JvmOverloads
+        @Throws(CryptoException::class, IOException::class)
+        fun sellPrice(base: String, currency: String = "USD"): CryptoPrice {
+            return apiCall(listOf("prices", "$base-$currency", "sell")).toPrice()
+        }
+
+        /** Retrieves the spot price. */
+        @JvmStatic
+        @JvmOverloads
+        @Throws(CryptoException::class, IOException::class)
+        fun spotPrice(base: String, currency: String = "USD", date: LocalDate? = null): CryptoPrice {
+            val params = date?.let { mapOf("date" to "$it") } ?: emptyMap()
+            return apiCall(listOf("prices", "$base-$currency", "spot"), params).toPrice()
+        }
+
+        /** Prints current prices for CLI usage. */
         @JvmStatic
         fun main(args: Array<String>) {
             if (args.isEmpty()) {
@@ -189,43 +202,10 @@ data class CryptoPrice(val base: String, val currency: String, val amount: BigDe
                 }
             }
         }
-
-        /**
-         * Retrieves the sell price.
-         *
-         * @param base The cryptocurrency ticker symbol, such as `BTC`, `ETH`, `LTC`, etc.
-         * @param currency The fiat currency ISO 4217 code, such as `USD`, `GPB`, `EUR`, etc.
-         */
-        @JvmStatic
-        @JvmOverloads
-        @Throws(CryptoException::class, IOException::class)
-        fun sellPrice(base: String, currency: String = "USD"): CryptoPrice {
-            return apiCall(listOf("prices", "$base-$currency", "sell"), emptyMap()).toPrice()
-        }
-
-        /**
-         * Retrieves the spot price.
-         *
-         * @param base The cryptocurrency ticker symbol, such as `BTC`, `ETH`, `LTC`, etc.
-         * @param currency The fiat currency ISO 4217 code, such as `USD`, `GPB`, `EUR`, etc.
-         * @param date The [LocalDate] for historical price data.
-         */
-        @JvmStatic
-        @JvmOverloads
-        @Throws(CryptoException::class, IOException::class)
-        fun spotPrice(base: String, currency: String = "USD", date: LocalDate? = null): CryptoPrice {
-            val params = if (date != null) mapOf("date" to "$date") else emptyMap()
-            return apiCall(listOf("prices", "$base-$currency", "spot"), params).toPrice()
-        }
     }
 
     /**
      * Returns the [amount] as a currency formatted string.
-     *
-     * For example: `$1,203.33`.
-     *
-     * @param locale The desired locale.
-     * @param minFractionDigits The minimum number of digits allowed in the fraction portion of the currency.
      */
     @JvmOverloads
     @Throws(IllegalArgumentException::class)
@@ -268,38 +248,27 @@ data class CryptoPrice(val base: String, val currency: String, val amount: BigDe
 
     /**
      * Returns a JSON representation of the [CryptoPrice].
-     *
-     * For example, with the default `data` object key:
-     *
-     * ```
-     * {"data":{"base":"BTC","currency":"USD","amount":"58977.17"}}
-     * ```
-     *
-     * @param key Specifies a JSON object key to wrap the price data in.
      */
     @JvmOverloads
     fun toJson(key: String = "data"): String {
         val json = JSONStringer()
-        if (key.isNotBlank()) json.`object`().key(key)
-        json.`object`()
-            .key("base").value(base)
+
+        if (key.isNotBlank()) {
+            json.`object`().key(key).`object`()
+        } else {
+            json.`object`()
+        }
+
+        json.key("base").value(base)
             .key("currency").value(currency)
             .key("amount").value(amount.toString())
             .endObject()
+
         if (key.isNotBlank()) json.endObject()
+
         return json.toString()
     }
 
-    /**
-     * Returns a JSON representation of the [CryptoPrice].
-     *
-     * For example:
-     *
-     * ```
-     * {"base":"BTC","currency":"USD","amount":"58977.17"}
-     * ```
-     *
-     * @see [toJson]
-     */
+    /** Returns a JSON representation without a wrapper key. */
     override fun toString(): String = toJson("")
 }
