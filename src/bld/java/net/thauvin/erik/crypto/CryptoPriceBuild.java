@@ -132,7 +132,7 @@ public class CryptoPriceBuild extends Project {
     @Override
     public void compile() throws Exception {
         final var op = new CompileKotlinOperation().fromProject(this);
-        op.compileOptions().languageVersion("1.9").verbose(true);
+        op.compileOptions().languageVersion("2.1").verbose(true);
         op.execute();
     }
 
